@@ -17,8 +17,6 @@ public class PatientDto {
     private String diagnosis;
     private Long insuranceNumber;
     private String doctorsName;
-    private LocalDateTime createDataTime;
-    private LocalDateTime updateDataTime;
     private Boolean status;
 
 }

@@ -1,6 +1,7 @@
 package com.t_systems.T_Medical_Center_System.entity;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,33 +20,28 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@ToString
+@Data
 @Table(name = "tb_events")
 public class Event {
-    @Getter
-    @Setter
+
     @Id
     @SequenceGenerator(name = "events_id_generator",sequenceName = "events_id_generator",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "events_id_generator")
     private Long id;
-    @Getter
-    @Setter
+
     @ManyToOne ///attention pliz
     @JoinColumn(name = "event_id",referencedColumnName = "id")
     private Patient patient;
-    @Getter
-    @Setter
+
+    @CreationTimestamp
     private LocalDateTime eventDateTime;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String status;
-    @Getter
-    @Setter
+
     @CreationTimestamp
     private LocalDateTime createDataTime;
-    @Getter
-    @Setter
+
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
 

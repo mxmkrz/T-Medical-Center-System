@@ -20,44 +20,34 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@ToString
+@Data
 @Table(name = "tb_appointments")
 public class Appointment {
-    @Getter
-    @Setter
+
     @Id
     @SequenceGenerator(name = "appointments_id_generator",sequenceName = "appointments_id_generator",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "appointments_id_generator")
     private Long id;
-    @Getter
-    @Setter
     @OneToOne ///attention pliz
     @JoinColumn(name = "patient_id",referencedColumnName = "id")
     private Patient patient;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String type;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private Integer dose;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String timePattern;
-    @Getter
-    @Setter
+
     private LocalDateTime startDate;
-    @Getter
-    @Setter
+
     private LocalDateTime endData;
-    @Getter
-    @Setter
+
     @CreationTimestamp
     private LocalDateTime createDataTime;
-    @Getter
-    @Setter
+
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
 

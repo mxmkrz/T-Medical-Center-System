@@ -6,8 +6,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PatientRepository extends PagingAndSortingRepository<Patient, Long>,
-        JpaSpecificationExecutor<Patient> {
+public interface PatientRepository extends PagingAndSortingRepository<Patient, Long> {
 
-    Patient getPatientBy(Long id);
+
+
+
 }

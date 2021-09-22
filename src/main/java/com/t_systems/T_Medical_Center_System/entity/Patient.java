@@ -20,45 +20,36 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-@ToString
+@Data
 @Table(name = "tb_patients")
 public class Patient {
-    @Getter
-    @Setter
+
     @Id
     @SequenceGenerator(name = "patient_id_generator",sequenceName = "patient_id_generator",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "patient_id_generator")
     private Long id;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String firstName;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String secondName;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String diagnosis;
-    @Getter
-    @Setter
+
     @Column(nullable = false,unique = true)
     private Long insuranceNumber;
-    @Getter
-    @Setter
+
     @Column(nullable = false)
     private String doctorsName;
-    @Getter
-    @Setter
+
     @CreationTimestamp
     private LocalDateTime createDataTime;
-    @Getter
-    @Setter
+
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
-    @Getter
-    @Setter
+
     private Boolean status;
 
     public Patient() {

@@ -7,8 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AppointmentRepository extends PagingAndSortingRepository<Appointment,Long>,
-        JpaSpecificationExecutor<Appointment> {
+public interface AppointmentRepository extends PagingAndSortingRepository<Appointment,Long>{
 
 
 }
