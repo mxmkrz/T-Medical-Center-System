@@ -29,19 +29,14 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "patient_id_generator")
     private Long id;
 
-    @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
     private String secondName;
 
-    @Column(nullable = false)
     private String diagnosis;
 
-    @Column(nullable = false,unique = true)
     private Long insuranceNumber;
 
-    @Column(nullable = false)
     private String doctorsName;
 
     @CreationTimestamp

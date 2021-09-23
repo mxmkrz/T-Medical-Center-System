@@ -2,7 +2,7 @@ package com.t_systems.T_Medical_Center_System.service;
 
 import java.util.List;
 
-public interface HelperService<T> {
+public interface ServiceImpl<T> {
 
     List<T> findAll();
 

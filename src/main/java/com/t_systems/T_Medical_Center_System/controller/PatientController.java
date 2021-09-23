@@ -3,22 +3,24 @@ package com.t_systems.T_Medical_Center_System.controller;
 import com.t_systems.T_Medical_Center_System.dto.PatientDto;
 import com.t_systems.T_Medical_Center_System.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@Slf4j
-@RestController("/patients")
+@RestController
 public class PatientController {
 
     private final PatientService patientService;
 
-    public PatientController(PatientService patientService) {
+    @Autowired
+    public PatientController(@NonNull PatientService patientService) {
         this.patientService = patientService;
     }
 
-    @GetMapping(value = "/patients")
+    @GetMapping(value = "/all")
     public List<PatientDto> getPatientsList() {
         return patientService.findAll();
     }
@@ -30,14 +32,13 @@ public class PatientController {
 
     @PostMapping(value = "/addPatient")
     public void addPatient(@RequestBody PatientDto patientDto) {
-        log.info("patient add" ,patientDto);
         patientService.save(patientDto);
     }
 
-    @PutMapping(value = "/pattients")
-    public void updatePatient(@RequestBody PatientDto patientDto) {
-        patientService.update(patientDto);
-    }
+//    @PutMapping(value = "/pattients/{firstName}")
+//    public void updatePatientByName(@RequestBody PatientDto patientDto,@PathVariable("firstName") String firstName) {
+//        patientService.update(patientDto,firstName);
+//    }
 
     @DeleteMapping(value = "/patients/{id}")
     public void deletePatient(@PathVariable("id") Long id) {

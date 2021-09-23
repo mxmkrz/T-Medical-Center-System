@@ -11,10 +11,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class AppointmentDto {
-    private Long id;
     private Patient patient;
     private String type;
     private Integer dose;
     private String timePattern;
-
 }
