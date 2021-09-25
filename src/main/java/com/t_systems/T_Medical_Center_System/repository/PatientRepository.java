@@ -14,4 +14,6 @@ public interface PatientRepository extends PagingAndSortingRepository<Patient, L
     List<Patient> findAllList();
 
 
+
+
 }

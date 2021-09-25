@@ -24,6 +24,8 @@ public class PatientService implements ServiceImpl<PatientDto> {
     public PatientService(@NonNull PatientRepository patientRepository, @NonNull Convertor<Patient, PatientDto> patientConvertor) {
         this.patientRepository = patientRepository;
         this.patientConvertor = patientConvertor;
+
+
     }
 
     @Transactional

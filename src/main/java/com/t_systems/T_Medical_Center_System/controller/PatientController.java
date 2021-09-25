@@ -5,6 +5,7 @@ import com.t_systems.T_Medical_Center_System.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +21,11 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping(value = "/all")
-    public List<PatientDto> getPatientsList() {
-        return patientService.findAll();
+    @GetMapping("/all")
+    public String getPatientsList(Model model) {
+        List<PatientDto> patientDtos = patientService.findAll();
+        model.addAttribute("patients",patientDtos);
+        return "patientsList";
     }
 
     @GetMapping(value = "/patient/{id}")
