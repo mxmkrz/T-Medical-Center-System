@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PatientService implements ServiceImpl<PatientDto> {
+public class PatientService implements ServiceImpl<PatientDto,Patient> {
 
     private final PatientRepository patientRepository;
     private final Convertor<Patient, PatientDto> patientConvertor;
@@ -43,8 +43,8 @@ public class PatientService implements ServiceImpl<PatientDto> {
 
     @Transactional
     @Override
-    public void save(PatientDto obj) {
-        patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
+    public Patient save(PatientDto obj) {
+         return patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
     }
 
     @Transactional

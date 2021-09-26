@@ -2,13 +2,13 @@ package com.t_systems.T_Medical_Center_System.service;
 
 import java.util.List;
 
-public interface ServiceImpl<T> {
+public interface ServiceImpl<T,K> {
 
     List<T> findAll();
 
     T findById(Long id);
 
-    void save(T obj);
+    K save(T obj);
 
     void update(T obj);
 

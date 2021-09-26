@@ -12,11 +12,8 @@ import org.springframework.context.support.AbstractApplicationContext;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class TMedicalCenterSystemApplication extends SpringBootServletInitializer {
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(TMedicalCenterSystemApplication.class);
-	}
+public class TMedicalCenterSystemApplication  {
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(TMedicalCenterSystemApplication.class, args);

@@ -50,4 +50,11 @@ public class Patient {
     public Patient() {
     }
 
+    public Patient(String firstName, String secondName, String diagnosis, Long insuranceNumber, String doctorsName) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.diagnosis = diagnosis;
+        this.insuranceNumber = insuranceNumber;
+        this.doctorsName = doctorsName;
+    }
 }
