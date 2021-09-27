@@ -9,6 +9,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.websocket.server.PathParam;
 
 
 @Slf4j
@@ -24,38 +27,49 @@ public class PatientController {
 
     @GetMapping("/all")
     public String getPatientsList(Model model) {
-        model.addAttribute("patients",patientService.findAll());
+        model.addAttribute("patients", patientService.findAll());
         return "patientsList";
     }
 
+    //*******************************************
     @GetMapping(value = "/patient/{id}")
     public PatientDto getPatientById(@PathVariable("id") Long id) {
         return patientService.findById(id);
     }
 
-    @PostMapping(value = "/add")
-    public String addPatient(@ModelAttribute("patient") PatientDto patientDto) {
-
-
-        log.info("New patient created");
-        Patient patient = patientService.save(patientDto);
-        patient.setFirstName(patientDto.getFirstName());
-        patient.setSecondName(patientDto.getSecondName());
-        patient.setDiagnosis(patientDto.getDiagnosis());
-        patient.setInsuranceNumber(patientDto.getInsuranceNumber());
-        patient.setDoctorsName(patientDto.getDoctorsName());
-        patient.setStatus(patientDto.getStatus());
+    //*******************************************
+    @GetMapping("/add")
+    public String addCustomerGet(Model model) {
+        model.addAttribute("patient", new Patient());
         return "addPatient";
     }
 
-//    @PutMapping(value = "/pattients/{firstName}")
-//    public void updatePatientByName(@RequestBody PatientDto patientDto,@PathVariable("firstName") String firstName) {
-//        patientService.update(patientDto,firstName);
-//    }
 
-    @DeleteMapping(value = "/patients/{id}")
-    public void deletePatient(@PathVariable("id") Long id) {
-        patientService.deleteById(id);
+    @PostMapping(value = "/add")
+    public String addPatientPost(@ModelAttribute("patient") PatientDto patientDto) {
+        log.info("New patient created");
+        patientService.save(patientDto);
+        return "redirect:/all";
+    }
+
+    //*******************************************
+    @GetMapping(value = "/edit")
+    public String updatePatientGet(@RequestParam(name = "id") Long id, Model model) {
+        model.addAttribute("patient", patientService.findById(id));
+        return "editPatient";
+    }
+
+    @PostMapping(value = "/edit")
+    public String updatePatientPost(@ModelAttribute(name = "patient") PatientDto patientDto) {
+        patientService.updatePatientByStatus(patientDto,patientDto.getStatus());
+        return "redirect:/all";
+    }
+
+    //*******************************************
+    @GetMapping(value = "/deletePatient")
+    public String deletePatient(@RequestParam(name = "id") Long patientId) {
+        patientService.deleteById(patientId);
+        return "redirect:/all";
     }
 
 

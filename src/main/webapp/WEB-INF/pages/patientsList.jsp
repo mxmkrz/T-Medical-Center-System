@@ -7,29 +7,42 @@
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 </head>
 <body>
-<h1>Patients</h1>
-
-<table class="table table-dark table-hover">
+<h1>All Patients</h1>
+<table class="table table-bordered">
     <tr>
-        <th>firstName</th>
-        <th>secondName</th>
-        <th>diagnosis</th>
-        <th>insuranceNumber</th>
-        <th>doctorsName</th>
-        <th>status</th>
+        <th>Id</th>
+        <th>FirstName</th>
+        <th>SecondName</th>
+        <th>Diagnosis</th>
+        <th>InsuranceNumber</th>
+        <th>DoctorsName</th>
+        <th>Status</th>
+        <th>Delete</th>
+        <th>Update</th>
     </tr>
     <c:forEach var="patient" items="${patients}">
         <tr>
+            <td>${patient.id}</td>
             <td>${patient.firstName}</td>
             <td>${patient.secondName}</td>
             <td>${patient.diagnosis}</td>
             <td>${patient.insuranceNumber}</td>
             <td>${patient.doctorsName}</td>
             <td>${patient.status}</td>
+            <td><a href="deletePatient?id=<c:out value="${patient.id}"/>">Delete</a></td>
+            <td><a href="edit?id=<c:out value="${patient.id}"/>">Update</a></td>
         </tr>
     </c:forEach>
-
 </table>
+<ul>
+    <li>
+        <a href="add">Add new Patient</a>
+    </li>
+    <li>
+        <a href="/">Home Page</a>
+    </li>
+</ul>
+
 </body>
 </html>
 

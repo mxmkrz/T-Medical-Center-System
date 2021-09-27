@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PatientService implements ServiceImpl<PatientDto,Patient> {
+public class PatientService implements ServiceImpl<PatientDto> {
 
     private final PatientRepository patientRepository;
     private final Convertor<Patient, PatientDto> patientConvertor;
@@ -33,6 +33,7 @@ public class PatientService implements ServiceImpl<PatientDto,Patient> {
     public List<PatientDto> findAll() {
         List<Patient> result = patientRepository.findAllList();
         return patientConvertor.convertListEntityToDto(result, PatientDto.class);
+
     }
 
     @Transactional
@@ -43,21 +44,27 @@ public class PatientService implements ServiceImpl<PatientDto,Patient> {
 
     @Transactional
     @Override
-    public Patient save(PatientDto obj) {
-         return patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
-    }
-
-    @Transactional
-    @Override
-    public void update(PatientDto obj) {
-        patientConvertor.convertToDto(patientRepository.findById(obj.getId()).orElseThrow(PatientNotFoundException::new), PatientDto.class);
+    public void save(PatientDto obj) {
         patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
     }
 
     @Transactional
     @Override
+    public void update(PatientDto obj) {
+    }
+
+
+    @Transactional
+    @Override
     public void deleteById(Long id) {
         patientRepository.deleteById(id);
+    }
+    @Transactional
+    public void updatePatientByStatus(PatientDto obj, Boolean status) {
+        Patient patient = patientConvertor.convertToEntity(obj, Patient.class);
+        Patient patient1 = patientRepository.findById(patient.getId()).orElseThrow(PatientNotFoundException::new);
+        patient1.setStatus(status);
+        patientRepository.save(patient1);
     }
 
 

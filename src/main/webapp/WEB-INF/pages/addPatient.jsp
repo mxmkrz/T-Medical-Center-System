@@ -15,8 +15,8 @@
 </head>
 <body>
 <div align="center">
-    <h1 class="text-center">Add new Employee</h1>
-    <form:form action="add" method="post" modelAttribute="patient">
+    <h1 class="text-center">Add new Patient</h1>
+    <form:form action="/add" method="post" modelAttribute="patient">
         <table border="0" cellpadding="5">
             <tr>
                 <td>Name:</td>
@@ -26,23 +26,26 @@
                 <td>Surname:</td>
                 <td><form:input path="secondName"/></td>
             </tr>
-<%--            <tr>--%>
-<%--                <td>Diagnosis:</td>--%>
-<%--                <td><form:input path="diagnosis"/></td>--%>
-<%--            </tr>--%>
-<%--            <tr>--%>
-<%--                <td>Insurance Number:</td>--%>
-<%--                <td><form:input path="insuranceNumber"/></td>--%>
-<%--            </tr>--%>
-<%--            <tr>--%>
-<%--                <td>Name doctor:</td>--%>
-<%--                <td><form:input path="doctorsName"/></td>--%>
-<%--            </tr>--%>
             <tr>
-                <td colspan="2"><input type="submit" value="Save"></td>
+                <td>Diagnosis:</td>
+                <td><form:input path="diagnosis"/></td>
+            </tr>
+            <tr>
+                <td>Insurance Number:</td>
+                <td><form:input path="insuranceNumber"/></td>
+            </tr>
+            <tr>
+                <td>Name doctor:</td>
+                <td><form:input path="doctorsName"/></td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td><form:input path="status"/></td>
             </tr>
         </table>
-
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
     </form:form>
 </div>
 </body>
