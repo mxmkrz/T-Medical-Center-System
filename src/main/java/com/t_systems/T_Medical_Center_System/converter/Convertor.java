@@ -34,7 +34,7 @@ public class Convertor<T,K> {
 //                .collect(Collectors.toList());
 //
 //    }
-    public List<K> convertListEntityToDto(List<T> entityList,Class<K> tClass) {
+    public List<K> convertLisToDto(List<T> entityList, Class<K> tClass) {
         return entityList.stream()
                 .map(dto -> modelMapper.map(dto,tClass))
                 .collect(Collectors.toList());

@@ -2,39 +2,36 @@ package com.t_systems.T_Medical_Center_System.controller;
 
 import com.t_systems.T_Medical_Center_System.dto.PatientDto;
 import com.t_systems.T_Medical_Center_System.entity.Patient;
-import com.t_systems.T_Medical_Center_System.service.PatientService;
+import com.t_systems.T_Medical_Center_System.service.impl.PatientServiceImp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.websocket.server.PathParam;
 
 
 @Slf4j
 @Controller
 public class PatientController {
 
-    private final PatientService patientService;
+    private final PatientServiceImp patientService;
 
     @Autowired
-    public PatientController(@NonNull PatientService patientService) {
+    public PatientController(@NonNull PatientServiceImp patientService) {
         this.patientService = patientService;
     }
 
     @GetMapping("/all")
     public String getPatientsList(Model model) {
-        model.addAttribute("patients", patientService.findAll());
+        model.addAttribute("patients", patientService.getAllPatients());
         return "patientsList";
     }
 
     //*******************************************
     @GetMapping(value = "/patient/{id}")
     public PatientDto getPatientById(@PathVariable("id") Long id) {
-        return patientService.findById(id);
+        return patientService.getPatientById(id);
     }
 
     //*******************************************
@@ -48,27 +45,27 @@ public class PatientController {
     @PostMapping(value = "/add")
     public String addPatientPost(@ModelAttribute("patient") PatientDto patientDto) {
         log.info("New patient created");
-        patientService.save(patientDto);
+        patientService.savePatient(patientDto);
         return "redirect:/all";
     }
 
     //*******************************************
     @GetMapping(value = "/edit")
     public String updatePatientGet(@RequestParam(name = "id") Long id, Model model) {
-        model.addAttribute("patient", patientService.findById(id));
+        model.addAttribute("patient", patientService.getPatientById(id));
         return "editPatient";
     }
 
     @PostMapping(value = "/edit")
     public String updatePatientPost(@ModelAttribute(name = "patient") PatientDto patientDto) {
-        patientService.updatePatientByStatus(patientDto,patientDto.getStatus());
+        patientService.updatePatient(patientDto);
         return "redirect:/all";
     }
 
     //*******************************************
     @GetMapping(value = "/deletePatient")
     public String deletePatient(@RequestParam(name = "id") Long patientId) {
-        patientService.deleteById(patientId);
+        patientService.deletePatient(patientId);
         return "redirect:/all";
     }
 

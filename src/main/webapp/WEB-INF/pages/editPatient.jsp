@@ -23,19 +23,19 @@
     </tr>
     <tr>
         <td>Surname:</td>
-        <td><form:input path="secondName" readonly="true"/></td>
+        <td><form:input path="secondName"/></td>
     </tr>
     <tr>
         <td>Diagnosis:</td>
-        <td><form:input path="diagnosis" readonly="true"/></td>
+        <td><form:input path="diagnosis"/></td>
     </tr>
     <tr>
         <td>Insurance Number:</td>
-        <td><form:input path="insuranceNumber" readonly="true"/></td>
+        <td><form:input path="insuranceNumber"/></td>
     </tr>
     <tr>
         <td>Name doctor:</td>
-        <td><form:input path="doctorsName" readonly="true"/></td>
+        <td><form:input path="doctorsName"/></td>
     </tr>
     <tr>
         <td>Status:</td>
