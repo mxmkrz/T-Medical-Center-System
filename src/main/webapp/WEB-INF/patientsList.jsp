@@ -39,7 +39,7 @@
         <a href="add">Add new Patient</a>
     </li>
     <li>
-        <a href="/">Home Page</a>
+        <a href="/home">Home Page</a>
     </li>
 </ul>
 

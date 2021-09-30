@@ -20,7 +20,7 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container d-flex align-items-center justify-content-between">
         <ul>
-            <li><a class="nav-link" href="/">Home</a></li>
+            <li><a class="nav-link" href="/home">Home</a></li>
             <li><a class="nav-link" href="/all">Show Patients</a></li>
             <li><a class="nav-link" href="/add">Add Patient</a></li>`
         </ul>

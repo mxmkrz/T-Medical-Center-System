@@ -27,14 +27,14 @@ public class PatientServiceImp implements PatientService {
         this.patientConvertor = patientConvertor;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<PatientDto> getAllPatients() {
         List<Patient> result = patientRepository.findAllList();
         return patientConvertor.convertLisToDto(result, PatientDto.class);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PatientDto getPatientById(Long id) {
         return patientConvertor.convertToDto(patientRepository.findById(id).orElseThrow(PatientNotFoundException::new),PatientDto.class);
@@ -46,7 +46,7 @@ public class PatientServiceImp implements PatientService {
         patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public void updatePatient(PatientDto obj) {
         Patient patient = patientRepository.findById(obj.getId()).orElseThrow(PatientNotFoundException::new);

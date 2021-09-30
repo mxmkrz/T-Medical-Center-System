@@ -1,7 +1,5 @@
 package com.t_systems.T_Medical_Center_System.entity;
 
-import com.t_systems.T_Medical_Center_System.entity.enums.Role;
-import com.t_systems.T_Medical_Center_System.entity.enums.Status;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,19 +25,14 @@ import java.time.LocalDateTime;
 public class Patient {
 
     @Id
-    @SequenceGenerator(name = "patient_id_generator", sequenceName = "patient_id_generator", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_id_generator")
+    @SequenceGenerator(name = "patient_id_generator",sequenceName = "patient_id_generator",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "patient_id_generator")
+
     private Long id;
 
     private String firstName;
 
     private String secondName;
-
-    private String email;
-
-    private String password;
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
 
     private String diagnosis;
 
@@ -53,7 +46,7 @@ public class Patient {
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
 
-    private Status status;
+    private Boolean status;
 
     public Patient() {
     }
