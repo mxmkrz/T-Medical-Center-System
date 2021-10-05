@@ -1,16 +1,13 @@
 package com.t_systems.t_medical_center_system.config;
 
+import com.t_systems.t_medical_center_system.entity.Role;
 import com.t_systems.t_medical_center_system.security.AuthProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
@@ -59,13 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .permitAll()
 //                .logoutSuccessUrl("/login");
         httpSecurity.authorizeRequests()
-                .antMatchers("/sign_up", "/login").anonymous()
-                .antMatchers("/all").authenticated()
+                .antMatchers("/sign_in", "/login").anonymous()
+                .antMatchers("/allPatients").hasRole("ROLE_PATIENT")
+                .antMatchers("/allDoctors").hasRole("ROLE_DOCTOR")
                 .and().csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/process")
-                .usernameParameter("email")
+                .usernameParameter("name")
+                .defaultSuccessUrl("/login")
                 .failureUrl("/login?error=true")
                 .and()
                 .exceptionHandling()

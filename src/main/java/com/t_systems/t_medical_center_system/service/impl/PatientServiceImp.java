@@ -3,13 +3,14 @@ package com.t_systems.t_medical_center_system.service.impl;
 import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Patient;
+import com.t_systems.t_medical_center_system.entity.Role;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
 
 import com.t_systems.t_medical_center_system.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -20,17 +21,21 @@ public class PatientServiceImp implements PatientService {
 
     private final PatientRepository patientRepository;
     private final Convertor<Patient, PatientDto> patientConvertor;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public PatientServiceImp(@NonNull PatientRepository patientRepository, @NonNull Convertor<Patient, PatientDto> patientConvertor) {
+    public PatientServiceImp(PatientRepository patientRepository, Convertor<Patient, PatientDto> patientConvertor, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.patientRepository = patientRepository;
         this.patientConvertor = patientConvertor;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+
+    @Autowired
+
 
     @Transactional(readOnly = true)
     @Override
     public List<PatientDto> getAllPatients() {
-        List<Patient> result = patientRepository.findAllList();
+        List<Patient> result = (List<Patient>) patientRepository.findAll();
         return patientConvertor.convertLisToDto(result, PatientDto.class);
     }
 
@@ -42,19 +47,17 @@ public class PatientServiceImp implements PatientService {
 
     @Transactional
     @Override
-    public void savePatient(PatientDto obj) {
-        patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
+    public void savePatient(Patient patient) {
+        patient.setRole(new Role(2L,"ROLE_PATIENT"));
+        patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
+        patientRepository.save(patient);
+        log.info("Add patient");
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public void updatePatient(PatientDto obj) {
-        Patient patient = patientRepository.findById(obj.getId()).orElseThrow(PatientNotFoundException::new);
-        patient.setFirstName(obj.getFirstName());
-        patient.setSecondName(obj.getSecondName());
-        patient.setDiagnosis(obj.getDiagnosis());
-        patient.setInsuranceNumber(obj.getInsuranceNumber());
-        patient.setStatus(obj.getStatus());
+        patientRepository.save(patientConvertor.convertToEntity(obj, Patient.class));
     }
 
 

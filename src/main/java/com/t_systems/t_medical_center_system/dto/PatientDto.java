@@ -6,11 +6,10 @@ import lombok.Data;
 @Data
 public class PatientDto {
     private Long id;
-    private String firstName;
-    private String secondName;
+    private String name;
+    private String surname;
     private String diagnosis;
     private Long insuranceNumber;
-    private String doctorsName;
     private Boolean status;
 
     public PatientDto() {

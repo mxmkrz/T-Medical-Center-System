@@ -11,7 +11,7 @@ public interface DoctorService {
 
     List<DoctorDto> getAllDoctors();
 
-    void add(DoctorDto doctor);
+    void saveDoctor(Doctor doctor);
 
     DoctorDto getById(Long id);
 

@@ -1,7 +1,12 @@
 package com.t_systems.t_medical_center_system.security;
 
+import com.t_systems.t_medical_center_system.entity.Doctor;
+import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.User;
+import com.t_systems.t_medical_center_system.repository.DoctorRepository;
+import com.t_systems.t_medical_center_system.repository.PatientRepository;
 import com.t_systems.t_medical_center_system.service.UserService;
+import com.t_systems.t_medical_center_system.service.impl.DoctorServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,29 +26,42 @@ import java.util.List;
 public class AuthProviderImpl implements AuthenticationProvider {
 
 
-    private UserService userService;
     private PasswordEncoder passwordEncoder;
+    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
 
     @Autowired
-    public AuthProviderImpl(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
+    public AuthProviderImpl(PasswordEncoder passwordEncoder, DoctorRepository doctorRepository, PatientRepository patientRepository) {
         this.passwordEncoder = passwordEncoder;
+        this.doctorRepository = doctorRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String email = authentication.getName();
-        User user = userService.getOne(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        String name = authentication.getName();
+        Doctor doctor = doctorRepository.findDoctorByName(name);
+        Patient patient = patientRepository.findPatientByName(name);
+        System.out.println(name);
         String password = authentication.getCredentials().toString();
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Bad credentials");
+        System.out.println(password);
+
+
+
+
+
+        if (doctor != null){
+            if (passwordEncoder.matches(password, doctor.getPassword()) && doctor.getPassword() != null) {
+                System.out.println("password" + password + "Enter doctor");
+                List<GrantedAuthority> authorities = new ArrayList<>(doctor.getAuthorities());
+                return new UsernamePasswordAuthenticationToken(doctor, null, authorities);
+        }} else if (passwordEncoder.matches(password, patient.getPassword()) && patient.getPassword() != null) {
+            System.out.println("password" + password + " Enter patient");
+            List<GrantedAuthority> authorities = new ArrayList<>(patient.getAuthorities());
+//            authorities.add(new SimpleGrantedAuthority(patient.getRole().getAuthority()));
+            return new UsernamePasswordAuthenticationToken(patient, null, authorities);
         }
-        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority())
-        return new UsernamePasswordAuthenticationToken(user, null, authorities);
+        return null;
     }
 
     @Override

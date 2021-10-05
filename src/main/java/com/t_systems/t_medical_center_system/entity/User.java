@@ -1,6 +1,7 @@
 package com.t_systems.t_medical_center_system.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -28,6 +30,5 @@ public class User {
     @Size(min = 7, message = "Minimum 7 symbols")
     private String password;
 
-    public User() {
-    }
+
 }

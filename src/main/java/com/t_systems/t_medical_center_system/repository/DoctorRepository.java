@@ -9,10 +9,6 @@ import java.util.List;
 
 @Repository
 public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Long> {
-    @Query(value = "SELECT c FROM Doctor c")
-    List<Doctor> findAllList();
-
-
     Doctor findDoctorByName(String name);
 
 }

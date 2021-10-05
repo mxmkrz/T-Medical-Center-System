@@ -1,14 +1,14 @@
 package com.t_systems.t_medical_center_system.controller;
 
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
+import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Doctor;
+import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class DoctorController {
@@ -19,31 +19,52 @@ public class DoctorController {
         this.doctorService = doctorService;
     }
 
-//    @GetMapping("/registration")
-//    public String registration(Model model) {
-//        model.addAttribute("staff", new Doctor(authorities));
-//        return "registration";
-//    }
 
-    @PostMapping("/registration")
-    public String signUp(@ModelAttribute(name = "staff") DoctorDto doctor) {
-        doctorService.add(doctor);
-        return "redirect:/login";
+
+    @GetMapping("/allDoctors")
+    public String getDoctorList(Model model) {
+        model.addAttribute("doctors", doctorService.getAllDoctors());
+        return "doctorsList";
     }
 
-//    @GetMapping("/login")
-//    public String login(Model model){
-//        model.addAttribute("staff", new Doctor(authorities));
-//        return "login";
-//    }
-
-    @GetMapping("/menu")
-    public String menuForDoctor(){
-        return "menu";
+    //*******************************************
+    @GetMapping(value = "/doctor/{id}")
+    public DoctorDto getDoctorById(@PathVariable("id") Long id) {
+        return doctorService.getById(id);
     }
-    @PostMapping("/menu")
-    public String menuForDoctorPost(){
-        return "menu";
+
+    //*******************************************
+    @GetMapping("/addDoctor")
+    public String addDoctorGet(Model model) {
+        model.addAttribute("doctor", new Doctor());
+        return "addDoctor";
+    }
+
+
+    @PostMapping(value = "/addDoctor")
+    public String addPatientPost(@ModelAttribute("doctor") Doctor doctor) {
+        doctorService.saveDoctor(doctor);
+        return "redirect:/allDoctors";
+    }
+
+    //*******************************************
+    @GetMapping(value = "/editDoctor")
+    public String updateDoctorGet(@RequestParam(name = "id") Long id, Model model) {
+        model.addAttribute("doctor", doctorService.getById(id));
+        return "editDoctor";
+    }
+
+    @PostMapping(value = "/editDoctor")
+    public String updateDoctorPost(@ModelAttribute(name = "doctor") DoctorDto doctorDto) {
+        doctorService.update(doctorDto);
+        return "redirect:/allDoctors";
+    }
+
+    //*******************************************
+    @GetMapping(value = "/deleteDoctor")
+    public String deletePatient(@RequestParam(name = "id") Long patientId) {
+        doctorService.delete(patientId);
+        return "redirect:/allDoctors";
     }
 
 

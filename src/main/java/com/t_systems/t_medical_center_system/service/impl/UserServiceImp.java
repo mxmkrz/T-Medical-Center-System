@@ -31,8 +31,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User getOne(String email) {
-        return userRepository.findByEmail(email);
+    public User getOne(String name) {
+        return userRepository.findByName(name);
     }
 
     @Override

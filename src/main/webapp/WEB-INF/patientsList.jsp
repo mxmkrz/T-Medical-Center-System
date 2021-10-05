@@ -15,7 +15,6 @@
         <th>SecondName</th>
         <th>Diagnosis</th>
         <th>InsuranceNumber</th>
-        <th>DoctorsName</th>
         <th>Status</th>
         <th>Delete</th>
         <th>Update</th>
@@ -23,23 +22,19 @@
     <c:forEach var="patient" items="${patients}">
         <tr>
             <td>${patient.id}</td>
-            <td>${patient.firstName}</td>
-            <td>${patient.secondName}</td>
+            <td>${patient.name}</td>
+            <td>${patient.surname}</td>
             <td>${patient.diagnosis}</td>
             <td>${patient.insuranceNumber}</td>
-            <td>${patient.doctorsName}</td>
             <td>${patient.status}</td>
             <td><a href="deletePatient?id=<c:out value="${patient.id}"/>">Delete</a></td>
-            <td><a href="edit?id=<c:out value="${patient.id}"/>">Update</a></td>
+            <td><a href="editPatient?id=<c:out value="${patient.id}"/>">Update</a></td>
         </tr>
     </c:forEach>
 </table>
 <ul>
     <li>
-        <a href="add">Add new Patient</a>
-    </li>
-    <li>
-        <a href="/home">Home Page</a>
+        <a href="/addPatient">Add new Patient</a>
     </li>
 </ul>
 

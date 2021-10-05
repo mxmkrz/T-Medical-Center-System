@@ -3,15 +3,12 @@ package com.t_systems.t_medical_center_system.service.impl;
 import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.entity.Doctor;
-import com.t_systems.t_medical_center_system.entity.enums.Role;
+import com.t_systems.t_medical_center_system.entity.Role;
 import com.t_systems.t_medical_center_system.exception.DoctorNotFoundException;
 import com.t_systems.t_medical_center_system.repository.DoctorRepository;
 import com.t_systems.t_medical_center_system.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,16 +38,15 @@ public class DoctorServiceImp implements DoctorService {
     @Transactional(readOnly = true)
     @Override
     public List<DoctorDto> getAllDoctors() {
-        return doctorConvertor.convertLisToDto(doctorRepository.findAllList(), DoctorDto.class);
+        return doctorConvertor.convertLisToDto((List<Doctor>) doctorRepository.findAll(), DoctorDto.class);
     }
 
     @Transactional
     @Override
-    public void add(DoctorDto doctor) {
-        Doctor doctorEntity = doctorConvertor.convertToEntity(doctor, Doctor.class);
-//        doctorEntity.setRole(Role.ROLE_DOCTOR);
-        doctorEntity.setPassword(bCryptPasswordEncoder.encode(doctorEntity.getPassword()));
-        doctorRepository.save(doctorEntity);
+    public void saveDoctor(Doctor doctor) {
+        doctor.setRole(new Role(1L,"ROLE_DOCTOR"));
+        doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
+        doctorRepository.save(doctor);
         log.info("Add doctor");
     }
 
@@ -70,12 +66,7 @@ public class DoctorServiceImp implements DoctorService {
     @Transactional
     @Override
     public void update(DoctorDto doctorDto) {
-        Doctor doctor = doctorRepository.findById(doctorDto.getId()).orElseThrow(DoctorNotFoundException::new);
-        doctor.setPassword(doctorDto.getName());
-        doctor.setPassword(doctorDto.getSurname());
-        doctor.setPassword(doctorDto.getPosition());
-        doctor.setPassword(doctorDto.getSpecialization());
-        log.info("Doctor was updated");
+        doctorRepository.save(doctorConvertor.convertToEntity(doctorDto, Doctor.class));
     }
 
 

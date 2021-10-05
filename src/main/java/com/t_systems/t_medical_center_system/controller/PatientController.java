@@ -22,7 +22,7 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/allPatients")
     public String getPatientsList(Model model) {
         model.addAttribute("patients", patientService.getAllPatients());
         return "patientsList";
@@ -35,38 +35,37 @@ public class PatientController {
     }
 
     //*******************************************
-    @GetMapping("/add")
-    public String addCustomerGet(Model model) {
+    @GetMapping("/addPatient")
+    public String addPatientGet(Model model) {
         model.addAttribute("patient", new Patient());
         return "addPatient";
     }
 
 
-    @PostMapping(value = "/add")
-    public String addPatientPost(@ModelAttribute("patient") PatientDto patientDto) {
-        log.info("New patient created");
-        patientService.savePatient(patientDto);
-        return "redirect:/all";
+    @PostMapping(value = "/addPatient")
+    public String addPatientPost(@ModelAttribute("patient") Patient patient) {
+        patientService.savePatient(patient);
+        return "redirect:/allPatients";
     }
 
     //*******************************************
-    @GetMapping(value = "/edit")
+    @GetMapping(value = "/editPatient")
     public String updatePatientGet(@RequestParam(name = "id") Long id, Model model) {
         model.addAttribute("patient", patientService.getPatientById(id));
         return "editPatient";
     }
 
-    @PostMapping(value = "/edit")
+    @PostMapping(value = "/editPatient")
     public String updatePatientPost(@ModelAttribute(name = "patient") PatientDto patientDto) {
         patientService.updatePatient(patientDto);
-        return "redirect:/all";
+        return "redirect:/allPatients";
     }
 
     //*******************************************
     @GetMapping(value = "/deletePatient")
     public String deletePatient(@RequestParam(name = "id") Long patientId) {
         patientService.deletePatient(patientId);
-        return "redirect:/all";
+        return "redirect:/allPatients";
     }
 
 
