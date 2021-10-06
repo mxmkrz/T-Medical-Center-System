@@ -9,4 +9,6 @@ public class DoctorDto {
     private String surname;
     private String position;
     private String specialization;
+    //username, set<String>
+
 }

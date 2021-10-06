@@ -34,11 +34,7 @@ public class AuthController {
             return "/sign_up";
         }
         userService.add(user);
-        return "redirect:/all";
+        return "redirect:/";
     }
 
-    @RequestMapping("/login")
-    public String login(){
-        return "sign_in";
-    }
 }

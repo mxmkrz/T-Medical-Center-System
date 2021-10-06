@@ -8,9 +8,13 @@
 <body>
 <form:form action="/login/process" method="post">
     <div>
-        <input name="name" type="name" placeholder="Username"
-               autofocus="true"/>
-        <input name="password" type="password" placeholder="Password"/>
+        <label>
+            <input name="name" type="name" placeholder="Username"
+                   autofocus="true"/>
+        </label>
+        <label>
+            <input name="password" type="password" placeholder="Password"/>
+        </label>
         <button type="submit">Log In</button>
         <h4><a href="/sig_up">Register</a></h4>
     </div>

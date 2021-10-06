@@ -4,6 +4,7 @@ import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.entity.Doctor;
 import com.t_systems.t_medical_center_system.entity.Role;
+import com.t_systems.t_medical_center_system.entity.User;
 import com.t_systems.t_medical_center_system.exception.DoctorNotFoundException;
 import com.t_systems.t_medical_center_system.repository.DoctorRepository;
 import com.t_systems.t_medical_center_system.service.DoctorService;
@@ -44,7 +45,7 @@ public class DoctorServiceImp implements DoctorService {
     @Transactional
     @Override
     public void saveDoctor(Doctor doctor) {
-        doctor.setRole(new Role(1L,"ROLE_DOCTOR"));
+        doctor.setUser(new User(doctor.getName()));
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
         doctorRepository.save(doctor);
         log.info("Add doctor");

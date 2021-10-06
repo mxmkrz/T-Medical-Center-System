@@ -1,13 +1,16 @@
 package com.t_systems.t_medical_center_system.config;
 
 import com.t_systems.t_medical_center_system.entity.Role;
-import com.t_systems.t_medical_center_system.security.AuthProviderImpl;
+import com.t_systems.t_medical_center_system.service.impl.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Configuration
@@ -15,12 +18,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private AuthProviderImpl authProvider;
+    private UserServiceImp userDetailsService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SecurityConfig(AuthProviderImpl authProvider) {
-        this.authProvider = authProvider;
+    public SecurityConfig(UserServiceImp userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+
+
+
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -56,16 +65,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .permitAll()
 //                .logoutSuccessUrl("/login");
         httpSecurity.authorizeRequests()
-                .antMatchers("/sign_in", "/login").anonymous()
-                .antMatchers("/allPatients").hasRole("ROLE_PATIENT")
-                .antMatchers("/allDoctors").hasRole("ROLE_DOCTOR")
+                .antMatchers("/login","/sign_up").permitAll()
+                .antMatchers("/allPatients").hasRole("PATIENT")
+                .antMatchers("/allDoctors").hasRole("DOCTOR")
                 .and().csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/process")
                 .usernameParameter("name")
-                .defaultSuccessUrl("/login")
-                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/allDoctors")
+                .failureUrl("/login?fail=true")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/")
@@ -73,9 +82,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authProvider);
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
 
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return authProvider;
+    }
 
 }

@@ -25,7 +25,7 @@ import java.util.*;
 @Data
 @Table(name = "tb_doctors")
 @NoArgsConstructor
-public class Doctor implements UserDetails {
+public class Doctor {
     @Id
     @SequenceGenerator(name = "doctor_id_generator", sequenceName = "doctor_id_generator", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctor_id_generator")
@@ -64,38 +64,11 @@ public class Doctor implements UserDetails {
     @ManyToMany(mappedBy = "doctors")
     private Set<Patient> patients = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(role);
-    }
 
-    @Override
-    public String getUsername() {
-        return name;
-    }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

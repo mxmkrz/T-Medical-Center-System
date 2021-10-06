@@ -26,7 +26,7 @@ import java.util.Set;
 @Data
 @Table(name = "tb_patients")
 @NoArgsConstructor
-public class Patient implements UserDetails {
+public class Patient {
 
     @Id
     @SequenceGenerator(name = "patient_id_generator", sequenceName = "patient_id_generator", allocationSize = 1)
@@ -44,8 +44,6 @@ public class Patient implements UserDetails {
     private String diagnosis;
 
     private Long insuranceNumber;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Doctor doctorsName;
 
     @CreationTimestamp
     private LocalDateTime createDataTime;
@@ -54,48 +52,16 @@ public class Patient implements UserDetails {
     private LocalDateTime updateDataTime;
 
     private Boolean status;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "patient_medical_doctor",
             joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "doctor_id"))
     private Set<Doctor> doctors = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(role);
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
 
-    @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

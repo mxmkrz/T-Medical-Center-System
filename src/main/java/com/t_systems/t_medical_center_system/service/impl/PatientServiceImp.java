@@ -4,6 +4,7 @@ import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.Role;
+import com.t_systems.t_medical_center_system.entity.User;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
 
@@ -48,7 +49,7 @@ public class PatientServiceImp implements PatientService {
     @Transactional
     @Override
     public void savePatient(Patient patient) {
-        patient.setRole(new Role(2L,"ROLE_PATIENT"));
+        patient.setUser(new User(patient.getName()));
         patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
         patientRepository.save(patient);
         log.info("Add patient");
