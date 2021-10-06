@@ -3,8 +3,6 @@ package com.t_systems.t_medical_center_system.service.impl;
 import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Patient;
-import com.t_systems.t_medical_center_system.entity.Role;
-import com.t_systems.t_medical_center_system.entity.User;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
 

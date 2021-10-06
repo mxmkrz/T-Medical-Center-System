@@ -1,54 +1,39 @@
 package com.t_systems.t_medical_center_system.entity;
 
-
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
-/**
- * This is my Appointment entity,here I will write the mapping in the database
- *
- * @author Kuryzin Maxim
- * @github mxmkrz
- */
-
+import java.util.List;
 
 @Entity
+@Table(name = "tb_appointment")
 @Data
-@Table(name = "tb_appointments")
+@NoArgsConstructor
 public class Appointment {
 
     @Id
-    @SequenceGenerator(name = "appointments_id_generator",sequenceName = "appointments_id_generator",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "appointments_id_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne ///attention pliz
-    @JoinColumn(name = "patient_id",referencedColumnName = "id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @Column(nullable = false)
-    private String type;
 
-    @Column(nullable = false)
-    private Integer dose;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "staff_id",nullable = false)
+    private MedicalStaff staff;
 
-    @Column(nullable = false)
-    private String timePattern;
 
-    private LocalDateTime startDate;
+    @OneToMany(mappedBy = "appointment")
+    private List<Procedure> procedureList;
 
-    private LocalDateTime endData;
+    @OneToMany(mappedBy = "appointment")
+    private List<Drug> drugsList;
 
-    @CreationTimestamp
-    private LocalDateTime createDataTime;
 
-    @UpdateTimestamp
-    private LocalDateTime updateDataTime;
+    private String description;
 
-    public Appointment(){
-    }
 
 }

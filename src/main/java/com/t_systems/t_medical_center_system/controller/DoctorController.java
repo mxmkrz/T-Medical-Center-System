@@ -1,9 +1,7 @@
 package com.t_systems.t_medical_center_system.controller;
 
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
-import com.t_systems.t_medical_center_system.dto.PatientDto;
-import com.t_systems.t_medical_center_system.entity.Doctor;
-import com.t_systems.t_medical_center_system.entity.Patient;
+import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,13 +34,13 @@ public class DoctorController {
     //*******************************************
     @GetMapping("/addDoctor")
     public String addDoctorGet(Model model) {
-        model.addAttribute("doctor", new Doctor());
+        model.addAttribute("doctor", new MedicalStaff());
         return "addDoctor";
     }
 
 
     @PostMapping(value = "/addDoctor")
-    public String addPatientPost(@ModelAttribute("doctor") Doctor doctor) {
+    public String addPatientPost(@ModelAttribute("doctor") MedicalStaff doctor) {
         doctorService.saveDoctor(doctor);
         return "redirect:/allDoctors";
     }

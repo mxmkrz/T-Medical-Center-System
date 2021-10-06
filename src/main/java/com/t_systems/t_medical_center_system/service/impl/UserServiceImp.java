@@ -1,8 +1,6 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
 
-import com.t_systems.t_medical_center_system.entity.Role;
-import com.t_systems.t_medical_center_system.entity.User;
 import com.t_systems.t_medical_center_system.repository.UserRepository;
 import com.t_systems.t_medical_center_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,47 +1,39 @@
 package com.t_systems.t_medical_center_system.entity;
 
-
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * This is my Event entity,here I will write the mapping in the database
- *
- * @author Kuryzin Maxim
- * @github mxmkrz
- */
-
-
 @Entity
+@Table(name = "events")
+@NoArgsConstructor
 @Data
-@Table(name = "tb_events")
 public class Event {
-
     @Id
-    @SequenceGenerator(name = "events_id_generator",sequenceName = "events_id_generator",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "events_id_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne ///attention pliz
-    @JoinColumn(name = "event_id",referencedColumnName = "id")
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @CreationTimestamp
-    private LocalDateTime eventDateTime;
+    @Column(name = "date_and_time", nullable = false)
+    private LocalDateTime dateAndTime;
 
-    @Column(nullable = false)
-    private String status;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;
 
-    @CreationTimestamp
-    private LocalDateTime createDataTime;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proc_id", nullable = false)
+    private Procedure procedure;
 
-    @UpdateTimestamp
-    private LocalDateTime updateDataTime;
-
-    public Event(){}
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "drug_id", nullable = false)
+    private Drug drug;
 }

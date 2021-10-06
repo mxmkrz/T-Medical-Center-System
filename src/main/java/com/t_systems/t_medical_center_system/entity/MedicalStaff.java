@@ -23,12 +23,12 @@ import java.util.*;
 
 @Entity
 @Data
-@Table(name = "tb_doctors")
+@Table(name = "tb_medical_staff")
 @NoArgsConstructor
-public class Doctor {
+public class MedicalStaff {
     @Id
-    @SequenceGenerator(name = "doctor_id_generator", sequenceName = "doctor_id_generator", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "doctor_id_generator")
+    @SequenceGenerator(name = "medical_staff_id_generator", sequenceName = "medical_staff_id_generator", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "medical_staff_id_generator")
     private Long id;
 
     @NotBlank(message = "Name is required")
@@ -61,14 +61,12 @@ public class Doctor {
     private LocalDateTime updateDataTime;
 
 
-    @ManyToMany(mappedBy = "doctors")
-    private Set<Patient> patients = new HashSet<>();
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
-    private User user;
 
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<Appointment> appointmentList = new ArrayList<>();
 
+    @Column(name = "staff_role")
+    private Role role;
 
 }

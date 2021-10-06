@@ -2,9 +2,7 @@ package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
-import com.t_systems.t_medical_center_system.entity.Doctor;
-import com.t_systems.t_medical_center_system.entity.Role;
-import com.t_systems.t_medical_center_system.entity.User;
+import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.exception.DoctorNotFoundException;
 import com.t_systems.t_medical_center_system.repository.DoctorRepository;
 import com.t_systems.t_medical_center_system.service.DoctorService;
@@ -22,13 +20,13 @@ import java.util.List;
 @Service
 public class DoctorServiceImp implements DoctorService {
 
-    private Convertor<Doctor, DoctorDto> doctorConvertor;
+    private Convertor<MedicalStaff, DoctorDto> doctorConvertor;
     private DoctorRepository doctorRepository;
     private PatientServiceImp patientServiceImp;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public DoctorServiceImp(Convertor<Doctor, DoctorDto> doctorConvertor, DoctorRepository doctorRepository, PatientServiceImp patientServiceImp, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public DoctorServiceImp(Convertor<MedicalStaff, DoctorDto> doctorConvertor, DoctorRepository doctorRepository, PatientServiceImp patientServiceImp, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.doctorConvertor = doctorConvertor;
         this.doctorRepository = doctorRepository;
         this.patientServiceImp = patientServiceImp;
@@ -39,12 +37,12 @@ public class DoctorServiceImp implements DoctorService {
     @Transactional(readOnly = true)
     @Override
     public List<DoctorDto> getAllDoctors() {
-        return doctorConvertor.convertLisToDto((List<Doctor>) doctorRepository.findAll(), DoctorDto.class);
+        return doctorConvertor.convertLisToDto((List<MedicalStaff>) doctorRepository.findAll(), DoctorDto.class);
     }
 
     @Transactional
     @Override
-    public void saveDoctor(Doctor doctor) {
+    public void saveDoctor(MedicalStaff doctor) {
         doctor.setUser(new User(doctor.getName()));
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
         doctorRepository.save(doctor);
@@ -67,7 +65,7 @@ public class DoctorServiceImp implements DoctorService {
     @Transactional
     @Override
     public void update(DoctorDto doctorDto) {
-        doctorRepository.save(doctorConvertor.convertToEntity(doctorDto, Doctor.class));
+        doctorRepository.save(doctorConvertor.convertToEntity(doctorDto, MedicalStaff.class));
     }
 
 

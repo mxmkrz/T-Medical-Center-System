@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @Entity
 @NoArgsConstructor
 @Data
-@Table(name = "tb_procedure")
-public class Procedure {
+@Table(name = "tb_drug")
+public class Drug {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,13 +19,11 @@ public class Procedure {
     private String name;
 
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
-
-
-    @OneToOne(mappedBy = "procedure")
+    @OneToOne(mappedBy = "drug")
     private Event event;
-
 }
