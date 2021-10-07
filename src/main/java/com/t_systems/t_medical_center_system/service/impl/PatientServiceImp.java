@@ -47,8 +47,6 @@ public class PatientServiceImp implements PatientService {
     @Transactional
     @Override
     public void savePatient(Patient patient) {
-        patient.setUser(new User(patient.getName()));
-        patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
         patientRepository.save(patient);
         log.info("Add patient");
     }

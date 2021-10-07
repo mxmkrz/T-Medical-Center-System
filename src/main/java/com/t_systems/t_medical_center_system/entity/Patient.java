@@ -35,9 +35,6 @@ public class Patient {
 
     private String surname;
 
-    private String password;
-
-    private String passwordConfirm;
 
     private String diagnosis;
 
@@ -55,7 +52,11 @@ public class Patient {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private List<Appointment> appointmentList = new ArrayList<>();
 
-
+    @ManyToMany
+    @JoinTable(name = "patient_medical_staff",
+            joinColumns = @JoinColumn(name = "patient_id"),
+            inverseJoinColumns = @JoinColumn(name = "medical_staff_id"))
+    private Set<MedicalStaff> medicalStaffs = new HashSet<>();
 
 
 

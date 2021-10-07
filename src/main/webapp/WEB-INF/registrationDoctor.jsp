@@ -9,7 +9,7 @@
 <body>
 <div align="center">
   <h1 class="text-center">Add new Doctor</h1>
-  <form:form action="/addDoctor" method="post" modelAttribute="doctor">
+  <form:form action="/registrationDoctor" method="post" modelAttribute="doctor">
     <table border="0" cellpadding="5">
       <tr>
         <td>Name:</td>

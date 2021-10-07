@@ -1,7 +1,7 @@
 package com.t_systems.t_medical_center_system.config;
 
 import com.t_systems.t_medical_center_system.entity.Role;
-import com.t_systems.t_medical_center_system.service.impl.UserServiceImp;
+import com.t_systems.t_medical_center_system.service.impl.MedicalStaffServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,18 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserServiceImp userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MedicalStaffServiceImp medicalStaffServiceImp;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SecurityConfig(UserServiceImp userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(MedicalStaffServiceImp medicalStaffServiceImp, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.medicalStaffServiceImp = medicalStaffServiceImp;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
-
-
-
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -64,15 +60,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
 //                .permitAll()
 //                .logoutSuccessUrl("/login");
-        httpSecurity.authorizeRequests()
-                .antMatchers("/login","/sign_up").permitAll()
-                .antMatchers("/allPatients").hasRole("PATIENT")
-                .antMatchers("/allDoctors").hasRole("DOCTOR")
+        httpSecurity
+                .authorizeRequests()
+                .antMatchers("/login","/registrationDoctor","/registrationDoctor").permitAll()
+                .antMatchers("/allPatients").hasAuthority(Role.NURSE.name())
+                .antMatchers("/allPatients").hasAuthority(Role.DOCTOR.name())
                 .and().csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/process")
-                .usernameParameter("name")
+                .usernameParameter("name").passwordParameter("password")
                 .defaultSuccessUrl("/allDoctors")
                 .failureUrl("/login?fail=true")
                 .and()
@@ -83,14 +80,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(medicalStaffServiceImp).passwordEncoder(bCryptPasswordEncoder);
     }
 
 
     @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(medicalStaffServiceImp);
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return authProvider;
     }

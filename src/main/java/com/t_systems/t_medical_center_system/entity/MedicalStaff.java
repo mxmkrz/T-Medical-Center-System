@@ -25,7 +25,7 @@ import java.util.*;
 @Data
 @Table(name = "tb_medical_staff")
 @NoArgsConstructor
-public class MedicalStaff {
+public class MedicalStaff  {
     @Id
     @SequenceGenerator(name = "medical_staff_id_generator", sequenceName = "medical_staff_id_generator", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "medical_staff_id_generator")
@@ -60,13 +60,11 @@ public class MedicalStaff {
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
 
-
-
-
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "staff", cascade = CascadeType.ALL)
     private List<Appointment> appointmentList = new ArrayList<>();
 
-    @Column(name = "staff_role")
+    @Enumerated(EnumType.STRING)
     private Role role;
+
 
 }

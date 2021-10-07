@@ -5,7 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DoctorRepository extends PagingAndSortingRepository<MedicalStaff, Long> {
-    MedicalStaff findDoctorByName(String name);
+public interface MedicalStaffRepository extends PagingAndSortingRepository<MedicalStaff, Long> {
+    MedicalStaff findByName(String name);
 
 }

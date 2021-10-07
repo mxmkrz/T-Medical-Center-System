@@ -5,7 +5,7 @@ import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 
 import java.util.List;
 
-public interface DoctorService {
+public interface MedicalStaffService {
 
     List<DoctorDto> getAllDoctors();
 
@@ -16,6 +16,8 @@ public interface DoctorService {
     void delete(Long id);
 
     void update(DoctorDto doctor);
+
+    void saveNurse(MedicalStaff nurse);
 
 
 }
