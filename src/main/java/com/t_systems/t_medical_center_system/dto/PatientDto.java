@@ -10,7 +10,6 @@ public class PatientDto {
     private String surname;
     private String diagnosis;
     private Long insuranceNumber;
-    private Boolean status;
 
     public PatientDto() {
     }

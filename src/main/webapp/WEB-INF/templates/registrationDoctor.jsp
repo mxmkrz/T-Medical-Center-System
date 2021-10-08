@@ -19,6 +19,7 @@
         <td>Surname:</td>
         <td><form:input path="surname"/></td>
       </tr>
+
       <tr>
         <td>Password:</td>
         <td><form:input path="password"/></td>
@@ -36,6 +37,17 @@
         <td><form:input path="specialization"/></td>
       </tr>
     </table>
+
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+        <option selected>Open this select role</option>
+        <option value="1"> <td><form:input path="${doctor.role}"/></td></option>
+        <option value="2">Two</option>
+      </select>
+      <label for="floatingSelect">Works with selects</label>
+    </div>
+
+
     <div class="col-auto">
       <button type="submit" class="btn btn-primary">Save</button>
     </div>

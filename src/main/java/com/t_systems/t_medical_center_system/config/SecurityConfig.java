@@ -1,6 +1,6 @@
 package com.t_systems.t_medical_center_system.config;
 
-import com.t_systems.t_medical_center_system.entity.Role;
+import com.t_systems.t_medical_center_system.entity.enums.Role;
 import com.t_systems.t_medical_center_system.service.impl.MedicalStaffServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -63,14 +63,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/login","/registrationDoctor","/registrationDoctor").permitAll()
-                .antMatchers("/allPatients").hasAuthority(Role.NURSE.name())
-                .antMatchers("/allPatients").hasAuthority(Role.DOCTOR.name())
-                .and().csrf().disable()
+                .antMatchers("/patient/**").hasAuthority(Role.DOCTOR.name())
+//                .antMatchers("/allPatients").hasAuthority(Role.DOCTOR.name())
+                .and()
+                .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/process")
                 .usernameParameter("name").passwordParameter("password")
-                .defaultSuccessUrl("/allDoctors")
+                .defaultSuccessUrl("/patient/patients")
                 .failureUrl("/login?fail=true")
                 .and()
                 .exceptionHandling()

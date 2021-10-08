@@ -1,7 +1,6 @@
 package com.t_systems.t_medical_center_system.controller;
 
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
-import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.service.MedicalStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ public class DoctorController {
     @GetMapping("/allDoctors")
     public String getDoctorList(Model model) {
         model.addAttribute("doctors", doctorService.getAllDoctors());
-        return "doctorsList";
+        return "templates/doctorsList";
     }
 
     //*******************************************
@@ -37,7 +36,7 @@ public class DoctorController {
     @GetMapping(value = "/editDoctor")
     public String updateDoctorGet(@RequestParam(name = "id") Long id, Model model) {
         model.addAttribute("doctor", doctorService.getById(id));
-        return "editDoctor";
+        return "templates/editDoctor";
     }
 
     @PostMapping(value = "/editDoctor")
@@ -50,7 +49,7 @@ public class DoctorController {
     @GetMapping(value = "/deleteDoctor")
     public String deletePatient(@RequestParam(name = "id") Long patientId) {
         doctorService.delete(patientId);
-        return "redirect:/allDoctors";
+        return "redirect:/allPatients";
     }
 
 

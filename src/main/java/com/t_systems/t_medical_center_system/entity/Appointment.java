@@ -1,5 +1,7 @@
 package com.t_systems.t_medical_center_system.entity;
 
+import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
+import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -22,33 +26,27 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private TherapyType therapyType;
 
-    private String timePattern;
-
 
     private LocalDateTime startDate;
 
-
     private LocalDateTime endDate;
-
 
     private String dosage;
 
 
-    @CreationTimestamp
-    private LocalDateTime createDataTime;
+    @Enumerated(EnumType.STRING)
+    private WeekDay weekDay;
 
-    @UpdateTimestamp
-    private LocalDateTime updateDataTime;
-
+    private LocalDateTime time;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-//
+    //
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "staff_id",nullable = false)
+    @JoinColumn(name = "staff_id", nullable = false)
     private MedicalStaff staff;
 
 
@@ -60,6 +58,8 @@ public class Appointment {
 
 
     private String description;
+
+
 
 
 }

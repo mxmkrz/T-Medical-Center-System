@@ -1,5 +1,6 @@
 package com.t_systems.t_medical_center_system.entity;
 
+import com.t_systems.t_medical_center_system.entity.enums.PatientStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,8 +47,8 @@ public class Patient {
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
 
-    private Boolean status;
-
+    @Enumerated(EnumType.STRING)
+    private PatientStatus patientStatus;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private List<Appointment> appointmentList = new ArrayList<>();

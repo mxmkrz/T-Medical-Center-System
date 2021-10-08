@@ -1,5 +1,6 @@
 package com.t_systems.t_medical_center_system.entity;
 
+import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

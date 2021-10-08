@@ -3,7 +3,7 @@ package com.t_systems.t_medical_center_system.service.impl;
 import com.t_systems.t_medical_center_system.converter.Convertor;
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
-import com.t_systems.t_medical_center_system.entity.Role;
+import com.t_systems.t_medical_center_system.entity.enums.Role;
 import com.t_systems.t_medical_center_system.exception.DoctorNotFoundException;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.service.MedicalStaffService;

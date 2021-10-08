@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class RegistrationNurseController {
 
-    private MedicalStaffServiceImp medicalStaffServiceImp;
+    private final MedicalStaffServiceImp medicalStaffServiceImp;
 
     @Autowired
     public RegistrationNurseController(MedicalStaffServiceImp medicalStaffServiceImp) {
@@ -24,7 +24,7 @@ public class RegistrationNurseController {
     @GetMapping("/registrationNurse")
     public String addDoctorGet(Model model) {
         model.addAttribute("nurse", new MedicalStaff());
-        return "registrationNurse";
+        return "templates/registrationNurse";
     }
 
 

@@ -1,11 +1,10 @@
 package com.t_systems.t_medical_center_system.entity;
 
+import com.t_systems.t_medical_center_system.entity.enums.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
 import javax.persistence.*;

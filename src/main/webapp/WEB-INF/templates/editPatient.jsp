@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1 class="text-center">Update Patient</h1>
-<form:form action="/editPatient" method="post" modelAttribute="patient">
+<form:form action="/patient/edit" method="post" modelAttribute="profile">
     <form:hidden path="id"/>
     <tr>
         <td>Name:</td>
@@ -25,10 +25,6 @@
     <tr>
         <td>Insurance Number:</td>
         <td><form:input path="insuranceNumber"/></td>
-    </tr>
-    <tr>
-        <td>Status:</td>
-        <td><form:input path="status"/></td>
     </tr>
 
     <button type="submit" class="btn btn-primary">Submit</button>
