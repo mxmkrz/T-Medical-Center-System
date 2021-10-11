@@ -9,7 +9,7 @@ public interface MedicalStaffService {
 
     List<DoctorDto> getAllDoctors();
 
-    void saveDoctor(MedicalStaff doctor);
+    void saveStaff(MedicalStaff doctor);
 
     DoctorDto getById(Long id);
 

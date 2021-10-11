@@ -1,13 +1,17 @@
 package com.t_systems.t_medical_center_system.controller;
 
 import com.t_systems.t_medical_center_system.dto.PatientDto;
+import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -36,10 +40,12 @@ public class PatientController {
     }
 
 
-    @PostMapping(value = "/add")
-    public String addPatientPost(@ModelAttribute("patient") Patient patient) {
-        patientService.savePatient(patient);
-        return "redirect:/patient/patients";
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ModelAndView addPatientPost(@ModelAttribute("patient") PatientDto patientDto) {
+        patientService.savePatient(patientDto);
+        return new ModelAndView("redirect:/patient/patients");
     }
 
 
@@ -60,17 +66,21 @@ public class PatientController {
         return "templates/editPatient";
     }
 
-    @PostMapping(value = "/edit")
-    public String updatePatientPost(@ModelAttribute(name = "profile") PatientDto patientDto) {
+
+    @PostMapping(value = "/edit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ModelAndView updatePatientPost(@ModelAttribute("profile") PatientDto patientDto) {
         patientService.updatePatient(patientDto);
-        Long id = patientDto.getId();
-         return "redirect:/patient/profile/"+id;
+        return new ModelAndView("redirect:/patient/profile/");
     }
 
+
+
     //*******************************************
-    @GetMapping(value = "/delete")
-    public String deletePatient(@RequestParam(name = "id") Long patientId) {
-        patientService.deletePatient(patientId);
+    @GetMapping(value = "/delete/{id}")
+    public String deletePatient(@PathVariable(name = "id") Long id) {
+        patientService.deletePatient(id);
         return "redirect:/patient/patients";
     }
 

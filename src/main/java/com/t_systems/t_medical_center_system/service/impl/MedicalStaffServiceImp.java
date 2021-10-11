@@ -1,6 +1,6 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
-import com.t_systems.t_medical_center_system.converter.Convertor;
+import com.t_systems.t_medical_center_system.mapper.Convertor;
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.enums.Role;
@@ -50,8 +50,7 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
 
     @Transactional
     @Override
-    public void saveDoctor(MedicalStaff doctor) {
-        doctor.setRole(Role.DOCTOR);
+    public void saveStaff(MedicalStaff doctor) {
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
         staffRepository.save(doctor);
         log.info("Add doctor");

@@ -12,7 +12,7 @@ public interface PatientService {
 
     PatientDto getPatientById(Long id);
 
-    void savePatient(Patient patient);
+    void savePatient(PatientDto patient);
 
     void updatePatient(PatientDto obj);
 

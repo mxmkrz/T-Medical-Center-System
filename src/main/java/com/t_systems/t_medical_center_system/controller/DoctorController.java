@@ -18,10 +18,10 @@ public class DoctorController {
 
 
 
-    @GetMapping("/allDoctors")
+    @GetMapping("/allStaff")
     public String getDoctorList(Model model) {
-        model.addAttribute("doctors", doctorService.getAllDoctors());
-        return "templates/doctorsList";
+        model.addAttribute("staff", doctorService.getAllDoctors());
+        return "templates/allStaff";
     }
 
     //*******************************************

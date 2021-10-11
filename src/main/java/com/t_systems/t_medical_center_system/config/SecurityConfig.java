@@ -62,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessUrl("/login");
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/login","/registrationDoctor","/registrationDoctor").permitAll()
-                .antMatchers("/patient/**").hasAuthority(Role.DOCTOR.name())
+                .antMatchers("/login","/registrationMedicalStaff").permitAll()
+                .antMatchers("/patient/**","/appointment").hasAuthority(Role.DOCTOR.name())
 //                .antMatchers("/allPatients").hasAuthority(Role.DOCTOR.name())
                 .and()
                 .csrf().disable()

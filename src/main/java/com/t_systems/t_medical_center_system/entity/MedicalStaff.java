@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.entity;
 
 import com.t_systems.t_medical_center_system.entity.enums.Role;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,7 +25,7 @@ import java.util.*;
 @Data
 @Table(name = "tb_medical_staff")
 @NoArgsConstructor
-public class MedicalStaff  {
+public class MedicalStaff {
     @Id
     @SequenceGenerator(name = "medical_staff_id_generator", sequenceName = "medical_staff_id_generator", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "medical_staff_id_generator")
@@ -64,6 +65,5 @@ public class MedicalStaff  {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
 
 }

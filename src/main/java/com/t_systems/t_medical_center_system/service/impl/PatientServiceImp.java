@@ -1,6 +1,6 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
-import com.t_systems.t_medical_center_system.converter.Convertor;
+import com.t_systems.t_medical_center_system.mapper.Convertor;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Patient;
@@ -12,6 +12,8 @@ import com.t_systems.t_medical_center_system.repository.PatientRepository;
 import com.t_systems.t_medical_center_system.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,14 +51,17 @@ public class PatientServiceImp implements PatientService {
     @Transactional(readOnly = true)
     @Override
     public PatientDto getPatientById(Long id) {
-        return patientConvertor.convertToDto(patientRepository.findById(id).orElseThrow(PatientNotFoundException::new),PatientDto.class);
+        PatientDto patientDto = patientConvertor.convertToDto(patientRepository.findById(id).orElseThrow(PatientNotFoundException::new),PatientDto.class);
+        Authentication authStaff = SecurityContextHolder.getContext().getAuthentication();
+        patientDto.setDoctorsName(authStaff.getName());
+
+        return patientDto;
     }
 
     @Transactional
     @Override
-    public void savePatient(Patient patient) {
-        patient.setPatientStatus(PatientStatus.PATIENT);
-        patientRepository.save(patient);
+    public void savePatient(PatientDto patient) {
+        patientRepository.save(patientConvertor.convertToEntity(patient,Patient.class));
         log.info("Add patient");
     }
 
