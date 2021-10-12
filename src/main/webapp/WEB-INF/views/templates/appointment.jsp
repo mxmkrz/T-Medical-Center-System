@@ -1,6 +1,3 @@
-<%@ page import="com.t_systems.t_medical_center_system.dto.AppointmentListWrapper" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="com.t_systems.t_medical_center_system.dto.AppointmentDto" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -51,28 +48,21 @@
 <p id='key'></p>
 <button onclick="getCountDay()">Press</button>
 <form:form action="/patient/profile/${patientId.id}/appointment" method="post"
-           modelAttribute="appointmentListWrapper" role="form">
+           modelAttribute="appointmentListWrapper">
 
 
+<%--    <c:forEach varStatus="us" var="appointmentDtos" items="${appointmentListWrapper.appointmentDtoArrayList}" >--%>
 
-    <c:forEach varStatus="us" var="appointmentDtos" items="${appointmentListWrapper.appointmentDtoArrayList}" >
-        <td><form:input type="hidden" path="appointmentDtoArrayList"/>${appointmentDtos.startData}</td>
+<div class="mb-3"><input class="form-control" type="text" name="type" placeholder="Type"></div>
+<div class="mb-3"><input class="form-control" type="number" name="dose" placeholder="dose"></div>
+<div class="mb-3"><input class="form-control" type="text" name="startData" placeholder="startData"></div>
+<div class="mb-3"><input class="form-control" type="text" name="endData" placeholder="endData"></div>
+<button class="btn btn-primary d-block w-100" type="submit">Sign Up</button>
+<%--        <form:input path="appointmentDtos"></form:input>--%>
 
-<%--    <div class="mb-3"><input class="form-control" type="text" name="type" placeholder="Type"></div>--%>
-<%--    <div class="mb-3"><input class="form-control" type="number" name="dose" placeholder="dose"></div>--%>
-<%--    <div class="mb-3"><input class="form-control" type="text" name="startData" placeholder="startData"></div>--%>
-<%--    <div class="mb-3"><input class="form-control" type="text" name="endData" placeholder="endData"></div>--%>
-<%--
-
-    <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button>--%>
-
-
-        <label>
-            <input type="text"  name="appointmentDtos[${us.index}]">
-        </label>
-
-    </c:forEach>
-    </form:form>
+</form:form>
+<%--</c:forEach>--%>
+<%--    </form:form>--%>
 <%--        <td><form:input path="appointmentDtoArrayList" /></td>--%>
 
 

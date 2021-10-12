@@ -36,7 +36,7 @@ public class AppointmentServiceImp implements AppointmentService {
     }
 
     @Override
-    public void addAppointment(List<AppointmentDto> appointment,Long id) {
+    public void addAppointment(AppointmentDto appointment,Long id) {
 
     }
 

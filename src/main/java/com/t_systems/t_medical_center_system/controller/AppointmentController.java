@@ -39,21 +39,15 @@ public class AppointmentController {
     @GetMapping(value = "/patient/profile/{id}/appointment")
     public String newAppointmentGet(Model model,@PathVariable(name = "id")Long id) {
         PatientDto patient = patientServiceImp.getPatientById(id);
-
-        AppointmentListWrapper wrapper = new AppointmentListWrapper();
-        wrapper.setAppointmentDtoArrayList(new ArrayList<>(appointmentServiceImp.getAllAppointments()));
-
-
         model.addAttribute("patientId",patient);
-        model.addAttribute("appointmentListWrapper", wrapper);
+        model.addAttribute("appointmentListWrapper", new AppointmentDto());
         return "templates/appointment";
 
 
     }
     @PostMapping(value = "/patient/profile/{id}/appointment")
-    public String newAppointmentPost(@PathVariable(name = "id")Long id, @ModelAttribute(value = "appointmentListWrapper") AppointmentListWrapper appointmentListWrapper) {
-
-        appointmentServiceImp.addAppointment(appointmentListWrapper.getAppointmentDtoArrayList(),id);
+    public String newAppointmentPost(@PathVariable(name = "id")Long id, @ModelAttribute(value = "appointmentListWrapper") AppointmentDto appointmentDto) {
+        appointmentServiceImp.addAppointment(appointmentDto,id);
         return "redirect:/patient/patients";
 
     }
