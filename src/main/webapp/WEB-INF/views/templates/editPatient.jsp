@@ -30,7 +30,7 @@
                 </div><input class="form-control form-control" type="file" name="avatar-file">
             </div>
             <div class="col-md-8">
-                <h1>Profile </h1>
+                <h1>Edit Profile </h1>
                 <hr>
                 <form:form action="patient/edit" method="post" modelAttribute="profile" class="formWithValidation3"
                            role="form">

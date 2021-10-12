@@ -26,13 +26,13 @@
         <form:form action="/registrationMedicalStaff" method="post" modelAttribute="staff" class="formWithValidation2"
                    role="form">
             <h2 class="text-center"><strong>Create</strong> an account.</h2>
-            <div class="mb-3"><input class="form-control" type="name" name="name" placeholder="Name"></div>
-            <div class="mb-3"><input class="form-control" type="surname" name="surname" placeholder="Surname"></div>
+            <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
+            <div class="mb-3"><input class="form-control" type="text" name="surname" placeholder="Surname"></div>
             <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="mb-3"><input class="form-control" type="passwordConfirm" name="passwordConfirm"
+            <div class="mb-3"><input class="form-control" type="text" name="passwordConfirm"
                                      placeholder="Password (repeat)"></div>
-            <div class="mb-3"><input class="form-control" type="position" name="position" placeholder="Position"></div>
-            <div class="mb-3"><input class="form-control" type="specialization" name="specialization"
+            <div class="mb-3"><input class="form-control" type="text" name="position" placeholder="Position"></div>
+            <div class="mb-3"><input class="form-control" type="text" name="specialization"
                                      placeholder="Specialization"></div>
             <div class="form-floating">
                     <select class="form-select" name="role" id="roleInput" aria-label="Floating label select example">
