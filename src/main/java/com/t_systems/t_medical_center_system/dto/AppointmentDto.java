@@ -16,4 +16,10 @@ public class AppointmentDto {
     private String startData;
     private String endData;
 
+    public AppointmentDto(String type, Integer dose, String startData, String endData) {
+        this.type = type;
+        this.dose = dose;
+        this.startData = startData;
+        this.endData = endData;
+    }
 }

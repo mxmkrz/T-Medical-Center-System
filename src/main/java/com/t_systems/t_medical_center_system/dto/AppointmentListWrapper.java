@@ -9,8 +9,10 @@ public class AppointmentListWrapper {
     private List<AppointmentDto> appointmentDtoArrayList;
 
     public AppointmentListWrapper() {
-        this.appointmentDtoArrayList = new ArrayList<>();
+
     }
+
+
 
     public List<AppointmentDto> getAppointmentDtoArrayList() {
         return appointmentDtoArrayList;
