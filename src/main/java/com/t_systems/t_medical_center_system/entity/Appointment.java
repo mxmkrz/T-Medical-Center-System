@@ -4,13 +4,13 @@ import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.HashMap;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,24 +27,32 @@ public class Appointment {
     private TherapyType therapyType;
 
 
-    private LocalDateTime startDate;
+    private Date startDate;
 
-    private LocalDateTime endDate;
+    private Date endDate;
 
-    private String dosage;
+    private Integer dosage;
+
+    private String info;
+
+    @OneToMany(mappedBy="appointment")
+    private List<WeekDay> weekDay = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name="Nicknames", joinColumns=@JoinColumn(name="user_id"))
+    @Column(name="nickname")
+    public List<String> getNicknames;
 
 
-    @Enumerated(EnumType.STRING)
-    private WeekDay weekDay;
-
-    private LocalDateTime time;
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    //
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id", nullable = false)
     private MedicalStaff staff;
@@ -55,11 +63,5 @@ public class Appointment {
 
     @OneToMany(mappedBy = "appointment")
     private List<Drug> drugsList;
-
-
-    private String description;
-
-
-
 
 }

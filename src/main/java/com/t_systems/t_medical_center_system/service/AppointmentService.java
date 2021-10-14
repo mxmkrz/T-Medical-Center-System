@@ -9,6 +9,6 @@ public interface AppointmentService {
 
     List<AppointmentDto> getAllAppointments();
 
-    void addAppointment(AppointmentDto appointment,Long id);
+    void addAppointment(AppointmentDto appointment);
 
 }

@@ -1,23 +1,16 @@
 package com.t_systems.t_medical_center_system.controller;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
-import com.t_systems.t_medical_center_system.dto.AppointmentListWrapper;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
-import com.t_systems.t_medical_center_system.entity.Appointment;
-import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.service.impl.AppointmentServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AppointmentController {
@@ -37,18 +30,21 @@ public class AppointmentController {
 
 
     @GetMapping(value = "/patient/profile/{id}/appointment")
-    public String newAppointmentGet(Model model,@PathVariable(name = "id")Long id) {
-        PatientDto patient = patientServiceImp.getPatientById(id);
-        model.addAttribute("patientId",patient);
-        model.addAttribute("appointmentListWrapper", new AppointmentDto());
+    public String newAppointmentGet(@PathVariable(name = "id")Long id, Model model) {
+        PatientDto patientDto = patientServiceImp.getPatientById(id);
+
+
+        model.addAttribute("patient",patientDto);
+        model.addAttribute("appointmentNew",new AppointmentDto());
+
         return "templates/appointment";
 
 
     }
     @PostMapping(value = "/patient/profile/{id}/appointment")
-    public String newAppointmentPost(@PathVariable(name = "id")Long id, @ModelAttribute(value = "appointmentListWrapper") AppointmentDto appointmentDto) {
-        appointmentServiceImp.addAppointment(appointmentDto,id);
-        return "redirect:/patient/patients";
+    public String newAppointmentPost(@PathVariable(name = "id")Long id, @ModelAttribute(value = "appointmentNew") AppointmentDto appointmentDto) {
+        appointmentServiceImp.addAppointment(appointmentDto);
+        return "redirect:/patient/profile/{id}";
 
     }
 

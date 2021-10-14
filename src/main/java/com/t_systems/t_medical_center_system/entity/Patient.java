@@ -8,10 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -42,10 +39,10 @@ public class Patient {
     private Long insuranceNumber;
 
     @CreationTimestamp
-    private LocalDateTime createDataTime;
+    private Date createDataTime;
 
     @UpdateTimestamp
-    private LocalDateTime updateDataTime;
+    private Date updateDataTime;
 
     @Enumerated(EnumType.STRING)
     private PatientStatus patientStatus;

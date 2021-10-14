@@ -1,3 +1,5 @@
+<%@ page import="com.t_systems.t_medical_center_system.entity.calendar.WeekDay" %>
+<%@ page import="com.t_systems.t_medical_center_system.dto.AppointmentDto" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -19,106 +21,329 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/JNKKKK/MoreToggles.css@0.2.1/output/moretoggles.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/main.css">
     <title></title>
-    <title></title></head>
+    <script src="../static/bootstrap/js/Multi-Select-Dropdown-by-Jigar-Mistry.js"></script>
+    <link rel="stylesheet" href="../static/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
+</head>
 <body>
-<div class="row">
-    <div class="col-xs-6">
-        <div class="form-group">
-
-            <div class="input-group date" id="datetimepicker7">
-                <input type="text" class="form-control"/>
-                <span class="input-group-addon">
+<form:form action="/patient/profile/${patient.id}/appointment" method="post" modelAttribute="appointmentNew">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group" id="getWeekDay">
+                <div class="input-group date" id="datetimepicker7">
+                    <input type="text" name="startOfData" class="form-control "/>
+                    <span class="input-group-addon">
                     <i class="glyphicon glyphicon-calendar"></i>
                 </span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-xs-6">
-        <div class="form-group">
-            <div class="input-group date" id="datetimepicker8">
-                <input type="text" class="form-control"/>
-                <span class="input-group-addon">
+        <script>
+            function checkCheckBox() {
+                $("#getWeekDay").on("dp.change", function (e) {
+
+
+                    $("#getWeekDay2").on("dp.change", function (e) {
+                        var dateFirstCalendar = $('#getWeekDay input').val();
+                        var currentWeekDay = new Date(dateFirstCalendar).getDay();
+
+                        var dateFirstCalendar2 = $('#getWeekDay2 input').val();
+                        var currentWeekDay2 = new Date(dateFirstCalendar2).getDay();
+
+                        var period = getCountDay();
+                        // alert(period + " period")
+                        // alert(currentWeekDay + " week day 1 cal")
+                        // alert(currentWeekDay2 + " week day 2 cal")
+                        if (period < 7) {
+                            if (currentWeekDay < currentWeekDay2) {
+                                if (0 === currentWeekDay || 0 === currentWeekDay2) {
+                                    $('#0day').show()
+                                } else {
+                                    $('#0day').hide()
+                                }
+                                if (1 === currentWeekDay || (currentWeekDay <= 1 && 1 <= currentWeekDay2)) {
+                                    $('#1day').show()
+                                } else {
+                                    $('#1day').hide()
+                                }
+                                if (2 === currentWeekDay || (currentWeekDay <= 2 && 2 <= currentWeekDay2)) {
+                                    $('#2day').show()
+                                } else {
+                                    $('#2day').hide()
+                                }
+                                if (3 === currentWeekDay || (currentWeekDay <= 3 && 3 <= currentWeekDay2)) {
+                                    $('#3day').show()
+                                } else {
+                                    $('#3day').hide()
+                                }
+                                if (4 === currentWeekDay || (currentWeekDay <= 4 && 4 <= currentWeekDay2)) {
+                                    $('#4day').show()
+                                } else {
+                                    $('#4day').hide()
+                                }
+                                if (5 === currentWeekDay || (currentWeekDay <= 5 && 5 <= currentWeekDay2)) {
+                                    $('#5day').show()
+                                } else {
+                                    $('#5day').hide()
+                                }
+                                if (6 === currentWeekDay || (currentWeekDay <= 6 && 6 <= currentWeekDay2)) {
+                                    $('#6day').show()
+                                } else {
+                                    $('#6day').hide()
+                                }
+                            }
+                        }
+                    });
+                });
+
+
+            }
+            window.onload = checkCheckBox();
+        </script>
+        <div class="col-xs-6">
+            <div class="form-group" id="getWeekDay2">
+                <div class="input-group date" id="datetimepicker8">
+                    <input type="text" name="endOfData" class="form-control" id="btn1"/>
+                    <span class="input-group-addon">
                     <i class="glyphicon glyphicon-calendar"></i>
                 </span>
+                </div>
             </div>
         </div>
+
+
     </div>
-</div>
-<p id='key'></p>
-<button onclick="getCountDay()">Press</button>
-<form:form action="/patient/profile/${patientId.id}/appointment" method="post"
-           modelAttribute="appointmentListWrapper">
 
 
-<%--    <c:forEach varStatus="us" var="appointmentDtos" items="${appointmentListWrapper.appointmentDtoArrayList}" >--%>
+    <div class="container">
+        <div class="mt-square3d" id=0day style="font-size:10px;">
+            <h3>Sunday</h3>
+            <input id="1" name="sunday" type="checkbox"/>
+            <label for="1"></label>
+        </div>
 
-<div class="mb-3"><input class="form-control" type="text" name="type" placeholder="Type"></div>
-<div class="mb-3"><input class="form-control" type="number" name="dose" placeholder="dose"></div>
-<div class="mb-3"><input class="form-control" type="text" name="startData" placeholder="startData"></div>
-<div class="mb-3"><input class="form-control" type="text" name="endData" placeholder="endData"></div>
-<button class="btn btn-primary d-block w-100" type="submit">Sign Up</button>
-<%--        <form:input path="appointmentDtos"></form:input>--%>
+        <div class="mt-square3d" id=1day style="font-size:10px;">
+            <h3>Monday</h3>
+            <input id="2" name="monday" type="checkbox"/>
+            <label for="2"></label>
+        </div>
+
+        <div class="mt-square3d" id=2day style="font-size:10px;">
+            <h3>Tuesday</h3>
+            <input id="3" name="tuesday" type="checkbox"/>
+            <label for="3"></label>
+        </div>
+
+        <div class="mt-square3d" id=3day style="font-size:10px;">
+            <h3>Wednesday</h3>
+            <input id="4" name="wednesday" type="checkbox"/>
+            <label for="4"></label>
+        </div>
+
+        <div class="mt-square3d" id=4day style="font-size:10px;">
+            <h3>Thursday</h3>
+            <input id="5" name="thursday" type="checkbox"/>
+            <label for="5"></label>
+        </div>
+
+        <div class="mt-square3d" id=5day style="font-size:10px;">
+            <h3>Friday</h3>
+            <input id="6" name="friday" type="checkbox"/>
+            <label for="6"></label>
+        </div>
+
+        <div class="mt-square3d" id=6day style="font-size:10px;">
+            <h3>Saturday</h3>
+            <input id="7" name="saturday" type="checkbox"/>
+            <label for="7"></label>
+        </div>
+    </div>
+
+
+
+    <form:select id="dates-field2" class="multiselect-ui form-control" multiple="multiple" path="time">
+        <c:forEach items="${appointmentNew.time}" var="timeName" varStatus="loop">
+            <form:option value="${loop.index}" >${timeName} </form:option>
+        </c:forEach>
+    </form:select>
+
+
+
+
+
+
+
+<%--    <div class="form-group">--%>
+<%--        <label for="remedyType">Therapy Type</label>--%>
+<%--            <select  class="form-control" id="therapyType"   >--%>
+<%--                <option value="">drug</option>--%>
+<%--                <option>procedure</option>--%>
+<%--            </select>--%>
+<%--            <select class="form-control" id="remedyType" name="remedyType"  >--%>
+<%--                    <option selected>pill</option>--%>
+<%--                    <option>procedure</option>--%>
+<%--                    <option>pill</option>--%>
+<%--                    <option selected>procedure</option>--%>
+<%--            </select>--%>
+
+<%--    </div>--%>
+    <form:select path="type" id="selectType">
+        <form:option value="----">Please select a Therapy Type</form:option>
+        <form:option value="PROCEDURE">PROCEDURE</form:option>
+        <form:option value="DRUG" >DRUG</form:option>
+    </form:select>
+    <div class="procId_input form-group" style="display:none;">
+        <input type="text" id="procId" name="info"  placeholder="Info of Procedure"/>
+    </div>
+    <div class="drugId_input form-group" style="display:none;">
+        <input type="number" id="drugId" name="dose"  placeholder="Amount dose" min="1"/>
+    </div>
+    <script>
+        $('#selectType').change(function(){
+            var selectval = $(this).val(); // Получим значение из select со значением #participation
+            if( selectval ==='PROCEDURE') {
+                $('.procId_input').show();
+            } else {
+                $('.procId_input').hide();
+            }
+        });
+    </script>
+    <script>
+        $('#selectType').change(function(){
+            var selectval = $(this).val(); // Получим значение из select со значением #participation
+            if( selectval ==='DRUG') {
+                $('.drugId_input').show();
+            } else {
+                $('.drugId_input').hide();
+            }
+        });
+    </script>
+
+
+
+
+    <button class="btn btn-primary" type="submit">ADD</button>
+
+
+    <%--<script>--%>
+    <%--    const toggle = document.getElementById('5');--%>
+
+    <%--    toggle.addEventListener('change', (event) => {--%>
+    <%--        if (event.target.checked) {--%>
+    <%--            alert('checked');--%>
+    <%--        } else {--%>
+    <%--            alert('not checked');--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--</script>--%>
+
+    <%--<p id='key'></p>--%>
+    <%--<button onclick="getCountDay()">Press</button>--%>
+    <%--<form:form action="/patient/profile/${patientId.id}/appointment" method="post" modelAttribute="appointmentListWrapper">--%>
+    <%--    <table class="table table-striped">--%>
+    <%--        <thead>--%>
+    <%--        <tr>--%>
+    <%--            <th>type</th>--%>
+    <%--            <th>dose</th>--%>
+    <%--            <th>startData</th>--%>
+    <%--            <th>endData</th>--%>
+    <%--        </tr>--%>
+    <%--        </thead>--%>
+    <%--        <tbody>--%>
+    <%--        <c:forEach varStatus="us" var="app" items="${appointmentListWrapper.appointmentDtoArrayList}">--%>
+    <%--            <tr>--%>
+    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].type"/></td>--%>
+    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].dose"/></td>--%>
+    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].startData"/></td>--%>
+    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].endData"/></td>--%>
+    <%--            </tr>--%>
+    <%--            <br>--%>
+    <%--        </c:forEach>--%>
+    <%--        </tbody>--%>
+    <%--    </table>--%>
+    <%--    <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button>--%>
+    <%--</form:form>--%>
+    <%--</c:forEach>--%>
+    <%--    </form:form>--%>
+    <%--        <td><form:input path="appointmentDtoArrayList" /></td>--%>
+
+
+    <%--                ${appointmentDtos}--%>
+    <%--                &lt;%&ndash;                    ${appointmentDtos}&ndash;%&gt;--%>
+    <%--                &lt;%&ndash;                    ${us.index}&ndash;%&gt;--%>
+
+    <%--    <td><form:input path="appointmentDtoArrayList[${us}].startData" /></td>&ndash;%&gt;--%>
+
+    <%--                <c:forEach items="appointmentDtos" var="ap">--%>
+    <%--                    <td>--%>
+    <%--                        ${ap}--%>
+    <%--                    </td>--%>
+    <%--                </c:forEach>--%>
+    <%--                                <td><form:input path="appointmentDtoArrayList[${us}].startData" /></td>--%>
+    <%--                <td><label>--%>
+    <%--                    <input name="appointmentDtoArrayList[${us.index}].type" value="${appoint}"/>--%>
+    <%--                </label></td>--%>
+    <%--                <div class="mb-3"><input class="form-control" type="text" name="appointmentDtoArrayList[${us.index}].type" value="${appoint.type}"></div>--%>
+
+    <%--                <td><input name="appointmentDtoArrayList[${us.index}].startData" value="${appoint.startData}"/></td>--%>
+    <%--                <td><input name="appointmentDtoArrayList[${us.index}].endData"
+    <%--                  &ndash;%&gt;  <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button> value="${appointmentDtos.startData}"/></td>--%>
+    <%--        </tr>--%>
+
+    <%--    </c:forEach>--%>
+
+    <%--<form:form action="/patient/profile/${patient.id}/appointment" method="post" modelAttribute="appointmentNew" >--%>
+    <%--    <div class="form-group form-dateOfStart">--%>
+    <%--        <label for="dateOfStart">Date of start</label>--%>
+    <%--        <input type="date" id="dateOfStart" name="startOfData" class="form-control ">--%>
+    <%--        <ul class="input-requirements">--%>
+    <%--            <li>Date of start is required!</li>--%>
+    <%--            <li>Set the date of start not earlier than today</li>--%>
+    <%--        </ul>--%>
+    <%--    </div>--%>
+    <%--    <button class="btn btn-primary"  type="submit">ADD</button>--%>
+
+    <script type="text/javascript">
+        $(function () {
+            // инициализация datetimepicker7 и datetimepicker8
+            $("#datetimepicker7").datetimepicker();
+            $("#datetimepicker8").datetimepicker({
+                useCurrent: false
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker8').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker8").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").maxDate(e.date);
+            });
+
+
+        });
+
+        $(function () {
+            $('#datetimepicker4').datetimepicker({
+                locale: 'ru'
+            });
+        });
+
+    </script>
+    <script>
+        function getCountDay() {
+            let welcomeData = moment($('#datetimepicker7').data("DateTimePicker").date());
+            welcomeData.set({hour: 0, minute: 0, second: 0, millisecond: 0});
+            // получаем дату из 2 календаря
+            let perenosData = moment($('#datetimepicker8').data("DateTimePicker").date());
+            perenosData.set({hour: 0, minute: 0, second: 0, millisecond: 0})
+            // получаем разницу в днях
+            // document.getElementById('key').innerHTML = diffDays;
+            // alert(diffDays)
+            return perenosData.diff(welcomeData, 'days');
+        }
+    </script>
+
 
 </form:form>
-<%--</c:forEach>--%>
-<%--    </form:form>--%>
-<%--        <td><form:input path="appointmentDtoArrayList" /></td>--%>
-
-
-<%--                ${appointmentDtos}--%>
-<%--                &lt;%&ndash;                    ${appointmentDtos}&ndash;%&gt;--%>
-<%--                &lt;%&ndash;                    ${us.index}&ndash;%&gt;--%>
-
-<%--    <td><form:input path="appointmentDtoArrayList[${us}].startData" /></td>&ndash;%&gt;--%>
-
-<%--                <c:forEach items="appointmentDtos" var="ap">--%>
-<%--                    <td>--%>
-<%--                        ${ap}--%>
-<%--                    </td>--%>
-<%--                </c:forEach>--%>
-<%--                                <td><form:input path="appointmentDtoArrayList[${us}].startData" /></td>--%>
-<%--                <td><label>--%>
-<%--                    <input name="appointmentDtoArrayList[${us.index}].type" value="${appoint}"/>--%>
-<%--                </label></td>--%>
-<%--                <div class="mb-3"><input class="form-control" type="text" name="appointmentDtoArrayList[${us.index}].type" value="${appoint.type}"></div>--%>
-
-<%--                <td><input name="appointmentDtoArrayList[${us.index}].startData" value="${appoint.startData}"/></td>--%>
-<%--                <td><input name="appointmentDtoArrayList[${us.index}].endData"
-<%--                  &ndash;%&gt;  <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button> value="${appointmentDtos.startData}"/></td>--%>
-<%--        </tr>--%>
-
-<%--    </c:forEach>--%>
-
-<script type="text/javascript">
-    $(function () {
-        // инициализация datetimepicker7 и datetimepicker8
-        $("#datetimepicker7").datetimepicker();
-        $("#datetimepicker8").datetimepicker({
-            useCurrent: false
-        });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker8').data("DateTimePicker").minDate(e.date);
-        });
-        $("#datetimepicker8").on("dp.change", function (e) {
-            $('#datetimepicker7').data("DateTimePicker").maxDate(e.date);
-        });
-
-    });
-
-</script>
-<script>
-    function getCountDay() {
-        let welcomeData = moment($('#datetimepicker7').data("DateTimePicker").date());
-        welcomeData.set({hour: 0, minute: 0, second: 0, millisecond: 0});
-        // получаем дату из 2 календаря
-        let perenosData = moment($('#datetimepicker8').data("DateTimePicker").date());
-        perenosData.set({hour: 0, minute: 0, second: 0, millisecond: 0})
-        // получаем разницу в днях
-        const diffDays = perenosData.diff(welcomeData, 'days');
-        document.getElementById('key').innerHTML = diffDays;
-        alert(diffDays)
-    }
-</script>
 </body>
 </html>

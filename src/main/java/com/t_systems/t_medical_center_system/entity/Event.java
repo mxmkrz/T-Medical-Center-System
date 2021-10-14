@@ -37,4 +37,9 @@ public class Event {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drug_id", nullable = false)
     private Drug drug;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
+
 }
