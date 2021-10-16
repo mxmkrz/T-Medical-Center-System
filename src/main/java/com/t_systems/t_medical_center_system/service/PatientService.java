@@ -20,4 +20,6 @@ public interface PatientService {
 
     List<Appointment> getAppointment(Long id);
 
+
+
 }

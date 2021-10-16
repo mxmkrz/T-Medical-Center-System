@@ -1,40 +1,35 @@
 package com.t_systems.t_medical_center_system.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.t_systems.t_medical_center_system.entity.Patient;
-import com.t_systems.t_medical_center_system.entity.calendar.Time;
-import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.LocalDateTime;
 import java.util.*;
 
 
 @Data
-
-public class AppointmentDto {
+@NoArgsConstructor
+public class AppointmentDto extends AbstractDto{
     @Enumerated(EnumType.STRING)
     private TherapyType type;
     private Integer dose;
+    private String infoDrugs;
     private String info;
 
 
     private Date startOfData;
     private Date endOfData;
 
+    private boolean sunday;
+    private boolean monday;
+    private boolean tuesday;
+    private boolean wednesday;
+    private boolean thursday;
+    private boolean friday;
+    private boolean saturday;
 
-
-    private String monday;
-    private String tuesday;
-    private String wednesday;
-    private String thursday;
-    private String friday;
-    private String saturday;
-    private String sunday;
 
     private ArrayList<String> time = new ArrayList<>() {{
         add("9:00 - 10:00");
@@ -51,12 +46,11 @@ public class AppointmentDto {
         add("20:00 - 21:00");
     }};
 
+    List<String> weekDayString = new ArrayList<>();
+    List<String> eventTimes = new ArrayList<>();
 
 
 
-
-    public AppointmentDto() {
-    }
 
 
 

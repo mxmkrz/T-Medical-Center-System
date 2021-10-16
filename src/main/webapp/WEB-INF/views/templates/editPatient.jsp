@@ -24,16 +24,10 @@
     </div>
     <form>
         <div class="row profile-row">
-            <div class="col-md-4 relative">
-                <div class="avatar">
-                    <div class="avatar-bg center"></div>
-                </div><input class="form-control form-control" type="file" name="avatar-file">
-            </div>
             <div class="col-md-8">
                 <h1>Edit Profile </h1>
                 <hr>
-                <form:form action="patient/edit" method="post" modelAttribute="profile" class="formWithValidation3"
-                           role="form">
+                <form:form action="/profile/${profile.id}/edit" method="post" modelAttribute="profile" class="formWithValidation3">
                     <form:hidden path="id"/>
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
@@ -72,45 +66,45 @@
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 <script src="../static/bootstrap/js/Profile-Edit-Form.js"></script>
 </body>
-<script>
-    $("#edit_status").on('show.bs.modal', function (e) {
-        var status = $(e.relatedTarget).data('patient-status');
-        $('#statusEditInput').val(status);
-    });
-    $("#edit_status").on('hidden.bs.modal', function () {
-        var form = $(this).find('form');
-        form[0].reset();
+<%--<script>--%>
+<%--    $("#edit_status").on('show.bs.modal', function (e) {--%>
+<%--        var status = $(e.relatedTarget).data('patient-status');--%>
+<%--        $('#statusEditInput').val(status);--%>
+<%--    });--%>
+<%--    $("#edit_status").on('hidden.bs.modal', function () {--%>
+<%--        var form = $(this).find('form');--%>
+<%--        form[0].reset();--%>
 
-    });
-    var form = document.querySelector('.formWithValidation3')
-    var status = form.querySelector('.status')
+<%--    });--%>
+<%--    var form = document.querySelector('.formWithValidation3')--%>
+<%--    var status = form.querySelector('.status')--%>
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault()
+<%--    form.addEventListener("submit", function (event) {--%>
+<%--        event.preventDefault()--%>
 
 
-        $.ajax({
-            url: '/patient/edit',
-            datatype: 'json',
-            type: "POST",
-            dataType: 'JSON',
-            data: JSON.stringify({
-                id: ${profile.id},
-                name: '${profile.name}',
-                surname: "${profile.surname}",
-                diagnosis: '${profile.diagnosis}',
-                insuranceNumber: ${profile.insuranceNumber},
-                status: status.value,
-            }),
-            success: function (response) {
-                if (response.redirect) {
-                    window.location.href = response.redirect;
-                }
-            },
-            error: function (result) {
-                alert("error" + result.responseText);
-            }
-        });
-    });
-</script>
+<%--        $.ajax({--%>
+<%--            url: '/patient/edit',--%>
+<%--            datatype: 'json',--%>
+<%--            type: "POST",--%>
+<%--            dataType: 'JSON',--%>
+<%--            data: JSON.stringify({--%>
+<%--                id: ${profile.id},--%>
+<%--                name: '${profile.name}',--%>
+<%--                surname: "${profile.surname}",--%>
+<%--                diagnosis: '${profile.diagnosis}',--%>
+<%--                insuranceNumber: ${profile.insuranceNumber},--%>
+<%--                status: status.value,--%>
+<%--            }),--%>
+<%--            success: function (response) {--%>
+<%--                if (response.redirect) {--%>
+<%--                    window.location.href = response.redirect;--%>
+<%--                }--%>
+<%--            },--%>
+<%--            error: function (result) {--%>
+<%--                alert("error" + result.responseText);--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 </html>

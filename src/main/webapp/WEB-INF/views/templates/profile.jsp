@@ -86,7 +86,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info" target="__blank"
-                                   href="/patient/edit?id=<c:out value="${profile.id}"/>">Edit</a>
+                                   href="/patient/profile/${profile.id}/edit">Edit</a>
                             </div>
                         </div>
                         <hr>
@@ -106,6 +106,16 @@
                                 <div class="col-sm-12">
                                     <a class="btn btn-info" target="__blank"
                                        href="/patient/profile/${profile.id}/appointment">Create Appointment</a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-info" target="__blank"
+                                       href="/patient/profile/${profile.id}/pageAppointment">Appointments</a>
                                 </div>
                             </div>
                         </div>

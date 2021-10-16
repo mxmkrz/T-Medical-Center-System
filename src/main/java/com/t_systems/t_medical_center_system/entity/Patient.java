@@ -25,8 +25,9 @@ import java.util.*;
 public class Patient {
 
     @Id
-    @SequenceGenerator(name = "patient_id_generator", sequenceName = "patient_id_generator", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_id_generator")
+//    @SequenceGenerator(name = "patient_id_generator", sequenceName = "patient_id_generator", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_id_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -37,6 +38,8 @@ public class Patient {
     private String diagnosis;
 
     private Long insuranceNumber;
+
+    private String doctorName;
 
     @CreationTimestamp
     private Date createDataTime;

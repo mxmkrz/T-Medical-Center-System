@@ -18,12 +18,17 @@ public class Drug {
     @Column(name = "name", nullable = false)
     private String name;
 
+    private Integer dosage;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
     @OneToOne(mappedBy = "drug")
     private Event event;
+
+    public Drug(String name, Integer dosage) {
+        this.name = name;
+        this.dosage = dosage;
+    }
 }

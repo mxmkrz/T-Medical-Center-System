@@ -1,5 +1,4 @@
-<%@ page import="com.t_systems.t_medical_center_system.entity.calendar.WeekDay" %>
-<%@ page import="com.t_systems.t_medical_center_system.dto.AppointmentDto" %>
+
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -174,21 +173,6 @@
 
 
 
-
-<%--    <div class="form-group">--%>
-<%--        <label for="remedyType">Therapy Type</label>--%>
-<%--            <select  class="form-control" id="therapyType"   >--%>
-<%--                <option value="">drug</option>--%>
-<%--                <option>procedure</option>--%>
-<%--            </select>--%>
-<%--            <select class="form-control" id="remedyType" name="remedyType"  >--%>
-<%--                    <option selected>pill</option>--%>
-<%--                    <option>procedure</option>--%>
-<%--                    <option>pill</option>--%>
-<%--                    <option selected>procedure</option>--%>
-<%--            </select>--%>
-
-<%--    </div>--%>
     <form:select path="type" id="selectType">
         <form:option value="----">Please select a Therapy Type</form:option>
         <form:option value="PROCEDURE">PROCEDURE</form:option>
@@ -199,6 +183,9 @@
     </div>
     <div class="drugId_input form-group" style="display:none;">
         <input type="number" id="drugId" name="dose"  placeholder="Amount dose" min="1"/>
+    </div>
+    <div class="drugInfoId_input form-group" style="display:none;">
+        <input type="text" id="drugInfoId" name="infoDrugs"  placeholder="infoDrugs"/>
     </div>
     <script>
         $('#selectType').change(function(){
@@ -220,91 +207,18 @@
             }
         });
     </script>
-
-
-
-
+    </script>
+    <script>
+        $('#selectType').change(function(){
+            var selectval = $(this).val(); // Получим значение из select со значением #participation
+            if( selectval ==='DRUG') {
+                $('.drugInfoId_input').show();
+            } else {
+                $('.drugInfoId_input').hide();
+            }
+        });
+    </script>
     <button class="btn btn-primary" type="submit">ADD</button>
-
-
-    <%--<script>--%>
-    <%--    const toggle = document.getElementById('5');--%>
-
-    <%--    toggle.addEventListener('change', (event) => {--%>
-    <%--        if (event.target.checked) {--%>
-    <%--            alert('checked');--%>
-    <%--        } else {--%>
-    <%--            alert('not checked');--%>
-    <%--        }--%>
-    <%--    });--%>
-    <%--</script>--%>
-
-    <%--<p id='key'></p>--%>
-    <%--<button onclick="getCountDay()">Press</button>--%>
-    <%--<form:form action="/patient/profile/${patientId.id}/appointment" method="post" modelAttribute="appointmentListWrapper">--%>
-    <%--    <table class="table table-striped">--%>
-    <%--        <thead>--%>
-    <%--        <tr>--%>
-    <%--            <th>type</th>--%>
-    <%--            <th>dose</th>--%>
-    <%--            <th>startData</th>--%>
-    <%--            <th>endData</th>--%>
-    <%--        </tr>--%>
-    <%--        </thead>--%>
-    <%--        <tbody>--%>
-    <%--        <c:forEach varStatus="us" var="app" items="${appointmentListWrapper.appointmentDtoArrayList}">--%>
-    <%--            <tr>--%>
-    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].type"/></td>--%>
-    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].dose"/></td>--%>
-    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].startData"/></td>--%>
-    <%--                <td><form:input path="appointmentDtoArrayList[${us.index}].endData"/></td>--%>
-    <%--            </tr>--%>
-    <%--            <br>--%>
-    <%--        </c:forEach>--%>
-    <%--        </tbody>--%>
-    <%--    </table>--%>
-    <%--    <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button>--%>
-    <%--</form:form>--%>
-    <%--</c:forEach>--%>
-    <%--    </form:form>--%>
-    <%--        <td><form:input path="appointmentDtoArrayList" /></td>--%>
-
-
-    <%--                ${appointmentDtos}--%>
-    <%--                &lt;%&ndash;                    ${appointmentDtos}&ndash;%&gt;--%>
-    <%--                &lt;%&ndash;                    ${us.index}&ndash;%&gt;--%>
-
-    <%--    <td><form:input path="appointmentDtoArrayList[${us}].startData" /></td>&ndash;%&gt;--%>
-
-    <%--                <c:forEach items="appointmentDtos" var="ap">--%>
-    <%--                    <td>--%>
-    <%--                        ${ap}--%>
-    <%--                    </td>--%>
-    <%--                </c:forEach>--%>
-    <%--                                <td><form:input path="appointmentDtoArrayList[${us}].startData" /></td>--%>
-    <%--                <td><label>--%>
-    <%--                    <input name="appointmentDtoArrayList[${us.index}].type" value="${appoint}"/>--%>
-    <%--                </label></td>--%>
-    <%--                <div class="mb-3"><input class="form-control" type="text" name="appointmentDtoArrayList[${us.index}].type" value="${appoint.type}"></div>--%>
-
-    <%--                <td><input name="appointmentDtoArrayList[${us.index}].startData" value="${appoint.startData}"/></td>--%>
-    <%--                <td><input name="appointmentDtoArrayList[${us.index}].endData"
-    <%--                  &ndash;%&gt;  <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button> value="${appointmentDtos.startData}"/></td>--%>
-    <%--        </tr>--%>
-
-    <%--    </c:forEach>--%>
-
-    <%--<form:form action="/patient/profile/${patient.id}/appointment" method="post" modelAttribute="appointmentNew" >--%>
-    <%--    <div class="form-group form-dateOfStart">--%>
-    <%--        <label for="dateOfStart">Date of start</label>--%>
-    <%--        <input type="date" id="dateOfStart" name="startOfData" class="form-control ">--%>
-    <%--        <ul class="input-requirements">--%>
-    <%--            <li>Date of start is required!</li>--%>
-    <%--            <li>Set the date of start not earlier than today</li>--%>
-    <%--        </ul>--%>
-    <%--    </div>--%>
-    <%--    <button class="btn btn-primary"  type="submit">ADD</button>--%>
-
     <script type="text/javascript">
         $(function () {
             // инициализация datetimepicker7 и datetimepicker8

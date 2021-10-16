@@ -35,7 +35,7 @@ public class PatientController {
 
     @GetMapping("/add")
     public String addPatientGet(Model model) {
-        model.addAttribute("patient", new Patient());
+        model.addAttribute("patient", new PatientDto());
         return "templates/addPatient";
     }
 
@@ -60,19 +60,19 @@ public class PatientController {
 
 
     //*******************************************
-    @GetMapping(value = "/edit")
-    public String updatePatientGet(@RequestParam(name = "id") Long id, Model model) {
+    @GetMapping(value = "/profile/{id}/edit")
+    public String updatePatientGet( Model model, @PathVariable Long id  ) {
         model.addAttribute("profile", patientService.getPatientById(id));
         return "templates/editPatient";
     }
 
 
-    @PostMapping(value = "/edit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+    @PostMapping(value = "/profile/{id}/edit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView updatePatientPost(@ModelAttribute("profile") PatientDto patientDto) {
         patientService.updatePatient(patientDto);
-        return new ModelAndView("redirect:/patient/profile/");
+        return new ModelAndView("redirect:/profile/{id}");
     }
 
 

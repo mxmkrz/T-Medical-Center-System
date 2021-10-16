@@ -15,8 +15,4 @@ public class PatientDto {
     private String status;
     private String doctorsName;
 
-
-
-
-
 }

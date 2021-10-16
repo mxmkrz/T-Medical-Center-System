@@ -3,8 +3,7 @@ package com.t_systems.t_medical_center_system.service.impl;
 import com.t_systems.t_medical_center_system.mapper.Convertor;
 import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
-import com.t_systems.t_medical_center_system.entity.enums.Role;
-import com.t_systems.t_medical_center_system.exception.DoctorNotFoundException;
+import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.service.MedicalStaffService;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +58,7 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
     @Transactional(readOnly = true)
     @Override
     public DoctorDto getById(Long id) {
-        return doctorConvertor.convertToDto(staffRepository.findById(id).orElseThrow(DoctorNotFoundException::new), DoctorDto.class);
+        return doctorConvertor.convertToDto(staffRepository.findById(id).orElseThrow(AppointmentNotFoundException::new), DoctorDto.class);
     }
 
     @Transactional
@@ -75,19 +74,12 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
         staffRepository.save(doctorConvertor.convertToEntity(doctorDto, MedicalStaff.class));
     }
 
-    @Override
-    public void saveNurse(MedicalStaff nurse) {
-        nurse.setRole(Role.NURSE);
-        nurse.setPassword(bCryptPasswordEncoder.encode(nurse.getPassword()));
-        staffRepository.save(nurse);
-        log.info("Add nurse");
-    }
+
 
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         MedicalStaff medicalStaff = staffRepository.findByName(name);
-        System.out.println(medicalStaff);
         if (medicalStaff == null) {
             throw new UsernameNotFoundException(name);
         }

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface MedicalStaffRepository extends PagingAndSortingRepository<MedicalStaff, Long> {
     MedicalStaff findByName(String name);
 
+
 }

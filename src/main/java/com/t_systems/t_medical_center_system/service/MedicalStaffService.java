@@ -17,7 +17,5 @@ public interface MedicalStaffService {
 
     void update(DoctorDto doctor);
 
-    void saveNurse(MedicalStaff nurse);
-
 
 }

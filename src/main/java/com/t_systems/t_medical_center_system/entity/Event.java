@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +17,14 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description")
-    private String description;
+    private String cause;
+
+
+    private Date date;
+
+
+    private String status;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
@@ -26,9 +33,9 @@ public class Event {
     @Column(name = "date_and_time", nullable = false)
     private LocalDateTime dateAndTime;
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EventStatus status;
+//    @Column(name = "status", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private EventStatus status;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proc_id", nullable = false)
@@ -38,8 +45,38 @@ public class Event {
     @JoinColumn(name = "drug_id", nullable = false)
     private Drug drug;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
-
 }
+//@Id
+//@Column(name = "id")
+//@GeneratedValue(strategy = GenerationType.IDENTITY)
+//private int id;
+//
+
+//
+//    @Column(name = "time")
+//    private String time;
+//
+
+//
+//    @Column(name = "remedy_name")
+//    private String remedyName;
+//
+//    @Column(name = "remedy_type")
+//    private String remedyType;
+//
+//    @Column(name = "quantity")
+//    private int quantity;
+//
+//    @Column(name = "cause")
+//    private String cause;
+//
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "prescription_id")
+//    private Prescription prescription;
+//
+//    @Column(name = "patient_id")
+//    private int patientId;
+

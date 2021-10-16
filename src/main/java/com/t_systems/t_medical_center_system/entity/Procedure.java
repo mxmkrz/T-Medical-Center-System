@@ -15,12 +15,12 @@ public class Procedure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
 
@@ -28,4 +28,7 @@ public class Procedure {
     @OneToOne(mappedBy = "procedure")
     private Event event;
 
+    public Procedure(String name) {
+        this.name = name;
+    }
 }
