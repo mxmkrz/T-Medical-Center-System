@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.config;
 
 import com.t_systems.t_medical_center_system.entity.enums.Role;
 import com.t_systems.t_medical_center_system.service.impl.MedicalStaffServiceImp;
+import com.t_systems.t_medical_center_system.service.impl.MySimpleUrlAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 @Configuration
@@ -62,26 +64,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutSuccessUrl("/login");
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/login","/registrationMedicalStaff").permitAll()
-                .antMatchers("/patient/**","/appointment").hasAuthority(Role.DOCTOR.name())
-//                .antMatchers("/allPatients").hasAuthority(Role.DOCTOR.name())
-                .and()
-                .csrf().disable()
-                .formLogin()
-                .loginPage("/login")
+                .antMatchers("/login").anonymous()
+                .antMatchers("/doctor/**", "/nurse/**").authenticated()
+                .antMatchers("/doctor/**").hasRole("DOCTOR")
+                .antMatchers("/nurse/**").hasRole("NURSE")
+                .and().
+                formLogin().
+                loginPage("/login")
                 .loginProcessingUrl("/login/process")
                 .usernameParameter("name").passwordParameter("password")
-                .defaultSuccessUrl("/patient/patients")
                 .failureUrl("/login?fail=true")
+                .successHandler(myAuthenticationSuccessHandler()).
+                and().
+                exceptionHandling().
+                accessDeniedPage("/").
+                and().
+                logout()
+
+
                 .and()
-                .exceptionHandling()
-                .accessDeniedPage("/")
-                .and().logout();
+                .csrf().disable();
+
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(medicalStaffServiceImp).passwordEncoder(bCryptPasswordEncoder);
+    }
+
+
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
+        return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
 

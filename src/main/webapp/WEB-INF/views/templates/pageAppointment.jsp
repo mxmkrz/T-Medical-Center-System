@@ -45,7 +45,7 @@
                 <td><c:out value="${appointments.weekDayString}" /></td>
                 <td><c:out value="${appointments.eventTimes}" /></td>
                 <td><a class="nav-link active"
-                       href="<c:url value="/patient/profile/${patient.id}/edit/${appointments.id}"/>">Edit Appointment</a></td>
+                       href="<c:url value="/doctor/profile/${patient.id}/edit/${appointments.id}"/>">Edit Appointment</a></td>
             </tr>
         </c:forEach>
     </table>

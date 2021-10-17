@@ -27,7 +27,7 @@
             <div class="col-md-8">
                 <h1>Edit Profile </h1>
                 <hr>
-                <form:form action="/profile/${profile.id}/edit" method="post" modelAttribute="profile" class="formWithValidation3">
+                <form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile" class="formWithValidation3">
                     <form:hidden path="id"/>
                 <div class="row">
                     <div class="col-sm-12 col-md-6">

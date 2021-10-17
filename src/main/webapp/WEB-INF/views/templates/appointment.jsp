@@ -27,7 +27,8 @@
     <link rel="stylesheet" href="../static/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
 </head>
 <body>
-<form:form action="/patient/profile/${patient.id}/appointment" method="post" modelAttribute="appointmentNew">
+<form:form action="/doctor/profile/${patient.id}/appointment/${appointmentNew.id}" method="post" modelAttribute="appointmentNew">
+    <form:hidden path="id"/>
     <div class="row">
         <div class="col-xs-6">
             <div class="form-group" id="getWeekDay">

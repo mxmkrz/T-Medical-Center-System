@@ -14,7 +14,7 @@
 <body>
 <section class="register-photo">
     <div class="form-container">
-        <form:form action="/patient/add" method="post" modelAttribute="patient" class="formWithValidation1" role="form">
+        <form:form action="/doctor/add/" method="post" modelAttribute="patient" class="formWithValidation1" role="form">
             <h2 class="text-center"><strong>Create</strong> patient.</h2>
             <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
             <div class="mb-3"><input class="form-control" type="text" name="surname" placeholder="Surname"></div>
@@ -54,7 +54,7 @@
 
 
         $.ajax({
-            url: '/patient/add',
+            url: '/doctor/add',
             datatype: 'json',
             type: "POST",
             dataType: 'JSON',

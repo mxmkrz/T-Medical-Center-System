@@ -36,4 +36,10 @@ public class RegistrationMedicalStaffController {
         return new ModelAndView("redirect:/login");
     }
 
+    @GetMapping("/")
+    public String startPage() {
+        return "redirect:/login";
+    }
+
+
 }

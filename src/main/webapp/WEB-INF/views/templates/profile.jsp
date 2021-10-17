@@ -86,7 +86,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <a class="btn btn-info" target="__blank"
-                                   href="/patient/profile/${profile.id}/edit">Edit</a>
+                                   href="/doctor/profile/${profile.id}/edit">Edit</a>
                             </div>
                         </div>
                         <hr>
@@ -95,7 +95,7 @@
                             <div class="col-sm-12">
                                 <div class="col-sm-12">
                                     <a class="btn btn-info" target="__blank"
-                                       href="/patient/delete/${profile.id}">Delete</a>
+                                       href="/doctor/delete/${profile.id}">Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                             <div class="col-sm-12">
                                 <div class="col-sm-12">
                                     <a class="btn btn-info" target="__blank"
-                                       href="/patient/profile/${profile.id}/appointment">Create Appointment</a>
+                                       href="/doctor/profile/${profile.id}/appointment">Create Appointment</a>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                             <div class="col-sm-12">
                                 <div class="col-sm-12">
                                     <a class="btn btn-info" target="__blank"
-                                       href="/patient/profile/${profile.id}/pageAppointment">Appointments</a>
+                                       href="/doctor/profile/${profile.id}/pageAppointment">Appointments</a>
                                 </div>
                             </div>
                         </div>

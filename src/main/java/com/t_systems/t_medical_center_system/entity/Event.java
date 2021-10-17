@@ -1,12 +1,16 @@
 package com.t_systems.t_medical_center_system.entity;
 
 import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
+import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+
+
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "events")
@@ -17,66 +21,40 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String cause;
-
-
+    @Temporal(TemporalType.DATE)
     private Date date;
 
 
-    private String status;
+    private LocalTime time;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patient;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;
 
-    @Column(name = "date_and_time", nullable = false)
-    private LocalDateTime dateAndTime;
+    @Enumerated(EnumType.STRING)
+    private TherapyType therapyType;
 
-//    @Column(name = "status", nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    private EventStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "proc_id", nullable = false)
-    private Procedure procedure;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drug_id", nullable = false)
-    private Drug drug;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
+
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+
+    private String reasonToCancel;
+
+
+    public Event(Date date, LocalTime time, EventStatus status, TherapyType therapyType, Appointment appointment, Patient patient) {
+        this.date = date;
+        this.time = time;
+        this.status = status;
+        this.therapyType = therapyType;
+        this.appointment = appointment;
+        this.patient = patient;
+    }
 }
-//@Id
-//@Column(name = "id")
-//@GeneratedValue(strategy = GenerationType.IDENTITY)
-//private int id;
-//
-
-//
-//    @Column(name = "time")
-//    private String time;
-//
-
-//
-//    @Column(name = "remedy_name")
-//    private String remedyName;
-//
-//    @Column(name = "remedy_type")
-//    private String remedyType;
-//
-//    @Column(name = "quantity")
-//    private int quantity;
-//
-//    @Column(name = "cause")
-//    private String cause;
-//
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "prescription_id")
-//    private Prescription prescription;
-//
-//    @Column(name = "patient_id")
-//    private int patientId;
-

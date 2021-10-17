@@ -25,9 +25,6 @@ public class Procedure {
 
 
 
-    @OneToOne(mappedBy = "procedure")
-    private Event event;
-
     public Procedure(String name) {
         this.name = name;
     }

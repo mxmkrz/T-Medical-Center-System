@@ -19,7 +19,7 @@
     <h2 class="visually-hidden">Login Form</h2>
     <div class="illustration"><i class="icon ion-ios-medkit"></i></div>
     <form:form action="/login/process" method="post">
-        <div class="mb-3"><input class="form-control" type="name" name="name" placeholder="Name"></div>
+        <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
         <div class="mb-3">
             <button class="btn btn-primary d-block w-100" type="submit">Sing In</button>

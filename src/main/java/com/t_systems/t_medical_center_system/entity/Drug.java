@@ -24,8 +24,6 @@ public class Drug {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-    @OneToOne(mappedBy = "drug")
-    private Event event;
 
     public Drug(String name, Integer dosage) {
         this.name = name;

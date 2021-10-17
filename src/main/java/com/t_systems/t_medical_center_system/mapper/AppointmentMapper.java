@@ -28,6 +28,7 @@ public class AppointmentMapper {
     private AppointmentRepository appointmentRepository;
     private ProcedureRepository procedureRepository;
     private MedicalStaffRepository medicalStaffRepository;
+    private List<EventTime> timePatterns = new ArrayList<>();
 
     @Autowired
     public AppointmentMapper(PatientRepository patientRepository, AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository) {
@@ -36,7 +37,6 @@ public class AppointmentMapper {
         this.procedureRepository = procedureRepository;
         this.medicalStaffRepository = medicalStaffRepository;
     }
-
 
 
     public Appointment toEntity(AppointmentDto appointmentDto) {
@@ -107,15 +107,17 @@ public class AppointmentMapper {
         }
         appointment.setDrugsList(drugs);
 
-        List<EventTime> timePatterns = new ArrayList<>();
 
         for (int i = 0; i < appointmentDto.getTime().size(); i++) {
-            if (appointmentDto.getTime().get(i).equals("0")) {
-                EventTime nineOClock = new EventTime();
-                nineOClock.setAppointment(appointment);
-                nineOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 9, 0));
-                timePatterns.add(nineOClock);
+            switch (appointmentDto.getTime().get(i)) {
+                case ("0"):
+                    timeHandling(appointment, 9);
+                    break;
+                case ("1"):
+                    timeHandling(appointment,10);
+                    break;
             }
+
             if (appointmentDto.getTime().get(i).equals("1")) {
                 EventTime tenOClock = new EventTime();
                 tenOClock.setAppointment(appointment);
@@ -191,8 +193,15 @@ public class AppointmentMapper {
         appointment.setStaff(medicalStaff);
 
 
-
         return appointment;
+    }
+
+
+    private void timeHandling(Appointment appointment, int hours) {
+        EventTime eventTime = new EventTime();
+        eventTime.setAppointment(appointment);
+        eventTime.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), hours, 0));
+        timePatterns.add(eventTime);
     }
 
 
@@ -200,20 +209,20 @@ public class AppointmentMapper {
         AppointmentDto appointmentDto = new AppointmentDto();
         appointmentDto.setId(appointment.getId());
 
-        if (appointment.getTherapyType().equals(TherapyType.PROCEDURE)){
+        if (appointment.getTherapyType().equals(TherapyType.PROCEDURE)) {
             appointmentDto.setType(TherapyType.PROCEDURE);
             List<Procedure> procedures = appointment.getProcedureList();
-            for (Procedure p:procedures) {
-                if (p.getName() != null){
+            for (Procedure p : procedures) {
+                if (p.getName() != null) {
                     appointmentDto.setInfo(p.getName());
                 }
             }
 
-        }else {
+        } else {
             appointmentDto.setType(TherapyType.DRUG);
             List<Drug> drugs = appointment.getDrugsList();
-            for (Drug d:drugs) {
-                if (d.getName() != null || d.getDosage() != 0){
+            for (Drug d : drugs) {
+                if (d.getName() != null || d.getDosage() != 0) {
                     appointmentDto.setInfoDrugs(d.getName());
                     appointmentDto.setDose(d.getDosage());
                 }
@@ -222,8 +231,8 @@ public class AppointmentMapper {
 
         List<WeekDay> weekDay = appointment.getWeekDay();
         List<String> weekDayString = new ArrayList<>();
-        for (WeekDay w:weekDay) {
-            if (w.getDay() != null){
+        for (WeekDay w : weekDay) {
+            if (w.getDay() != null) {
                 weekDayString.add(w.getDay());
             }
         }
@@ -231,8 +240,8 @@ public class AppointmentMapper {
 
         List<EventTime> eventTimes = appointment.getTimePatterns();
         List<String> eventTimesString = new ArrayList<>();
-        for (EventTime eve: eventTimes) {
-            if (eve.getTime() != null){
+        for (EventTime eve : eventTimes) {
+            if (eve.getTime() != null) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
                 eventTimesString.add(eve.getTime().format(formatter));
             }
@@ -246,9 +255,9 @@ public class AppointmentMapper {
         return appointmentDto;
     }
 
-    public List<AppointmentDto> toDtoList(List<Appointment> appointments){
+    public List<AppointmentDto> toDtoList(List<Appointment> appointments) {
         List<AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (Appointment a:appointments) {
+        for (Appointment a : appointments) {
             appointmentDtos.add(toDto(a));
         }
         return appointmentDtos;

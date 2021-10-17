@@ -25,10 +25,10 @@ public class DoctorController {
     }
 
     //*******************************************
-    @GetMapping(value = "/doctor/{id}")
-    public DoctorDto getDoctorById(@PathVariable("id") Long id) {
-        return doctorService.getById(id);
-    }
+//    @GetMapping(value = "/doctor/{id}")
+//    public DoctorDto getDoctorById(@PathVariable("id") Long id) {
+//        return doctorService.getById(id);
+//    }
 
 
 

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="../static/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
 </head>
 <body>
-<form:form action="/patient/profile/${patient.id}/edit/${editAppointment.id}" method="post" modelAttribute="editAppointment">
+<form:form action="/doctor/profile/${patient.id}/edit/${editAppointment.id}" method="post" modelAttribute="editAppointment">
     <form:hidden path="id"/>
     <div class="row">
         <div class="col-xs-6">

@@ -36,7 +36,6 @@ public class AppointmentServiceImp implements AppointmentService {
         this.convertor = convertor;
         this.appointmentMapper = appointmentMapper;
         this.medicalStaffRepository = medicalStaffRepository;
-
     }
 
 
@@ -45,7 +44,11 @@ public class AppointmentServiceImp implements AppointmentService {
         Appointment appointmentEntity = appointmentMapper.toEntity(appointment);
         Patient patient = patientRepository.findById(id).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
-        appointmentRepository.save(appointmentEntity);
+        Appointment save = appointmentRepository.save(appointmentEntity);
+        getSavedId(save);
+
+
+
     }
 
 
@@ -64,12 +67,17 @@ public class AppointmentServiceImp implements AppointmentService {
     }
 
     @Override
-    public void updateAppointment(AppointmentDto appointmentDto,Long idPatient) {
+    public void updateAppointment(AppointmentDto appointmentDto, Long idPatient) {
+
         Appointment appointmentEntity = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
         appointmentEntity = appointmentMapper.toEntity(appointmentDto);
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
         appointmentRepository.save(appointmentEntity);
+    }
+
+    public Long getSavedId(Appointment appointment){
+        return appointment.getId();
     }
 
 

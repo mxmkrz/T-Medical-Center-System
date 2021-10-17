@@ -15,11 +15,11 @@
 <body>
 <div class="btn-group" role="group"></div>
 <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
-    <div class="container"><a class="navbar-brand" href="/patient/patients">Patients</a>
+    <div class="container"><a class="navbar-brand" href="/doctor/patients">Patients</a>
         <a data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span
                 class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></a>
         <div class="navbar-nav me-auto">
-            <a class="nav-link" href="/patient/add"><strong>Add patient</strong></a>
+            <a class="nav-link" href="/doctor/add"><strong>Add patient</strong></a>
             <a class="nav-item">
                 <form action="/logout" method="post">
                     <input type="submit" class="btn btn-danger" value="Logout"/>
@@ -41,10 +41,10 @@
         <c:forEach var="patient" items="${patients}">
             <tr>
                 <td><a class="nav-link active"
-                       href="<c:url value="/patient/profile/${patient.id}"/>">${patient.name} ${patient.surname}</a>
+                       href="<c:url value="/doctor/profile/${patient.id}"/>">${patient.name} ${patient.surname}</a>
                 </td>
                 <td><a class="nav-link active"
-                       href="<c:url value="/patient/profile/${patient.id}"/>">${patient.insuranceNumber}</a></td>
+                       href="<c:url value="doctor/profile/${patient.id}"/>">${patient.insuranceNumber}</a></td>
 
 
             </tr>

@@ -37,8 +37,8 @@
             <div class="form-floating">
                     <select class="form-select" name="role" id="roleInput" aria-label="Floating label select example">
                         <option selected>Role</option>
-                        <option value="DOCTOR">DOCTOR</option>
-                        <option value="NURSE">NURSE</option>
+                        <option value="ROLE_DOCTOR">DOCTOR</option>
+                        <option value="ROLE_NURSE">NURSE</option>
                     </select>
             </div>
             <div class="mb-3">
