@@ -64,27 +64,16 @@ public class PatientController {
     }
 
 
-    @PostMapping(value = "/doctor/profile/{id}/edit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ModelAndView updatePatientPost(@ModelAttribute("profile") PatientDto patientDto) {
+    @PostMapping(value = "/doctor/profile/{id}/edit")
+    public String updatePatientPost(@ModelAttribute("profile") PatientDto patientDto) {
         patientService.updatePatient(patientDto);
-        return new ModelAndView("redirect:/profile/{id}");
+        return "redirect:/doctor/profile/{id}";
     }
-
-
 
     //*******************************************
     @GetMapping(value = "/doctor/delete/{id}")
     public String deletePatient(@PathVariable(name = "id") Long id) {
         patientService.deletePatient(id);
-        return "redirect:/patient/patients";
+        return "redirect:/doctor/patients";
     }
-
-
-
-
-
-
-
 }

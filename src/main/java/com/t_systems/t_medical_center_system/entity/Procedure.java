@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Table(name = "tb_procedure")
+
 public class Procedure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

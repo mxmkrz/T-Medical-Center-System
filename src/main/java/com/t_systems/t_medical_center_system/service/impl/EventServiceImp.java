@@ -2,10 +2,8 @@ package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.dto.EventDto;
-import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Event;
-import com.t_systems.t_medical_center_system.entity.EventTime;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -33,17 +30,19 @@ public class EventServiceImp {
     private final EventRepository eventRepository;
     private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
-    private final AppointmentServiceImp appointmentServiceImp;
     private final EventMapper eventMapper;
+    private AppointmentRepository appointmentRepository;
 
     @Autowired
-    public EventServiceImp(EventRepository eventRepository, PatientRepository patientRepository, AppointmentMapper appointmentMapper, AppointmentServiceImp appointmentServiceImp, EventMapper eventMapper) {
+    public EventServiceImp(EventRepository eventRepository, PatientRepository patientRepository, AppointmentMapper appointmentMapper, EventMapper eventMapper, AppointmentRepository appointmentRepository) {
         this.eventRepository = eventRepository;
         this.patientRepository = patientRepository;
         this.appointmentMapper = appointmentMapper;
-        this.appointmentServiceImp = appointmentServiceImp;
         this.eventMapper = eventMapper;
+        this.appointmentRepository = appointmentRepository;
     }
+
+
 
 
     @Transactional
@@ -52,18 +51,18 @@ public class EventServiceImp {
     }
 
 
-    @Transactional
-    public void generateEvents(AppointmentDto appointmentDto, Long id) {
+
+
+
+
+    public void generateEvents(AppointmentDto appointmentDto, Long idPatient,Long appointmentId) {
         Map<Date, List<LocalTime>> dataAndTimes = countDataAndTime(appointmentDto);
-        System.out.println(appointmentDto.getId());
-
-        Appointment appointment = appointmentMapper.toEntity(appointmentDto);
-        Long idAppointment = appointmentServiceImp.getSavedId(appointment);
-        appointment.setId(idAppointment);
 
 
-        Patient patient = patientRepository.findById(id).orElseThrow(PatientNotFoundException::new);
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(AppointmentNotFoundException::new);
 
+
+        Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
 
         for (Map.Entry<Date, List<LocalTime>> dt : dataAndTimes.entrySet()) {
 
@@ -253,6 +252,7 @@ public class EventServiceImp {
 
 
     }
+
     @Transactional
     public List<EventDto> findAllEventsForHour() {
         LocalTime current = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -261,21 +261,22 @@ public class EventServiceImp {
         now = now.plusMonths(1);
         Date date = Date.valueOf(now);
 
-        List<Event> result = eventRepository.findAllForHour(currentPlusHour,current,date);
+        List<Event> result = eventRepository.findAllForHour(currentPlusHour, current, date);
         return eventMapper.toDtoList(result);
     }
+
     @Transactional
     public List<EventDto> findAllEventsForDay() {
 
         LocalDate now = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
-        now = now.plusMonths(1);
+        now = now.plusMonths(1).minusDays(1);
         Date date = Date.valueOf(now);
 
         LocalDate plusDay = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
-        plusDay = plusDay.plusDays(2).plusMonths(1);
+        plusDay = plusDay.plusDays(1).plusMonths(1);
         Date date1 = Date.valueOf(plusDay);
 
-        List < Event > result = (List<Event>) eventRepository.findAllForDay(date1,date);
+        List<Event> result = (List<Event>) eventRepository.findAllForDay(date1, date);
         return eventMapper.toDtoList(result);
 
 
@@ -291,15 +292,9 @@ public class EventServiceImp {
 
 
     @Transactional
-    public void updateEventStatus(EventStatus eventStatus,Long id) {
-        eventRepository.updateStatus(eventStatus,id);
+    public void updateEventStatus(EventStatus eventStatus, Long id) {
+        eventRepository.updateStatus(eventStatus, id);
     }
-
-
-
-
-
-
 
 
 

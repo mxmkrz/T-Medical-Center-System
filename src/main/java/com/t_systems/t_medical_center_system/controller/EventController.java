@@ -2,9 +2,7 @@ package com.t_systems.t_medical_center_system.controller;
 
 
 import com.t_systems.t_medical_center_system.dto.EventDto;
-import com.t_systems.t_medical_center_system.entity.Event;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
-import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class EventController {
@@ -29,9 +29,10 @@ public class EventController {
 
 
     @GetMapping("/nurse/eventList")
-    public String getEventList(@Param("keyword") String keyword
+    public String getEventListFilter(@Param("keyword") String keyword
             , Model model) {
 
+        model.addAttribute("eventFilterPatient", eventServiceImp.findAllPatientByName(keyword));
         model.addAttribute("events", eventServiceImp.findAllEvents());
         model.addAttribute("patients", patientServiceImp.getAllPatients());
         model.addAttribute("eventsForDay", eventServiceImp.findAllEventsForDay());
@@ -42,13 +43,31 @@ public class EventController {
 
     }
 
+//
+//    @PostMapping(value = "/nurse/eventList", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseBody
+//    public ModelAndView changeStatus(@ModelAttribute("status") EventDto doctor) {
+//        eventServiceImp.(doctor);
+//        return new ModelAndView("redirect:/nurse/eventList");
+//    }
 
-    @GetMapping("/nurse/eventList/{id}")
-    public String doCancelGet(@PathVariable(name = "id") Long id, Model model) {
-        eventServiceImp.updateEventStatus(EventStatus.CANCELED, id);
-        return "templates/eventPage";
 
-    }
+
+
+//
+//
+//    @GetMapping("/nurse/eventList/{id}")
+//    public String doCancelGet(@PathVariable(name = "id") Long id, Model model) {
+//        eventServiceImp.updateEventStatus(EventStatus.CANCELED, id);
+//        return "templates/eventPage";
+//
+//    }
+
+
+
+
+
 
 
 

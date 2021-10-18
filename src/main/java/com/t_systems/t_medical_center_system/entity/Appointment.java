@@ -2,14 +2,13 @@ package com.t_systems.t_medical_center_system.entity;
 
 import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_appointment")
@@ -30,14 +29,14 @@ public class Appointment {
     private Date endDate;
 
 
-    @OneToMany(mappedBy="appointment",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="appointment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<WeekDay> weekDay;
 
-//    @OneToMany(mappedBy = "appointment",fetch = FetchType.EAGER)
+//    @OneToMany(mappedBy = "appointment",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 //    private List<Event> events;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
@@ -55,7 +54,6 @@ public class Appointment {
 
     @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)
     private List<EventTime> timePatterns;
-
 
 
 

@@ -17,7 +17,8 @@ public class EventTime {
 
     private LocalDateTime time;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
     public EventTime(LocalDateTime time) {

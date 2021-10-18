@@ -2,13 +2,16 @@ package com.t_systems.t_medical_center_system.entity.calendar;
 
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_week_day")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 public class WeekDay {
     @Id

@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.entity;
 
 import com.t_systems.t_medical_center_system.entity.enums.PatientStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -50,14 +51,14 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private PatientStatus patientStatus;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private List<Appointment> appointmentList = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(name = "patient_medical_staff",
-            joinColumns = @JoinColumn(name = "patient_id"),
-            inverseJoinColumns = @JoinColumn(name = "medical_staff_id"))
-    private Set<MedicalStaff> medicalStaffs = new HashSet<>();
+//    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    private List<Appointment> appointmentList = new ArrayList<>();
+//
+//    @ManyToMany
+//    @JoinTable(name = "patient_medical_staff",
+//            joinColumns = @JoinColumn(name = "patient_id"),
+//            inverseJoinColumns = @JoinColumn(name = "medical_staff_id"))
+//    private Set<MedicalStaff> medicalStaffs = new HashSet<>();
 
 
 

@@ -60,8 +60,8 @@ public class MedicalStaff {
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "staff", cascade = CascadeType.ALL)
-    private List<Appointment> appointmentList = new ArrayList<>();
+//    @OneToMany(fetch = FetchType.EAGER,mappedBy = "staff", cascade = CascadeType.ALL)
+//    private List<Appointment> appointmentList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;

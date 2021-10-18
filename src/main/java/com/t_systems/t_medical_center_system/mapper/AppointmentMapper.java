@@ -43,9 +43,9 @@ public class AppointmentMapper {
 
         Appointment appointment = new Appointment();
         appointment.setId(appointmentDto.getId());
-        appointment.setTherapyType(Objects.isNull(appointmentDto) ? null : appointmentDto.getType());
-        appointment.setStartDate(Objects.isNull(appointmentDto) ? null : appointmentDto.getStartOfData());
-        appointment.setEndDate(Objects.isNull(appointmentDto) ? null : appointmentDto.getEndOfData());
+        appointment.setTherapyType(appointmentDto.getType());
+        appointment.setStartDate(appointmentDto.getStartOfData());
+        appointment.setEndDate(appointmentDto.getEndOfData());
         List<WeekDay> weekDays = new ArrayList<>();
         if (appointmentDto.isSunday()) {
             WeekDay sunday = new WeekDay("Sunday");
@@ -109,15 +109,20 @@ public class AppointmentMapper {
 
 
         for (int i = 0; i < appointmentDto.getTime().size(); i++) {
-            switch (appointmentDto.getTime().get(i)) {
-                case ("0"):
-                    timeHandling(appointment, 9);
-                    break;
-                case ("1"):
-                    timeHandling(appointment,10);
-                    break;
+//            switch (appointmentDto.getTime().get(i)) {
+//                case ("0"):
+//                    timeHandling(appointment, 9);
+//                    break;
+//                case ("1"):
+//                    timeHandling(appointment,10);
+//                    break;
+//            }
+            if (appointmentDto.getTime().get(i).equals("0")) {
+                EventTime tenOClock = new EventTime();
+                tenOClock.setAppointment(appointment);
+                tenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 9, 0));
+                timePatterns.add(tenOClock);
             }
-
             if (appointmentDto.getTime().get(i).equals("1")) {
                 EventTime tenOClock = new EventTime();
                 tenOClock.setAppointment(appointment);

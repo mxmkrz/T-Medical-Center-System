@@ -17,19 +17,23 @@
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<label for="selectType"></label><select id="selectType">
-    <option value="----">Please select a Filter Type</option>
-    <option value="AllPatientsFilter">Patients Filter</option>
+
+
+<label for="selectType"></label>
+
+<select id="selectType">
+    <option value="----" >Please select a Filter Type</option>
+    <option value ="AllPatientsFilter" >Patients Filter</option>
     <option value="AllPatients">Patients</option>
     <option value="ByDay">Day</option>
     <option value="ByHour">Hour</option>
 </select>
-<div class="patientsFilter_input form-group" style="display:none;">
-    <form action="/nurse/eventList" modelAttribute="eventFilterPatient" method="get" id="patientsFilter">
+<div class="patientsFilter_input form-group">
+    <form action="/nurse/eventList" modelAttribute="eventFilterPatient" method="get">
         Filter: <input type="text" name="keyword" required>
-        <input type="submit" value="Search">
+        <input type="submit" value="Search" id="patientsFilter">
 
-        <table class="table table-bordered table-hover" >
+        <table class="table table-bordered table-hover">
             <thead>
             <tr class="table-active">
                 <th>Date</th>
@@ -50,20 +54,23 @@
                     <td><c:out value="${event.therapyType.name()}  "/></td>
                     <td><c:out value="${event.status.name()}  "/></td>
                     <td><c:out value="${event.reasonToCancel}  "/></td>
-                    <td><div class="row">
-                        <div class="col-sm-12">
-                            <a class="btn btn-info"
-                               href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info"
+                                   href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                            </div>
                         </div>
-                    </div>
 
                     </td>
-                    <td><div class="row">
-                        <div class="col-sm-12">
-                            <a class="btn btn-info"
-                               href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info"
+                                   href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                            </div>
                         </div>
-                    </div></td>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -71,42 +78,46 @@
     </form>
 </div>
 <div class="patients_input form-group" style="display:none;">
-    <table class="table table-bordered table-hover" >
-    <thead>
-    <tr class="table-active">
-        <th>Date</th>
-        <th>Time</th>
-        <th>Patient</th>
-        <th>Status</th>
-        <th>Type</th>
-        <th>Cancel</th>
-        <th>Done</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="event" items="${events}">
-        <tr>
-            <td><c:out value="${event.eventDateTime}"/></td>
-            <td><c:out value="${event.time}"/></td>
-            <td><c:out value="${event.patient.name} ${event.patient.surname} "/></td>
-            <td><c:out value="${event.therapyType.name()}  "/></td>
-            <td><c:out value="${event.status.name()}  "/></td>
-            <td><c:out value="${event.reasonToCancel}  "/></td>
-            <td><div class="row">
-                <div class="col-sm-12">
-                    <a class="btn btn-info"
-                       href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
-                </div>
-            </div></td>
-            <td><div class="row">
-                <div class="col-sm-12">
-                    <a class="btn btn-info"
-                       href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
-                </div>
-            </div></td>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="table-active">
+            <th>Date</th>
+            <th>Time</th>
+            <th>Patient</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Cancel</th>
+            <th>Done</th>
         </tr>
-    </c:forEach>
-    </tbody>
+        </thead>
+        <tbody>
+        <c:forEach var="event" items="${events}">
+            <tr>
+                <td><c:out value="${event.eventDateTime}"/></td>
+                <td><c:out value="${event.time}"/></td>
+                <td><c:out value="${event.patient.name} ${event.patient.surname} "/></td>
+                <td><c:out value="${event.therapyType.name()}  "/></td>
+                <td><c:out value="${event.status.name()}  "/></td>
+                <td><c:out value="${event.reasonToCancel}  "/></td>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info"
+                               href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info"
+                               href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
     </table>
 </div>
 <div class="day_input form-group" style="display:none;">
@@ -131,18 +142,22 @@
                 <td><c:out value="${event.therapyType.name()}  "/></td>
                 <td><c:out value="${event.status.name()}  "/></td>
                 <td><c:out value="${event.reasonToCancel}  "/></td>
-                <td> <div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info"
-                           href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info"
+                               href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                        </div>
                     </div>
-                </div></td>
-                <td><div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info"
-                           href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info"
+                               href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                        </div>
                     </div>
-                </div></td>
+                </td>
 
             </tr>
         </c:forEach>
@@ -172,19 +187,22 @@
                 <td><c:out value="${event.therapyType.name()}  "/></td>
                 <td><c:out value="${event.status.name()}  "/></td>
                 <td><c:out value="${event.reasonToCancel}  "/></td>
-                <td> <div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info"
-                           href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info"
+                               href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                        </div>
                     </div>
-                </div>
                 </td>
-                <td><div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info"
-                           href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="btn btn-info"
+                               href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
+                        </div>
                     </div>
-                </div></td>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
@@ -193,7 +211,7 @@
 </div>
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'AllPatientsFilter') {
             $('.patientsFilter_input').show();
         } else {
@@ -203,7 +221,7 @@
 </script>
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'AllPatients') {
             $('.patients_input').show();
         } else {
@@ -213,7 +231,7 @@
 </script>
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'ByDay') {
             $('.day_input').show();
         } else {
@@ -224,7 +242,7 @@
 </script>
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'ByHour') {
             $('.hour_input').show();
         } else {
@@ -251,7 +269,6 @@
         $("#hour").tablesorter();
     });
 </script>
-
 
 </body>
 

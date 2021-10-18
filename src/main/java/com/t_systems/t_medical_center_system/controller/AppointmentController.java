@@ -39,7 +39,7 @@ public class AppointmentController {
                                      @ModelAttribute(value = "appointmentNew") AppointmentDto appointmentDto) {
 
         appointmentServiceImp.addAppointment(appointmentDto, id);
-        eventServiceImp.generateEvents(appointmentDto, id);
+
 
         return "redirect:/doctor/profile/{id}";
     }

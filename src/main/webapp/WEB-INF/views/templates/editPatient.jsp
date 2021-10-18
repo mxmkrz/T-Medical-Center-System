@@ -15,7 +15,8 @@
 </head>
 
 <body>
-
+<form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile" class="formWithValidation3">
+<form:hidden path="id"/>
 <div class="container profile profile-view" id="profile">
     <div class="row">
         <div class="col-md-12 alert-col relative">
@@ -27,8 +28,7 @@
             <div class="col-md-8">
                 <h1>Edit Profile </h1>
                 <hr>
-                <form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile" class="formWithValidation3">
-                    <form:hidden path="id"/>
+
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group mb-3"><label class="form-label">Name </label><input class="form-control" type="text" name="name"></div>
@@ -54,15 +54,16 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-12 content-right"><button class="btn btn-primary form-btn" type="submit">SAVE </button>
+                    <div class="col-md-12 content-right"><button class="btn-info ">SAVE </button>
+
                         <button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>
                 </div>
-                </form:form>
+
             </div>
         </div>
     </form>
 </div>
-
+</form:form>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 <script src="../static/bootstrap/js/Profile-Edit-Form.js"></script>
 </body>

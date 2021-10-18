@@ -15,6 +15,7 @@ import com.t_systems.t_medical_center_system.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,28 +28,27 @@ public class AppointmentServiceImp implements AppointmentService {
     private Convertor<Appointment, AppointmentDto> convertor;
     private AppointmentMapper appointmentMapper;
     private MedicalStaffRepository medicalStaffRepository;
-
+    private EventServiceImp eventServiceImp;
 
     @Autowired
-    public AppointmentServiceImp(AppointmentRepository appointmentRepository, PatientRepository patientRepository, Convertor<Appointment, AppointmentDto> convertor, AppointmentMapper appointmentMapper, MedicalStaffRepository medicalStaffRepository) {
+    public AppointmentServiceImp(AppointmentRepository appointmentRepository, PatientRepository patientRepository, Convertor<Appointment, AppointmentDto> convertor, AppointmentMapper appointmentMapper, MedicalStaffRepository medicalStaffRepository, EventServiceImp eventServiceImp) {
         this.appointmentRepository = appointmentRepository;
         this.patientRepository = patientRepository;
         this.convertor = convertor;
         this.appointmentMapper = appointmentMapper;
         this.medicalStaffRepository = medicalStaffRepository;
+        this.eventServiceImp = eventServiceImp;
     }
 
 
+    @Transactional
     @Override
     public void addAppointment(AppointmentDto appointment, Long id) {
         Appointment appointmentEntity = appointmentMapper.toEntity(appointment);
         Patient patient = patientRepository.findById(id).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
-        Appointment save = appointmentRepository.save(appointmentEntity);
-        getSavedId(save);
-
-
-
+        appointmentRepository.save(appointmentEntity);
+        eventServiceImp.generateEvents(appointment, id, appointmentEntity.getId());
     }
 
 
@@ -68,16 +68,12 @@ public class AppointmentServiceImp implements AppointmentService {
 
     @Override
     public void updateAppointment(AppointmentDto appointmentDto, Long idPatient) {
-
         Appointment appointmentEntity = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
         appointmentEntity = appointmentMapper.toEntity(appointmentDto);
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
         appointmentRepository.save(appointmentEntity);
-    }
 
-    public Long getSavedId(Appointment appointment){
-        return appointment.getId();
     }
 
 
