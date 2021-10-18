@@ -12,7 +12,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_appointment")
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Appointment {
 

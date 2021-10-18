@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
+import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.mapper.AppointmentMapper;
@@ -61,7 +62,6 @@ public class AppointmentServiceImp implements AppointmentService {
 
     @Override
     public AppointmentDto gitAppointById(Long id) {
-
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(AppointmentNotFoundException::new);
         return appointmentMapper.toDto(appointment);
     }
@@ -72,9 +72,15 @@ public class AppointmentServiceImp implements AppointmentService {
         appointmentEntity = appointmentMapper.toEntity(appointmentDto);
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
+
+
+
         appointmentRepository.save(appointmentEntity);
 
     }
+
+
+
 
 
 }

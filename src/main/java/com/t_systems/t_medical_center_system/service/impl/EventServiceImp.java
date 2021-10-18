@@ -49,6 +49,8 @@ public class EventServiceImp {
     public void saveEvent(Event event) {
         eventRepository.save(event);
     }
+    
+ 
 
 
 
@@ -245,13 +247,6 @@ public class EventServiceImp {
     }
 
 
-    @Transactional
-    public List<EventDto> findAllEventsByPatients(Long id) {
-        List<Event> result = (List<Event>) eventRepository.findAllByPatientId(id);
-        return eventMapper.toDtoList(result);
-
-
-    }
 
     @Transactional
     public List<EventDto> findAllEventsForHour() {

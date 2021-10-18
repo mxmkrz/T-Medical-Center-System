@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
-    List<Event> findAllByPatientId(Long id);
+    List<Event> findAllByAppointmentId(Long id);
 
     @Query("SELECT DISTINCT p FROM Event AS p JOIN FETCH p.patient JOIN FETCH p.appointment  WHERE p.time <:nextHour and p.time >:now and p.date =:today")
     List<Event> findAllForHour(@Param("nextHour") LocalTime nextHour, @Param("now") LocalTime now, @Param("today") Date today);

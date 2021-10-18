@@ -1,13 +1,14 @@
 package com.t_systems.t_medical_center_system.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "appointment")
 @Table(name = "tb_drug")
 public class Drug {
 

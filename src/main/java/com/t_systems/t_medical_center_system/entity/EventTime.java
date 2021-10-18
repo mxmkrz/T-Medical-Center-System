@@ -1,13 +1,14 @@
 package com.t_systems.t_medical_center_system.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "appointment")
 @Table(name = "tb_time_in_period")
 @NoArgsConstructor
 public class EventTime {
@@ -17,7 +18,7 @@ public class EventTime {
 
     private LocalDateTime time;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 

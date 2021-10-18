@@ -4,11 +4,9 @@ import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.entity.*;
 import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
+import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
-import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
-import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
-import com.t_systems.t_medical_center_system.repository.PatientRepository;
-import com.t_systems.t_medical_center_system.repository.ProcedureRepository;
+import com.t_systems.t_medical_center_system.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -29,23 +27,45 @@ public class AppointmentMapper {
     private ProcedureRepository procedureRepository;
     private MedicalStaffRepository medicalStaffRepository;
     private List<EventTime> timePatterns = new ArrayList<>();
+    private WeekDayRepository weekDayRepository;
+    private EventTimeRepository eventTimeRepository;
+    private DrugRepository drugRepository;
 
     @Autowired
-    public AppointmentMapper(PatientRepository patientRepository, AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository) {
+    public AppointmentMapper(PatientRepository patientRepository, AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, List<EventTime> timePatterns, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository) {
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
         this.medicalStaffRepository = medicalStaffRepository;
+        this.timePatterns = timePatterns;
+        this.weekDayRepository = weekDayRepository;
+        this.eventTimeRepository = eventTimeRepository;
+        this.drugRepository = drugRepository;
     }
 
 
+
+
+
+
+
+
+
+
+
     public Appointment toEntity(AppointmentDto appointmentDto) {
+
+
+
 
         Appointment appointment = new Appointment();
         appointment.setId(appointmentDto.getId());
         appointment.setTherapyType(appointmentDto.getType());
         appointment.setStartDate(appointmentDto.getStartOfData());
         appointment.setEndDate(appointmentDto.getEndOfData());
+
+
+
         List<WeekDay> weekDays = new ArrayList<>();
         if (appointmentDto.isSunday()) {
             WeekDay sunday = new WeekDay("Sunday");
@@ -196,6 +216,41 @@ public class AppointmentMapper {
 
         MedicalStaff medicalStaff = medicalStaffRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
         appointment.setStaff(medicalStaff);
+
+
+        if (appointmentDto.getId() != null){
+            Appointment appointmentFromEntity = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
+
+            List<WeekDay> weekDaysFromEntity = weekDayRepository.findAllByAppointmentId(appointmentFromEntity.getId());
+            weekDaysFromEntity = weekDays;
+            appointmentFromEntity.setWeekDay(weekDaysFromEntity);
+
+            List<EventTime> eventTimes = eventTimeRepository.findAllByAppointmentId(appointmentFromEntity.getId());
+            eventTimes = timePatterns;
+            appointmentFromEntity.setTimePatterns(eventTimes);
+
+
+            appointmentFromEntity.setTherapyType(appointmentDto.getType());
+            appointmentFromEntity.setStartDate(appointmentDto.getStartOfData());
+            appointmentFromEntity.setEndDate(appointmentDto.getEndOfData());
+
+
+            List<Procedure> procedureListFromEntity = procedureRepository.findProcedureByAppointmentId(appointmentFromEntity.getId());
+            procedureListFromEntity = procedures;
+            appointmentFromEntity.setProcedureList(procedureListFromEntity);
+
+            List<Drug> drugListFromEntity = drugRepository.findAllByAppointmentId(appointmentFromEntity.getId());
+            drugListFromEntity = drugs;
+            appointmentFromEntity.setDrugsList(drugListFromEntity);
+
+            return appointmentFromEntity;
+
+
+
+
+
+        }
+
 
 
         return appointment;

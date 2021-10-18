@@ -1,15 +1,15 @@
 package com.t_systems.t_medical_center_system.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Entity
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode(exclude = "appointment")
 @Table(name = "tb_procedure")
 
 public class Procedure {

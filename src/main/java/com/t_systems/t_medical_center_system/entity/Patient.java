@@ -1,9 +1,7 @@
 package com.t_systems.t_medical_center_system.entity;
 
 import com.t_systems.t_medical_center_system.entity.enums.PatientStatus;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -20,7 +18,9 @@ import java.util.*;
  */
 
 @Entity
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
 @Table(name = "tb_patients")
 @NoArgsConstructor
 public class Patient {
