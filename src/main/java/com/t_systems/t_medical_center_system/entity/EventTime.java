@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "appointment")
 @Table(name = "tb_time_in_period")
 @NoArgsConstructor
 public class EventTime {
@@ -18,7 +17,7 @@ public class EventTime {
 
     private LocalDateTime time;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 

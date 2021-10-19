@@ -66,21 +66,21 @@ public class AppointmentServiceImp implements AppointmentService {
         return appointmentMapper.toDto(appointment);
     }
 
+    @Transactional
     @Override
     public void updateAppointment(AppointmentDto appointmentDto, Long idPatient) {
         Appointment appointmentEntity = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
         appointmentEntity = appointmentMapper.toEntity(appointmentDto);
+
+
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
 
 
-
         appointmentRepository.save(appointmentEntity);
 
+
     }
-
-
-
 
 
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AppointmentRepository extends PagingAndSortingRepository<Appointment, Long> {
+public interface AppointmentRepository extends PagingAndSortingRepository<Appointment, Long> ,JpaRepository<Appointment,Long>{
     List<Appointment> findAllByPatient(Patient patient);
 
 
