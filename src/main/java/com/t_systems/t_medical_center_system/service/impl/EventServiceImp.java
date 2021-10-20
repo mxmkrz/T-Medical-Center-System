@@ -1,12 +1,14 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
+import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.dto.EventDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Event;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
+import com.t_systems.t_medical_center_system.exception.EventNotFoundException;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.mapper.AppointmentMapper;
 import com.t_systems.t_medical_center_system.mapper.EventMapper;
@@ -43,28 +45,31 @@ public class EventServiceImp {
     }
 
 
-
-
     @Transactional
     public void saveEvent(Event event) {
         eventRepository.save(event);
     }
-    
- 
+
+    @Transactional
+    public void deleteEvent(Long id) {
+        List<Event> events = eventRepository.findAllByAppointmentId(id);
+        eventRepository.deleteAll(events);
+    }
 
 
-
-
-
-
-    public void generateEvents(AppointmentDto appointmentDto, Long idPatient,Long appointmentId) {
+    public void generateEvents(AppointmentDto appointmentDto, Long idPatient, Long appointmentId) {
         Map<Date, List<LocalTime>> dataAndTimes = countDataAndTime(appointmentDto);
 
 
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(AppointmentNotFoundException::new);
+        Patient patient = null;
+        try {
+            patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
+        } catch (PatientNotFoundException ex) {
+            patient = new Patient();
+            patient.setId(idPatient);
+        }
 
-
-        Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
 
         for (Map.Entry<Date, List<LocalTime>> dt : dataAndTimes.entrySet()) {
 
@@ -247,7 +252,6 @@ public class EventServiceImp {
     }
 
 
-
     @Transactional
     public List<EventDto> findAllEventsForHour() {
         LocalTime current = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -271,7 +275,7 @@ public class EventServiceImp {
         plusDay = plusDay.plusDays(1).plusMonths(1);
         Date date1 = Date.valueOf(plusDay);
 
-        List<Event> result = (List<Event>) eventRepository.findAllForDay(date1, date);
+        List<Event> result = eventRepository.findAllForDay(date1, date);
         return eventMapper.toDtoList(result);
 
 
@@ -286,11 +290,16 @@ public class EventServiceImp {
     }
 
 
-    @Transactional
-    public void updateEventStatus(EventStatus eventStatus, Long id) {
-        eventRepository.updateStatus(eventStatus, id);
+    @Transactional(readOnly = true)
+    public EventDto getById(Long id) {
+        return eventMapper.toDto(eventRepository.findById(id).orElseThrow(EventNotFoundException::new));
     }
 
+
+    @Transactional
+    public void updateEventStatus(EventDto eventDto) {
+        eventRepository.updateStatus(eventDto.getStatus(), eventDto.getId());
+    }
 
 
 }

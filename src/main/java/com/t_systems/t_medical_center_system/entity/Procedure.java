@@ -21,7 +21,7 @@ public class Procedure {
     private String name;
 
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 

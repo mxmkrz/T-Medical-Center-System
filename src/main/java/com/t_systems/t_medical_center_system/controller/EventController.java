@@ -32,25 +32,27 @@ public class EventController {
     public String getEventListFilter(@Param("keyword") String keyword
             , Model model) {
 
-        model.addAttribute("eventFilterPatient", eventServiceImp.findAllPatientByName(keyword));
+
         model.addAttribute("events", eventServiceImp.findAllEvents());
         model.addAttribute("patients", patientServiceImp.getAllPatients());
         model.addAttribute("eventsForDay", eventServiceImp.findAllEventsForDay());
         model.addAttribute("eventsForHour", eventServiceImp.findAllEventsForHour());
         model.addAttribute("eventFilterPatient", eventServiceImp.findAllPatientByName(keyword));
+//        model.addAttribute("event",eventServiceImp.getById())
+
 
         return "templates/eventList";
 
     }
 
-//
-//    @PostMapping(value = "/nurse/eventList", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseBody
-//    public ModelAndView changeStatus(@ModelAttribute("status") EventDto doctor) {
-//        eventServiceImp.(doctor);
-//        return new ModelAndView("redirect:/nurse/eventList");
-//    }
+
+    @PostMapping(value = "/nurse/eventList", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String changeStatus(@ModelAttribute("events") EventDto eventDto) {
+        eventServiceImp.updateEventStatus(eventDto);
+        return "redirect:/nurse/eventList";
+    }
 
 
 

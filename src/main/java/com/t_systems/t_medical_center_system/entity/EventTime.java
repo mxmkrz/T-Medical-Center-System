@@ -17,7 +17,7 @@ public class EventTime {
 
     private LocalDateTime time;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 

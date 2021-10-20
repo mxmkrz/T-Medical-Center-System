@@ -2,11 +2,11 @@ package com.t_systems.t_medical_center_system.mapper;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.entity.*;
-import com.t_systems.t_medical_center_system.entity.calendar.WeekDay;
+import com.t_systems.t_medical_center_system.entity.WeekDay;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
-import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.repository.*;
+import com.t_systems.t_medical_center_system.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -29,9 +29,14 @@ public class AppointmentMapper {
     private WeekDayRepository weekDayRepository;
     private EventTimeRepository eventTimeRepository;
     private DrugRepository drugRepository;
+    private EventRepository eventRepository;
+    private EventTimeService eventTimeService;
+    private WeekDayService weekDayService;
+    private DrugServiceImpl drugService;
+    private ProcedureServiceImpl procedureService;
 
     @Autowired
-    public AppointmentMapper(PatientRepository patientRepository, AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository) {
+    public AppointmentMapper(PatientRepository patientRepository, AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventRepository eventRepository, EventTimeService eventTimeService, WeekDayService weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
@@ -39,12 +44,25 @@ public class AppointmentMapper {
         this.weekDayRepository = weekDayRepository;
         this.eventTimeRepository = eventTimeRepository;
         this.drugRepository = drugRepository;
+        this.eventRepository = eventRepository;
+        this.eventTimeService = eventTimeService;
+        this.weekDayService = weekDayService;
+        this.drugService = drugService;
+        this.procedureService = procedureService;
+
     }
 
 
+
+
+
+
+
+
+
+
+
     public Appointment toEntity(AppointmentDto appointmentDto) {
-
-
 
 
         if (appointmentDto.getId() == null) {
@@ -208,9 +226,27 @@ public class AppointmentMapper {
             return appointment;
 
         } else {
+
             Appointment appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
-            List<WeekDay> weekDays = weekDayRepository.findAllByAppointmentId(appointment.getId());
-//            weekDays.clear();
+//            List<Event> events = eventRepository.findAllByAppointmentId(appointment.getId());
+//            eventRepository.deleteAll(events);
+
+            List<WeekDay> weekDaysEntity = weekDayRepository.findAllByAppointmentId(appointment.getId());
+            weekDayService.delete(weekDaysEntity);
+            List<WeekDay> weekDays = new ArrayList<>();
+
+            List<EventTime> timePatternsEntity = eventTimeRepository.findAllByAppointmentId(appointment.getId());
+            eventTimeService.delete(timePatternsEntity);
+            List<EventTime> timePatterns = new ArrayList<>();
+
+            List<Drug> drugs = drugRepository.findAllByAppointmentId(appointment.getId());
+            drugService.delete(drugs);
+
+            List<Procedure> proceduresEntity = procedureRepository.findProcedureByAppointmentId(appointment.getId());
+            procedureService.delete(proceduresEntity);
+
+
+
             if (appointmentDto.isSunday()) {
                 WeekDay sunday = new WeekDay("Sunday");
                 sunday.setAppointment(appointment);
@@ -247,7 +283,8 @@ public class AppointmentMapper {
                 weekDays.add(saturday);
             }
 
-            appointment.setWeekDay(weekDays);
+
+            appointment.getWeekDay().addAll(weekDays);
 
 
             List<Procedure> procedures = new ArrayList<>();
@@ -258,22 +295,22 @@ public class AppointmentMapper {
                 procedure.setAppointment(appointment);
                 procedures.add(procedure);
             }
-            appointment.setProcedureList(procedures);
+            appointment.getProcedureList().addAll(procedures);
 
-            List<Drug> drugs = new ArrayList<>();
+            List<Drug> drugsNew = new ArrayList<>();
             if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.DRUG)) {
-                drugs.add(null);
+                drugsNew.add(null);
             } else {
                 Drug drug = new Drug(appointmentDto.getInfoDrugs(), appointmentDto.getDose());
                 drug.setAppointment(appointment);
-                drugs.add(drug);
+                drugsNew.add(drug);
 
             }
-            appointment.setDrugsList(drugs);
+            appointment.getDrugsList().addAll(drugsNew);
 
-//            List<EventTime> timePatterns = eventTimeRepository.findAllByAppointmentId(appointment.getId());
-//            timePatterns.clear();
-            List<EventTime> timePatterns = new ArrayList<>();
+
+
+
             for (int i = 0; i < appointmentDto.getTime().size(); i++) {
 //            switch (appointmentDto.getTime().get(i)) {
 //                case ("0"):
@@ -358,17 +395,11 @@ public class AppointmentMapper {
 
             }
 
-            appointment.setTimePatterns(timePatterns);
+
+            appointment.getTimePatterns().addAll(timePatterns);
 
             MedicalStaff medicalStaff = medicalStaffRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
             appointment.setStaff(medicalStaff);
-
-
-
-
-
-
-
 
 
 
@@ -387,6 +418,8 @@ public class AppointmentMapper {
 //            appointment.setTherapyType(appointmentDto.getType());
 //            appointment.setStartDate(appointmentDto.getStartOfData());
 //            appointment.setEndDate(appointmentDto.getEndOfData());
+
+
 
             return appointment;
         }

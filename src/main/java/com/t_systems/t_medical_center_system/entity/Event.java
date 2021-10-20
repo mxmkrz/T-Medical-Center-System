@@ -4,6 +4,8 @@ import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -36,12 +38,12 @@ public class Event {
     private TherapyType therapyType;
 
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private Patient patient;
 

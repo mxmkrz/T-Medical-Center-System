@@ -1,6 +1,7 @@
 package com.t_systems.t_medical_center_system.repository;
 
 import com.t_systems.t_medical_center_system.entity.Event;
+import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,7 +18,9 @@ import java.util.List;
 public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
     List<Event> findAllByAppointmentId(Long id);
 
+
     @Query("SELECT DISTINCT p FROM Event AS p JOIN FETCH p.patient JOIN FETCH p.appointment  WHERE p.time <:nextHour and p.time >:now and p.date =:today")
+
     List<Event> findAllForHour(@Param("nextHour") LocalTime nextHour, @Param("now") LocalTime now, @Param("today") Date today);
 
 

@@ -1,4 +1,4 @@
-package com.t_systems.t_medical_center_system.entity.calendar;
+package com.t_systems.t_medical_center_system.entity;
 
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class WeekDay {
 
     private String day;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="appointment_id")
     private Appointment appointment;
 

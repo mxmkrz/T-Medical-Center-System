@@ -20,5 +20,4 @@ public class EventDto {
     private LocalTime time;
     private TherapyType therapyType;
     private String reasonToCancel;
-
 }

@@ -22,8 +22,8 @@
 <label for="selectType"></label>
 
 <select id="selectType">
-    <option value="----" >Please select a Filter Type</option>
-    <option value ="AllPatientsFilter" >Patients Filter</option>
+    <option value="----">Please select a Filter Type</option>
+    <option value="AllPatientsFilter">Patients Filter</option>
     <option value="AllPatients">Patients</option>
     <option value="ByDay">Day</option>
     <option value="ByHour">Hour</option>
@@ -77,49 +77,94 @@
         </table>
     </form>
 </div>
+
 <div class="patients_input form-group" style="display:none;">
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr class="table-active">
-            <th>Date</th>
-            <th>Time</th>
-            <th>Patient</th>
-            <th>Status</th>
-            <th>Type</th>
-            <th>Cancel</th>
-            <th>Done</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="event" items="${events}">
-            <tr>
-                <td><c:out value="${event.eventDateTime}"/></td>
-                <td><c:out value="${event.time}"/></td>
-                <td><c:out value="${event.patient.name} ${event.patient.surname} "/></td>
-                <td><c:out value="${event.therapyType.name()}  "/></td>
-                <td><c:out value="${event.status.name()}  "/></td>
-                <td><c:out value="${event.reasonToCancel}  "/></td>
-                <td>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <a class="btn btn-info"
-                               href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <a class="btn btn-info"
-                               href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
-                        </div>
-                    </div>
-                </td>
+    <form:form action="/nurse/eventList" method="post"
+               class="formWithValidation3" role="form" modelattribute="events">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr class="table-active">
+                <th hidden>Id</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Patient</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Cancel</th>
+                <th>Done</th>
             </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <c:forEach var="event" items="${events}">
+
+                <tr>
+                    <td><hidden value="${event.id}"></hidden></td>
+                    <td><c:out value="${event.eventDateTime}"/></td>
+                    <td><c:out value="${event.time}"/></td>
+                    <td><c:out value="${event.patient.name} ${event.patient.surname} "/></td>
+                    <td><c:out value="${event.therapyType.name()}  "/></td>
+                    <td><c:out value="${event.status.name()}  "/></td>
+                    <td><c:out value="${event.reasonToCancel}  "/></td>
+                    <td><c:out value="${event.reasonToCancel}  "/></td>
+                    <td>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info"
+                                   href="/nurse/eventList/${event.id}/changeToCancel ">Cancel</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button"  class="btn btn-success" id="doneInput"
+                                data-toggle="modal" data-target="#edit_status"
+                                data-waypoint-id="${event.id}"> Done
+                        </button>
+                        <script>
+                            $("#edit_status").on('show.bs.modal', function (e) {
+                                var status = $(e.relatedTarget).data('modal');
+                                $('#doneInput').val(status);
+                            });
+                            $("#edit_status").on('hidden.bs.modal', function () {
+                                var form = $(this).find('form');
+                                form[0].reset();
+                            });
+
+                            var form = document.querySelector('.formWithValidation3')
+                            form.addEventListener("submit", function (event) {
+                                event.preventDefault()
+
+                                $.ajax({
+                                    url: '/nurse/eventList',
+                                    datatype: 'json',
+                                    type: "POST",
+                                    dataType: 'JSON',
+                                    data: JSON.stringify({
+                                        id: ${event.id},
+                                        patient: '${event.patient}',
+                                        eventDateTime: '${event.eventDateTime}',
+                                        status: 'DONE',
+                                        time: '${event.time}',
+                                        therapyType: '${event.therapyType}',
+                                        reasonToCancel: '${event.reasonToCancel}',
+                                    }),
+                                    success: function (data) {
+                                        window.location.reload();
+                                    },
+                                    error: function (result) {
+                                        alert("error" + result.responseText);
+                                    }
+                                });
+                            });
+                        </script>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </form:form>
 </div>
+
 <div class="day_input form-group" style="display:none;">
     <table class="table table-bordered table-hover" id="day">
         <thead>
@@ -202,6 +247,8 @@
                                href="/nurse/eventList/${event.id}/changeToDone ">Done</a>
                         </div>
                     </div>
+
+
                 </td>
             </tr>
         </c:forEach>
@@ -269,6 +316,7 @@
         $("#hour").tablesorter();
     });
 </script>
+
 
 </body>
 
