@@ -1,5 +1,6 @@
 package com.t_systems.t_medical_center_system.dto;
 
+import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
@@ -16,8 +17,13 @@ public class EventDto {
     private Long id;
     private Patient patient;
     private Date eventDateTime;
-    private EventStatus status;
     private LocalTime time;
+    private EventStatus status;
     private TherapyType therapyType;
     private String reasonToCancel;
+    private Long idPatient;
+    private Appointment appointment;
+    private Long idAppointment;
+
+
 }

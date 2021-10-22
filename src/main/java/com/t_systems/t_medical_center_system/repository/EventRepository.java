@@ -31,12 +31,8 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Long>
     @Query("SELECT DISTINCT p FROM Event AS p JOIN FETCH p.patient WHERE  p.patient.name LIKE %?1% OR p.patient.surname LIKE %?1%")
     List<Event> findAllBy(String keyword);
 
-    @Modifying
-    @Query("UPDATE Event AS p SET p.status =:eventStatus WHERE p.id =:id")
-    void updateStatus(EventStatus eventStatus, Long id);
 
-//    @Modifying
-//    @Query("UPDATE Event AS p SET p.reasonToCancel =:reasonToCancel WHERE p.id =:id")
-//    void updateReasonToCancel(String reasonToCancel, Long id);
+
+
 
 }

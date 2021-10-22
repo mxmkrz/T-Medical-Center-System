@@ -1,7 +1,6 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
-import com.t_systems.t_medical_center_system.dto.DoctorDto;
 import com.t_systems.t_medical_center_system.dto.EventDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Event;
@@ -54,6 +53,12 @@ public class EventServiceImp {
     public void deleteEvent(Long id) {
         List<Event> events = eventRepository.findAllByAppointmentId(id);
         eventRepository.deleteAll(events);
+    }
+
+    @Transactional
+    public List<Event> findAllByAppointmentId(Long id){
+        return eventRepository.findAllByAppointmentId(id);
+
     }
 
 
@@ -297,8 +302,33 @@ public class EventServiceImp {
 
 
     @Transactional
-    public void updateEventStatus(EventDto eventDto) {
-        eventRepository.updateStatus(eventDto.getStatus(), eventDto.getId());
+    public void updateStatusToDone(EventDto eventDto) {
+        Event event = eventRepository.findById(eventDto.getId()).orElseThrow(EventNotFoundException::new);
+        event = eventMapper.toEntity(eventDto);
+
+        if (eventDto.getStatus().name().equals("CANCELED")){
+            event.setStatus(EventStatus.CANCELED);
+            event.setReasonToCancel(eventDto.getReasonToCancel());
+        }else event.setStatus(EventStatus.DONE);
+
+
+        Patient patient = patientRepository.findById(eventDto.getIdPatient()).orElseThrow(PatientNotFoundException::new);
+        Appointment appointment = appointmentRepository.findById(eventDto.getIdAppointment()).orElseThrow(AppointmentNotFoundException::new);
+        event.setPatient(patient);
+        event.setAppointment(appointment);
+        eventRepository.save(event);
+    }
+
+    @Transactional
+    public void updateEvent(Event event,Long idAppointment){
+        Event eventOne = eventRepository.findById(event.getId()).orElseThrow(EventNotFoundException::new);
+        Patient patient = patientRepository.findById(eventOne.getPatient().getId()).orElseThrow(PatientNotFoundException::new);
+        Appointment appointment = appointmentRepository.findById(idAppointment).orElseThrow(AppointmentNotFoundException::new);
+        eventOne.setPatient(patient);
+        eventOne.setAppointment(appointment);
+        eventRepository.save(eventOne);
+
+
     }
 
 

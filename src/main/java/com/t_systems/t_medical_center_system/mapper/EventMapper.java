@@ -35,6 +35,7 @@ public class EventMapper {
         eventDto.setTime(event.getTime());
         eventDto.setStatus(event.getStatus());
         eventDto.setReasonToCancel(event.getReasonToCancel());
+        eventDto.setAppointment(event.getAppointment());
         return eventDto;
     }
 
@@ -46,5 +47,17 @@ public class EventMapper {
             eventDtos.add(toDto(e));
         }
         return eventDtos;
+    }
+
+
+    public Event toEntity(EventDto eventDto){
+        Event event = new Event();
+        event.setId(eventDto.getId());
+        event.setDate(eventDto.getEventDateTime());
+        event.setTime(eventDto.getTime());
+
+        event.setTherapyType(eventDto.getTherapyType());
+        event.setReasonToCancel(event.getReasonToCancel());
+        return  event;
     }
 }

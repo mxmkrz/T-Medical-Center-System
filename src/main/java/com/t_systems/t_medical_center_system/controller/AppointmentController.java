@@ -1,20 +1,24 @@
 package com.t_systems.t_medical_center_system.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
-import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.service.impl.AppointmentServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AppointmentController {
     private AppointmentServiceImp appointmentServiceImp;
     private PatientServiceImp patientServiceImp;
-
+    private ObjectMapper objectMapper = new ObjectMapper();
     private EventServiceImp eventServiceImp;
 
     @Autowired
@@ -22,6 +26,11 @@ public class AppointmentController {
         this.appointmentServiceImp = appointmentServiceImp;
         this.patientServiceImp = patientServiceImp;
         this.eventServiceImp = eventServiceImp;
+    }
+
+    @PostConstruct
+    public void init() {
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
 
@@ -69,6 +78,25 @@ public class AppointmentController {
         appointmentServiceImp.updateAppointment(appointmentDto, id);
         return "redirect:/doctor/profile/{id}";
     }
+
+
+    @PostMapping(value = "/doctor/profile/{id}/pageAppointment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String cancelAppointment(@PathVariable(name = "id") Long id,HttpServletRequest request) {
+        try {
+            AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
+            appointmentServiceImp.cancelAppointment(appointmentDto);
+            System.out.println(appointmentDto);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "0";
+    }
+
+
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.t_systems.t_medical_center_system.dto;
 
+import com.t_systems.t_medical_center_system.entity.enums.AppointmentStatus;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,8 @@ import java.util.*;
 
 @Data
 @NoArgsConstructor
-public class AppointmentDto extends AbstractDto{
+public class AppointmentDto{
+    private Long id;
     @Enumerated(EnumType.STRING)
     private TherapyType type;
     private Integer dose;
@@ -29,6 +31,9 @@ public class AppointmentDto extends AbstractDto{
     private boolean thursday;
     private boolean friday;
     private boolean saturday;
+
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
 
 
     private ArrayList<String> time = new ArrayList<>() {{

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface PatientRepository extends PagingAndSortingRepository<Patient, Long> {
-    MedicalStaff findByName(String name);
 
 
 }

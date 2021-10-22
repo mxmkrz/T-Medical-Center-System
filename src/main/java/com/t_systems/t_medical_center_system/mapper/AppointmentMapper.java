@@ -22,29 +22,26 @@ import java.util.Objects;
 public class AppointmentMapper {
 
 
-    private PatientRepository patientRepository;
+
     private AppointmentRepository appointmentRepository;
     private ProcedureRepository procedureRepository;
     private MedicalStaffRepository medicalStaffRepository;
     private WeekDayRepository weekDayRepository;
     private EventTimeRepository eventTimeRepository;
     private DrugRepository drugRepository;
-    private EventRepository eventRepository;
     private EventTimeService eventTimeService;
     private WeekDayService weekDayService;
     private DrugServiceImpl drugService;
     private ProcedureServiceImpl procedureService;
 
     @Autowired
-    public AppointmentMapper(PatientRepository patientRepository, AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventRepository eventRepository, EventTimeService eventTimeService, WeekDayService weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
-        this.patientRepository = patientRepository;
+    public AppointmentMapper( AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventTimeService eventTimeService, WeekDayService weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
         this.medicalStaffRepository = medicalStaffRepository;
         this.weekDayRepository = weekDayRepository;
         this.eventTimeRepository = eventTimeRepository;
         this.drugRepository = drugRepository;
-        this.eventRepository = eventRepository;
         this.eventTimeService = eventTimeService;
         this.weekDayService = weekDayService;
         this.drugService = drugService;
@@ -71,6 +68,7 @@ public class AppointmentMapper {
             appointment.setTherapyType(appointmentDto.getType());
             appointment.setStartDate(appointmentDto.getStartOfData());
             appointment.setEndDate(appointmentDto.getEndOfData());
+
 
 
             List<WeekDay> weekDays = new ArrayList<>();
@@ -407,6 +405,7 @@ public class AppointmentMapper {
             appointment.setStartDate(appointmentDto.getStartOfData());
             appointment.setEndDate(appointmentDto.getEndOfData());
 
+
 //
 //            List<Procedure> procedureListFromEntity = procedureRepository.findProcedureByAppointmentId(appointment.getId());
 //            appointment.setProcedureList(procedureListFromEntity);
@@ -478,7 +477,7 @@ public class AppointmentMapper {
 
         }
         appointmentDto.setEventTimes(eventTimesString);
-
+        appointmentDto.setStatus(appointment.getStatus());
         appointmentDto.setStartOfData(appointment.getStartDate());
         appointmentDto.setEndOfData(appointment.getEndDate());
 

@@ -1,5 +1,6 @@
 package com.t_systems.t_medical_center_system.entity;
 
+import com.t_systems.t_medical_center_system.entity.enums.AppointmentStatus;
 import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.*;
 
@@ -22,7 +23,6 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private TherapyType therapyType;
 
-
     private Date startDate;
 
     private Date endDate;
@@ -33,7 +33,6 @@ public class Appointment {
 
     @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Event> events;
-
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
@@ -55,6 +54,7 @@ public class Appointment {
     @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<EventTime> timePatterns;
 
-
-
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
+    
 }
