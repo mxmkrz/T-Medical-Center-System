@@ -7,12 +7,14 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 
 @Controller
-@RequestMapping
 public class PatientController {
 
     private final PatientServiceImp patientService;
@@ -37,15 +39,14 @@ public class PatientController {
     }
 
 
-    @PostMapping(value = "/doctor/add", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ModelAndView addPatientPost(@ModelAttribute("patient") PatientDto patientDto) {
+    @PostMapping(value = "/doctor/add")
+    public String addPatientPost(@ModelAttribute("patient") @Valid PatientDto patientDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/templates/addPatient";
+        }
         patientService.savePatient(patientDto);
-        return new ModelAndView("redirect:/doctor/patients");
+        return "redirect:/doctor/patients";
     }
-
-
 
 
     //*******************************************
@@ -58,14 +59,18 @@ public class PatientController {
 
     //*******************************************
     @GetMapping(value = "/doctor/profile/{id}/edit")
-    public String updatePatientGet( Model model, @PathVariable Long id  ) {
+    public String updatePatientGet(Model model, @PathVariable Long id) {
         model.addAttribute("profile", patientService.getPatientById(id));
         return "templates/editPatient";
     }
 
 
     @PostMapping(value = "/doctor/profile/{id}/edit")
-    public String updatePatientPost(@ModelAttribute("profile") PatientDto patientDto) {
+    public String updatePatientPost(@ModelAttribute("profile") @Valid PatientDto patientDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "templates/editPatient";
+        }
+        patientService.patientDischarge(patientDto);
         patientService.updatePatient(patientDto);
         return "redirect:/doctor/profile/{id}";
     }

@@ -12,6 +12,8 @@ import java.util.List;
 public interface AppointmentRepository extends PagingAndSortingRepository<Appointment, Long> ,JpaRepository<Appointment,Long>{
     List<Appointment> findAllByPatient(Patient patient);
 
+    List<Appointment> findAllByPatientId(Long id);
+
 
 
 

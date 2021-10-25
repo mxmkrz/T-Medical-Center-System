@@ -21,7 +21,4 @@ public class EventTime {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-    public EventTime(LocalDateTime time) {
-        this.time = time;
-    }
 }

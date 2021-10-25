@@ -1,7 +1,5 @@
 package com.t_systems.t_medical_center_system.entity;
 
-import com.t_systems.t_medical_center_system.entity.Appointment;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

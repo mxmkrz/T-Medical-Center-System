@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -20,10 +21,9 @@ public class EventDto {
     private LocalTime time;
     private EventStatus status;
     private TherapyType therapyType;
+
     private String reasonToCancel;
     private Long idPatient;
     private Appointment appointment;
     private Long idAppointment;
-
-
 }

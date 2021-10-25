@@ -25,8 +25,6 @@ public class Procedure {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-
-
     public Procedure(String name) {
         this.name = name;
     }

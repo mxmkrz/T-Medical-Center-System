@@ -1,6 +1,5 @@
 package com.t_systems.t_medical_center_system.config;
 
-import com.t_systems.t_medical_center_system.entity.enums.Role;
 import com.t_systems.t_medical_center_system.service.impl.MedicalStaffServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.MySimpleUrlAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MedicalStaffServiceImp medicalStaffServiceImp;
@@ -31,59 +29,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .csrf()
-//                .disable()
-//                .authorizeRequests()
-//                .antMatchers("/").permitAll()
-//                .anyRequest()
-//                .authenticated()
-////                .antMatchers("/menu").permitAll()
-////                .antMatchers("/add").permitAll()
-//                //Доступ только для не зарегистрированных пользователей
-////                .antMatchers("/**").not().fullyAuthenticated()
-//                //Доступ только для пользователей с ролью Администратор
-////                .antMatchers("/admin/**").hasRole("ADMIN")
-////                .antMatchers("/news").hasRole("USER")
-//                //Доступ разрешен всем пользователей
-////                .antMatchers("/").permitAll()
-//                //Все остальные страницы требуют аутентификации
-////                .anyRequest().authenticated()
-//                .and()
-//                //Настройка для входа в систему
-//                .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/authenticating")
-//                .usernameParameter("name").passwordParameter("password")
-//                //Перенарпавление на главную страницу после успешного входа
-//                .defaultSuccessUrl("/login")
-//                .permitAll()
-//                .and()
-//                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-//                .permitAll()
-//                .logoutSuccessUrl("/login");
-        httpSecurity
-                .authorizeRequests()
-                .antMatchers("/login").anonymous()
-                .antMatchers("/doctor/**", "/nurse/**").authenticated()
-                .antMatchers("/doctor/**").hasRole("DOCTOR")
-                .antMatchers("/nurse/**").hasRole("NURSE")
-                .and().
+        httpSecurity.
+                authorizeRequests().
+                antMatchers("/login").anonymous().
+                antMatchers("/doctor/**", "/nurse/**").authenticated().
+                antMatchers("/doctor/**").hasRole("DOCTOR").
+                antMatchers("/nurse/**").hasRole("NURSE").
+                and().
                 formLogin().
-                loginPage("/login")
-                .loginProcessingUrl("/login/process")
-                .usernameParameter("name").passwordParameter("password")
-                .failureUrl("/login?fail=true")
-                .successHandler(myAuthenticationSuccessHandler()).
+                loginPage("/login").
+                loginProcessingUrl("/login/process").
+                usernameParameter("name").passwordParameter("password").
+                failureUrl("/login?error=true").
+                successHandler(myAuthenticationSuccessHandler()).
                 and().
                 exceptionHandling().
                 accessDeniedPage("/").
                 and().
-                logout()
+                logout().
 
 
-                .and()
-                .csrf().disable();
+                and().
+                csrf().disable();
 
     }
 

@@ -21,8 +21,11 @@ public class PatientMapper {
         patient.setSurname(patientDto.getSurname());
         patient.setDiagnosis(patientDto.getDiagnosis());
         patient.setInsuranceNumber(patientDto.getInsuranceNumber());
+        patient.setDoctorName(patientDto.getDoctorsName());
         if (patientDto.getStatus().equals(PatientStatus.PATIENT.name())) patient.setPatientStatus(PatientStatus.PATIENT);
         if (patientDto.getStatus().equals(PatientStatus.DISCHARGED.name())) patient.setPatientStatus(PatientStatus.DISCHARGED);
+        patient.setCreateDataTime(patientDto.getCreateDataTime());
+        patient.setUpdateDataTime(patientDto.getUpdateDataTime());
        return patient;
     }
 
@@ -35,6 +38,8 @@ public class PatientMapper {
         patientDto.setInsuranceNumber(patient.getInsuranceNumber());
         patientDto.setDiagnosis(patient.getDiagnosis());
         patientDto.setStatus(patient.getPatientStatus().name());
+        patientDto.setCreateDataTime(patient.getCreateDataTime());
+        patientDto.setUpdateDataTime(patient.getUpdateDataTime());
         return patientDto;
     }
 }

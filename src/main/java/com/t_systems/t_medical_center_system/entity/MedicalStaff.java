@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.*;
 
 /**
  * An entity that represents a doctor in database
@@ -59,9 +58,6 @@ public class MedicalStaff {
 
     @UpdateTimestamp
     private LocalDateTime updateDataTime;
-
-//    @OneToMany(fetch = FetchType.EAGER,mappedBy = "staff", cascade = CascadeType.ALL)
-//    private List<Appointment> appointmentList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;

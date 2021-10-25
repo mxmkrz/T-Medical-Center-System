@@ -7,12 +7,16 @@ import com.t_systems.t_medical_center_system.service.impl.AppointmentServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 public class AppointmentController {
@@ -33,9 +37,17 @@ public class AppointmentController {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
+//
+//
+//
+    @ExceptionHandler
+    public String handleException(ConversionFailedException e){
+        return e.getMessage();
+    }
 
-    @GetMapping(value = "/doctor/profile/{id}/appointment")
-    public String newAppointmentGet(@PathVariable(name = "id") Long id,
+
+    @GetMapping(value = "/doctor/profile/{idPatient}/appointment")
+    public String newAppointmentGet(@PathVariable(name = "idPatient") Long id,
                                     Model model) {
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
         model.addAttribute("appointmentNew", new AppointmentDto());
@@ -43,20 +55,22 @@ public class AppointmentController {
     }
 
 
-    @PostMapping(value = "/doctor/profile/{id}/appointment")
-    public String newAppointmentPost(@PathVariable(name = "id") Long id,
-                                     @ModelAttribute(value = "appointmentNew") AppointmentDto appointmentDto) {
+    @PostMapping(value = "/doctor/profile/{idPatient}/appointment")
+    public String newAppointmentPost(@PathVariable(name = "idPatient") Long id,
+                                     @ModelAttribute(value = "appointmentNew") @Valid AppointmentDto appointmentDto, BindingResult bindingResult,Model model) {
+        if (bindingResult.hasErrors()){
+            return "redirect:/doctor/profile/{idPatient}/appointment";
 
-        appointmentServiceImp.addAppointment(appointmentDto, id);
-
-
-        return "redirect:/doctor/profile/{id}";
+        }
+        appointmentServiceImp.makeAnAppointment(appointmentDto, id);
+        return "redirect:/doctor/profile/{idPatient}";
     }
+
 
 
     @GetMapping(value = "/doctor/profile/{id}/pageAppointment")
     public String getAppointmentPage(@PathVariable(name = "id") Long id, Model model) {
-        model.addAttribute("pageAppointment", appointmentServiceImp.getAppointmentListByPatient(id));
+        model.addAttribute("pageAppointment", appointmentServiceImp.getAppointmentListByPatientId(id));
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
         return "templates/pageAppointment";
     }
@@ -74,9 +88,16 @@ public class AppointmentController {
 
     @PostMapping(value = "/doctor/profile/{id}/edit/{idAppointment}")
     public String editAppointmentPost(@PathVariable(name = "id") Long id,
-                                      @PathVariable(name = "idAppointment") Long idAppointment, @ModelAttribute(value = "appointmentEdit") AppointmentDto appointmentDto) {
+                                      @PathVariable(name = "idAppointment") Long idAppointment,
+                                      @ModelAttribute(value = "appointmentEdit") @Valid AppointmentDto appointmentDto,
+                                      BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "redirect:/doctor/profile/{id}/edit/{idAppointment}";
+
+        }
+
         appointmentServiceImp.updateAppointment(appointmentDto, id);
-        return "redirect:/doctor/profile/{id}";
+        return "redirect:/doctor/profile/{id}/pageAppointment";
     }
 
 
@@ -86,7 +107,7 @@ public class AppointmentController {
     public String cancelAppointment(@PathVariable(name = "id") Long id,HttpServletRequest request) {
         try {
             AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
-            appointmentServiceImp.cancelAppointment(appointmentDto);
+            appointmentServiceImp.cancelAppointment(appointmentDto,id);
             System.out.println(appointmentDto);
         } catch (Exception e) {
             System.out.println(e.getMessage());

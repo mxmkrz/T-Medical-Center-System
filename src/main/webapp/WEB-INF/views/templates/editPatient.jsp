@@ -1,111 +1,130 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </html>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="\">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Untitled</title>
-    <base href="\">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/Profile-Edit-Form-1.css">
-    <link rel="stylesheet" href="../static/css/Profile-Edit-Form.css">
+    <link rel="stylesheet" href="../static/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="../static/css/Ludens-Users---3-Profile.css">
     <link rel="stylesheet" href="../static/css/styles.css">
+    <style>
+        body {
+            background: url('../static/images/Fotolia_133334155_M-1.jpg');
+        }
+    </style>
 </head>
-
 <body>
-<form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile" class="formWithValidation3">
-<form:hidden path="id"/>
-<div class="container profile profile-view" id="profile">
-    <div class="row">
-        <div class="col-md-12 alert-col relative">
-            <div class="alert alert-info alert-dismissible absolue center" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><span>Profile save with success</span></div>
-        </div>
-    </div>
-    <form>
-        <div class="row profile-row">
-            <div class="col-md-8">
-                <h1>Edit Profile </h1>
-                <hr>
-
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="form-group mb-3"><label class="form-label">Name </label><input class="form-control" type="text" name="name"></div>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="form-group mb-3"><label class="form-label">Surname </label><input class="form-control" type="text" name="surname"></div>
-                    </div>
+<div>
+    <p>
+        <form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile"
+                   class="formWithValidation3">
+            <form:hidden path="id"/>
+    <main class="page" style="min-height: 100%;">
+        <section class="clean-block about-us">
+            <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
+                    <a class="anone" href="/doctor/patients"><i
+                            class="fa fa-long-arrow-left"></i><span>&nbsp;Back</span></a>
                 </div>
-                <div class="form-group mb-3"><label class="form-label">Diagnosis </label><input class="form-control" type="text" autocomplete="off" required="" name="diagnosis"></div>
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="form-group mb-3"><label class="form-label">Insurance Number </label><input class="form-control" type="text" name="insuranceNumber" autocomplete="off" required=""></div>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div class="form-floating">
-                            <select class="form-select" name="status" id="statusEditInput" aria-label="Floating label select example">
-                                <option selected>Status</option>
-                                <option value="PATIENT">PATIENT</option>
-                                <option value="DISCHARGED">DISCHARGED</option>
-                            </select>
+                <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
+                    <a class="anone" href="/logout"><i class="fa fa-long-arrow-left"></i><strong>&nbsp; Logout</strong></a>
+                </div>
+            </div>
+            <div class="row" style="margin-right: 0px;margin-left: 0px;">
+            </div>
+            <div class="row justify-content-center" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col-sm-6 col-lg-4" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="card clean-card text-center">
+                        <div class="card-body info">
+                            <div class="row" style="margin-top: -24px;">
+                                <div class="col-md-12" style="margin-top: 22px;">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Name</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>
+                                                <input class="form-control" type="text" name="name" placeholder="${profile.name}">
+                                                <form:errors path="name"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Surname</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>
+                                                <input class="form-control" type="text" name="surname"
+                                                       placeholder="${profile.surname}">
+                                                <form:errors path="surname"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Diagnosis</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>
+                                                <input class="form-control" type="text" name="diagnosis"
+                                                       placeholder="${profile.diagnosis}">
+                                                <form:errors path="diagnosis"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Insurance Number</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>
+                                                <input class="form-control" type="text" name="insuranceNumber"
+                                                       placeholder="${profile.insuranceNumber}">
+                                                <form:errors path="insuranceNumber"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Status</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>
+                                                <form:select class="form-selected" path="status" >
+                                                    <form:option value="PATIENT">PATIENT</form:option>
+                                                    <form:option value="DISCHARGED">DISCHARGED</form:option>
+                                                </form:select>
+                                                <form:errors path="status"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 content-right">
+                                            <button class="btn btn-success">SAVE</button>
+                                            <button class="btn btn-danger form-btn" type="reset">CANCEL</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-12 content-right"><button class="btn-info ">SAVE </button>
-
-                        <button class="btn btn-danger form-btn" type="reset">CANCEL </button></div>
-                </div>
-
             </div>
-        </div>
-    </form>
+        </section>
+    </main>
 </div>
 </form:form>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
-<script src="../static/bootstrap/js/Profile-Edit-Form.js"></script>
 </body>
-<%--<script>--%>
-<%--    $("#edit_status").on('show.bs.modal', function (e) {--%>
-<%--        var status = $(e.relatedTarget).data('patient-status');--%>
-<%--        $('#statusEditInput').val(status);--%>
-<%--    });--%>
-<%--    $("#edit_status").on('hidden.bs.modal', function () {--%>
-<%--        var form = $(this).find('form');--%>
-<%--        form[0].reset();--%>
-
-<%--    });--%>
-<%--    var form = document.querySelector('.formWithValidation3')--%>
-<%--    var status = form.querySelector('.status')--%>
-
-<%--    form.addEventListener("submit", function (event) {--%>
-<%--        event.preventDefault()--%>
-
-
-<%--        $.ajax({--%>
-<%--            url: '/patient/edit',--%>
-<%--            datatype: 'json',--%>
-<%--            type: "POST",--%>
-<%--            dataType: 'JSON',--%>
-<%--            data: JSON.stringify({--%>
-<%--                id: ${profile.id},--%>
-<%--                name: '${profile.name}',--%>
-<%--                surname: "${profile.surname}",--%>
-<%--                diagnosis: '${profile.diagnosis}',--%>
-<%--                insuranceNumber: ${profile.insuranceNumber},--%>
-<%--                status: status.value,--%>
-<%--            }),--%>
-<%--            success: function (response) {--%>
-<%--                if (response.redirect) {--%>
-<%--                    window.location.href = response.redirect;--%>
-<%--                }--%>
-<%--            },--%>
-<%--            error: function (result) {--%>
-<%--                alert("error" + result.responseText);--%>
-<%--            }--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
+</p>
 </html>

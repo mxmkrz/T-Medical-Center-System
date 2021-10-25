@@ -20,9 +20,6 @@ import java.util.Objects;
 
 @Component
 public class AppointmentMapper {
-
-
-
     private AppointmentRepository appointmentRepository;
     private ProcedureRepository procedureRepository;
     private MedicalStaffRepository medicalStaffRepository;
@@ -35,7 +32,7 @@ public class AppointmentMapper {
     private ProcedureServiceImpl procedureService;
 
     @Autowired
-    public AppointmentMapper( AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventTimeService eventTimeService, WeekDayService weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
+    public AppointmentMapper(AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventTimeService eventTimeService, WeekDayService weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
         this.medicalStaffRepository = medicalStaffRepository;
@@ -50,15 +47,6 @@ public class AppointmentMapper {
     }
 
 
-
-
-
-
-
-
-
-
-
     public Appointment toEntity(AppointmentDto appointmentDto) {
 
 
@@ -68,7 +56,6 @@ public class AppointmentMapper {
             appointment.setTherapyType(appointmentDto.getType());
             appointment.setStartDate(appointmentDto.getStartOfData());
             appointment.setEndDate(appointmentDto.getEndOfData());
-
 
 
             List<WeekDay> weekDays = new ArrayList<>();
@@ -238,11 +225,10 @@ public class AppointmentMapper {
             List<EventTime> timePatterns = new ArrayList<>();
 
             List<Drug> drugs = drugRepository.findAllByAppointmentId(appointment.getId());
-            drugService.delete(drugs);
+            drugService.deleteDrugs(drugs);
 
             List<Procedure> proceduresEntity = procedureRepository.findProcedureByAppointmentId(appointment.getId());
             procedureService.delete(proceduresEntity);
-
 
 
             if (appointmentDto.isSunday()) {
@@ -305,8 +291,6 @@ public class AppointmentMapper {
 
             }
             appointment.getDrugsList().addAll(drugsNew);
-
-
 
 
             for (int i = 0; i < appointmentDto.getTime().size(); i++) {
@@ -400,7 +384,6 @@ public class AppointmentMapper {
             appointment.setStaff(medicalStaff);
 
 
-
             appointment.setTherapyType(appointmentDto.getType());
             appointment.setStartDate(appointmentDto.getStartOfData());
             appointment.setEndDate(appointmentDto.getEndOfData());
@@ -417,7 +400,6 @@ public class AppointmentMapper {
 //            appointment.setTherapyType(appointmentDto.getType());
 //            appointment.setStartDate(appointmentDto.getStartOfData());
 //            appointment.setEndDate(appointmentDto.getEndOfData());
-
 
 
             return appointment;

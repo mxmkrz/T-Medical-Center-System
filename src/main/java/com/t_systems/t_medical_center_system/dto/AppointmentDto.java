@@ -7,21 +7,31 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 
 @Data
 @NoArgsConstructor
-public class AppointmentDto{
+public class AppointmentDto {
     private Long id;
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "type should not be empty")
     private TherapyType type;
+    @Min(1)
     private Integer dose;
+//    @NotBlank(message = "infoDrugs should not be empty")
     private String infoDrugs;
+//    @NotBlank(message = "info should not be empty")
     private String info;
 
-
+    @NotNull(message = "date should not be empty")
     private Date startOfData;
+    @NotNull(message = "date should not be empty")
     private Date endOfData;
 
     private boolean sunday;
@@ -35,7 +45,7 @@ public class AppointmentDto{
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
 
-
+    @NotEmpty(message = "time list cannot be empty.")
     private ArrayList<String> time = new ArrayList<>() {{
         add("9:00 - 10:00");
         add("10:00 - 11:00");
@@ -53,10 +63,6 @@ public class AppointmentDto{
 
     List<String> weekDayString = new ArrayList<>();
     List<String> eventTimes = new ArrayList<>();
-
-
-
-
 
 
 }

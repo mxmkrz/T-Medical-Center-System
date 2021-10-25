@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.dto.EventDto;
+import com.t_systems.t_medical_center_system.dto.Filter;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Event;
 import com.t_systems.t_medical_center_system.entity.Patient;
@@ -14,7 +15,12 @@ import com.t_systems.t_medical_center_system.mapper.EventMapper;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.EventRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
+import com.t_systems.t_medical_center_system.service.EventService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,55 +31,65 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+@Slf4j
 @Service
-public class EventServiceImp {
+public class EventServiceImp implements EventService {
 
     private final EventRepository eventRepository;
     private final PatientRepository patientRepository;
     private final AppointmentMapper appointmentMapper;
     private final EventMapper eventMapper;
-    private AppointmentRepository appointmentRepository;
-
+    private final AppointmentRepository appointmentRepository;
+    private final PatientServiceImp patientServiceImp;
     @Autowired
-    public EventServiceImp(EventRepository eventRepository, PatientRepository patientRepository, AppointmentMapper appointmentMapper, EventMapper eventMapper, AppointmentRepository appointmentRepository) {
+    public EventServiceImp(EventRepository eventRepository, PatientRepository patientRepository, AppointmentMapper appointmentMapper, EventMapper eventMapper, AppointmentRepository appointmentRepository, PatientServiceImp patientServiceImp) {
         this.eventRepository = eventRepository;
         this.patientRepository = patientRepository;
         this.appointmentMapper = appointmentMapper;
         this.eventMapper = eventMapper;
         this.appointmentRepository = appointmentRepository;
+        this.patientServiceImp = patientServiceImp;
     }
 
 
+
+    @Override
     @Transactional
     public void saveEvent(Event event) {
         eventRepository.save(event);
+        log.info("Event saved");
     }
 
+    @Override
     @Transactional
     public void deleteEvent(Long id) {
         List<Event> events = eventRepository.findAllByAppointmentId(id);
         eventRepository.deleteAll(events);
+
     }
 
+    @Override
     @Transactional
-    public List<Event> findAllByAppointmentId(Long id){
+    public List<Event> findAllByAppointmentId(Long id) {
         return eventRepository.findAllByAppointmentId(id);
 
     }
 
-
+    @Override
+    @Transactional
     public void generateEvents(AppointmentDto appointmentDto, Long idPatient, Long appointmentId) {
         Map<Date, List<LocalTime>> dataAndTimes = countDataAndTime(appointmentDto);
 
 
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(AppointmentNotFoundException::new);
         Patient patient = null;
-        try {
-            patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
-        } catch (PatientNotFoundException ex) {
+        if (idPatient == 0){
             patient = new Patient();
             patient.setId(idPatient);
+        }else {
+            patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         }
+
 
 
         for (Map.Entry<Date, List<LocalTime>> dt : dataAndTimes.entrySet()) {
@@ -248,6 +264,7 @@ public class EventServiceImp {
 
     }
 
+    @Override
     @Transactional
     public List<EventDto> findAllEvents() {
         List<Event> result = (List<Event>) eventRepository.findAll();
@@ -256,7 +273,7 @@ public class EventServiceImp {
 
     }
 
-
+    @Override
     @Transactional
     public List<EventDto> findAllEventsForHour() {
         LocalTime current = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -268,7 +285,7 @@ public class EventServiceImp {
         List<Event> result = eventRepository.findAllForHour(currentPlusHour, current, date);
         return eventMapper.toDtoList(result);
     }
-
+    @Override
     @Transactional
     public List<EventDto> findAllEventsForDay() {
 
@@ -285,7 +302,7 @@ public class EventServiceImp {
 
 
     }
-
+    @Override
     @Transactional
     public List<EventDto> findAllPatientByName(String name) {
         List<Event> result = eventRepository.findAllBy(name);
@@ -295,21 +312,16 @@ public class EventServiceImp {
     }
 
 
-    @Transactional(readOnly = true)
-    public EventDto getById(Long id) {
-        return eventMapper.toDto(eventRepository.findById(id).orElseThrow(EventNotFoundException::new));
-    }
-
-
+    @Override
     @Transactional
-    public void updateStatusToDone(EventDto eventDto) {
+    public void updateStatus(EventDto eventDto) {
         Event event = eventRepository.findById(eventDto.getId()).orElseThrow(EventNotFoundException::new);
         event = eventMapper.toEntity(eventDto);
 
-        if (eventDto.getStatus().name().equals("CANCELED")){
+        if (eventDto.getStatus().name().equals("CANCELED")) {
             event.setStatus(EventStatus.CANCELED);
             event.setReasonToCancel(eventDto.getReasonToCancel());
-        }else event.setStatus(EventStatus.DONE);
+        } else event.setStatus(EventStatus.DONE);
 
 
         Patient patient = patientRepository.findById(eventDto.getIdPatient()).orElseThrow(PatientNotFoundException::new);
@@ -317,19 +329,41 @@ public class EventServiceImp {
         event.setPatient(patient);
         event.setAppointment(appointment);
         eventRepository.save(event);
+        log.info("Update status event");
     }
-
+    @Override
     @Transactional
-    public void updateEvent(Event event,Long idAppointment){
+    public void updateEvent(Event event, Long idAppointment) {
         Event eventOne = eventRepository.findById(event.getId()).orElseThrow(EventNotFoundException::new);
         Patient patient = patientRepository.findById(eventOne.getPatient().getId()).orElseThrow(PatientNotFoundException::new);
         Appointment appointment = appointmentRepository.findById(idAppointment).orElseThrow(AppointmentNotFoundException::new);
         eventOne.setPatient(patient);
         eventOne.setAppointment(appointment);
         eventRepository.save(eventOne);
-
-
+        log.info("Update event");
     }
+
+
+    public List<EventDto> doFilter(Filter filter,String keyword){
+        if (filter.getAnInt().equals("0")){
+            return findAllEvents();
+        }
+        if (filter.getAnInt().equals("1")){
+            return findAllPatientByName(keyword);
+        }
+        if (filter.getAnInt().equals("2")){
+            return findAllEventsForDay();
+        }
+        if (filter.getAnInt().equals("3")){
+            return findAllEventsForHour();
+        }
+        return null;
+    }
+
+
+
+
+
 
 
 }

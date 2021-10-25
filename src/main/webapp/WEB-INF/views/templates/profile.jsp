@@ -1,148 +1,132 @@
 <!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
+    <base href="\">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Untitled</title>
-    <base href="\">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/fonts/material-icons.min.css">
-    <link rel="stylesheet" href="../static/css/Profile-with-data-and-skills.css">
+    <link rel="stylesheet" href="../static/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="../static/css/Ludens-Users---3-Profile.css">
     <link rel="stylesheet" href="../static/css/styles.css">
-
+    <style>
+        body {
+            background: url('../static/images/Fotolia_133334155_M-1.jpg');
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="main-body">
-        <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                 class="rounded-circle" width="150">
-                            <div class="mt-3">
-                                <h4>${profile.name} ${profile.surname}</h4>
+<div>
+    <p>
+    <main class="page" style="min-height: 100%;">
+        <section class="clean-block about-us">
+            <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
+                    <a class="anone" href="/doctor/patients"><i
+                            class="fa fa-long-arrow-left"></i><span>&nbsp;Back</span></a>
+                </div>
+                <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
+                    <a class="anone" href="/logout"><i class="fa fa-long-arrow-left"></i><strong>&nbsp; Logout</strong></a>
+                </div>
+            </div>
+            <div class="row" style="margin-right: 0px;margin-left: 0px;">
+            </div>
+            <h3 align="center">Patient profile</h3>
+            <div class="row justify-content-center" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col-sm-6 col-lg-4" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="card clean-card text-center">
+                        <div class="card-body info">
+                            <div class="row" style="margin-top: -24px;">
+                                <div class="col-md-12" style="margin-top: 22px;">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Name</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.name}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Surname</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.surname}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Diagnosis</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.diagnosis}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Insurance Number</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.insuranceNumber}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Status</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.status}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Doctor's name</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.doctorsName}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                         <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
+                                        <div class="col-md-12"><a class="btn btn-outline-secondary" type="button"
+                                                                  href="/doctor/profile/${profile.id}/edit"><i
+                                                class="fas fa-pencil-alt"></i>&nbsp;Edit</a></div>
+                                                   </span>
+                                    </div>
+                                    <div class="row">
+                                         <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
+                                        <div class="col-md-12"><a class="btn btn-outline-danger" role="button"
+                                                                  href="/doctor/delete/${profile.id}"><i
+                                                class="fas fa-trash"></i>&nbsp;Delete</a></div>
+                                               </span>
+                                    </div>
+                                    <div class="row">
+                                        <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
+                                        <div class="col-md-12"><a class="btn btn-outline-primary" role="button"
+                                                                  href="/doctor/profile/${profile.id}/pageAppointment"><i
+                                                class="fas fa-pager"></i>&nbsp;Appointments</a></div>
+                                             </span>
+                                    </div>
+                                    <div class="row">
+                                        <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
+                                                                <div class="col-md-12"><a class="btn btn-outline-success"
+                                                                                          role="button"
+                                                                                          href="/doctor/profile/${profile.id}/appointment"><i
+                                                                        class="fas fa-newspaper"></i>&nbsp;Make an appointment</a></div>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card mt-3">
-
-                    <%--Кнопки назначений--%>
-                </div>
             </div>
-            <div class="col-md-8">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Full Name</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                ${profile.name} ${profile.surname}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Diagnosis</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                ${profile.diagnosis}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Insurance Number</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                ${profile.insuranceNumber}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Status</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                ${profile.status}
-                            </div>
-                        </div>
-                        <hr>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Doctor's name</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                ${profile.doctorsName}
-                            </div>
-                        </div>
-                        <hr>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a class="btn btn-info"
-                                   href="/doctor/profile/${profile.id}/edit">Edit</a>
-                            </div>
-                        </div>
-                        <hr>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-12">
-                                    <a class="btn btn-info"
-                                       href="/doctor/delete/${profile.id}">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-12">
-                                    <a class="btn btn-info"
-                                       href="/doctor/profile/${profile.id}/appointment">Create Appointment</a>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-12">
-                                    <a class="btn btn-info"
-                                       href="/doctor/profile/${profile.id}/pageAppointment">Appointments</a>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-
-
-                <div class="row gutters-sm">
-                    <%--Список назначений--%>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </section>
+    </main>
 </div>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
-
-
-<script>
-    <%--var url = '/patient/profile?id=<c:out value="${profile.id}"/>';--%>
-    <%--var id = location.pathname.split('/')[3];--%>
-    <%--alert(id)--%>
-    <%--sessionStorage.setItem('key', id);--%>
-</script>
-
-
 </body>
+</p>
 </html>
