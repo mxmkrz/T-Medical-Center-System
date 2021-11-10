@@ -1,8 +1,6 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
-import com.t_systems.t_medical_center_system.mapper.Convertor;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
-import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.service.MedicalStaffService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -26,8 +23,8 @@ import java.util.Set;
 @Service
 public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsService {
 
-    private MedicalStaffRepository staffRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MedicalStaffRepository staffRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public MedicalStaffServiceImp(MedicalStaffRepository doctorRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -41,7 +38,7 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
     public void saveStaff(MedicalStaff doctor) {
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
         staffRepository.save(doctor);
-        log.info("Add med satff");
+        log.info("Add medical staff");
     }
 
 

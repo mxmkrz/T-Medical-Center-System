@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.dto.EventDto;
+import com.t_systems.t_medical_center_system.dto.EventBoardDto;
 import com.t_systems.t_medical_center_system.dto.Filter;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Event;
@@ -10,7 +11,6 @@ import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.exception.EventNotFoundException;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
-import com.t_systems.t_medical_center_system.mapper.AppointmentMapper;
 import com.t_systems.t_medical_center_system.mapper.EventMapper;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.EventRepository;
@@ -19,7 +19,6 @@ import com.t_systems.t_medical_center_system.service.EventService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,21 +36,19 @@ public class EventServiceImp implements EventService {
 
     private final EventRepository eventRepository;
     private final PatientRepository patientRepository;
-    private final AppointmentMapper appointmentMapper;
     private final EventMapper eventMapper;
     private final AppointmentRepository appointmentRepository;
-    private final PatientServiceImp patientServiceImp;
+    private final RabbitSender rabbitSender;
+
+
     @Autowired
-    public EventServiceImp(EventRepository eventRepository, PatientRepository patientRepository, AppointmentMapper appointmentMapper, EventMapper eventMapper, AppointmentRepository appointmentRepository, PatientServiceImp patientServiceImp) {
+    public EventServiceImp(EventRepository eventRepository, PatientRepository patientRepository, EventMapper eventMapper, AppointmentRepository appointmentRepository, RabbitSender rabbitSender) {
         this.eventRepository = eventRepository;
         this.patientRepository = patientRepository;
-        this.appointmentMapper = appointmentMapper;
         this.eventMapper = eventMapper;
         this.appointmentRepository = appointmentRepository;
-        this.patientServiceImp = patientServiceImp;
+        this.rabbitSender = rabbitSender;
     }
-
-
 
     @Override
     @Transactional
@@ -65,11 +62,12 @@ public class EventServiceImp implements EventService {
     public void deleteEvent(Long id) {
         List<Event> events = eventRepository.findAllByAppointmentId(id);
         eventRepository.deleteAll(events);
+        log.info("Delete event by appointment id");
 
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Event> findAllByAppointmentId(Long id) {
         return eventRepository.findAllByAppointmentId(id);
 
@@ -79,18 +77,14 @@ public class EventServiceImp implements EventService {
     @Transactional
     public void generateEvents(AppointmentDto appointmentDto, Long idPatient, Long appointmentId) {
         Map<Date, List<LocalTime>> dataAndTimes = countDataAndTime(appointmentDto);
-
-
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(AppointmentNotFoundException::new);
         Patient patient = null;
-        if (idPatient == 0){
+        if (idPatient == 0) {
             patient = new Patient();
             patient.setId(idPatient);
-        }else {
+        } else {
             patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         }
-
-
 
         for (Map.Entry<Date, List<LocalTime>> dt : dataAndTimes.entrySet()) {
 
@@ -107,211 +101,6 @@ public class EventServiceImp implements EventService {
     }
 
 
-    public List<Date> getDataBetweenStartEndData(AppointmentDto appointmentDto) {
-        List<Date> datesInRange = new ArrayList<>();
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(appointmentDto.getStartOfData());
-
-        Calendar endCalendar = new GregorianCalendar();
-        endCalendar.setTime(appointmentDto.getEndOfData());
-
-        while (calendar.before(endCalendar)) {
-            Date result = new Date(calendar.getTime().getTime());
-            datesInRange.add(result);
-            calendar.add(Calendar.DATE, 1);
-        }
-        return datesInRange;
-    }
-
-
-    public Map<Date, List<LocalTime>> countDataAndTime(AppointmentDto appointmentDto) {
-        List<Date> period = getDataBetweenStartEndData(appointmentDto);
-        Calendar calendar = new GregorianCalendar();
-        Map<Date, List<LocalTime>> dateAndTimeMap = new HashMap<>();
-
-
-        if (appointmentDto.isSunday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        if (appointmentDto.isMonday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        if (appointmentDto.isTuesday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        if (appointmentDto.isWednesday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        if (appointmentDto.isThursday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        if (appointmentDto.isFriday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        if (appointmentDto.isSaturday()) {
-            for (Date d : period) {
-                calendar.setTime(d);
-                List<LocalTime> times = new ArrayList<>();
-                if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-                    listOfAcceptedTimes(appointmentDto, times);
-                }
-                if (!times.isEmpty()) {
-                    dateAndTimeMap.put(d, times);
-                }
-            }
-        }
-        return dateAndTimeMap;
-
-    }
-
-    public void listOfAcceptedTimes(AppointmentDto appointmentDto, List<LocalTime> times) {
-        for (int i = 0; i < appointmentDto.getTime().size(); i++) {
-            if (appointmentDto.getTime().get(i).equals("0")) {
-                times.add(LocalTime.of(9, 0));
-
-
-            }
-            if (appointmentDto.getTime().get(i).equals("1")) {
-                times.add(LocalTime.of(10, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("2")) {
-                times.add(LocalTime.of(11, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("3")) {
-                times.add(LocalTime.of(12, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("4")) {
-                times.add(LocalTime.of(13, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("5")) {
-                times.add(LocalTime.of(14, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("6")) {
-                times.add(LocalTime.of(15, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("7")) {
-                times.add(LocalTime.of(16, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("8")) {
-                times.add(LocalTime.of(17, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("9")) {
-                times.add(LocalTime.of(18, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("10")) {
-                times.add(LocalTime.of(19, 0));
-            }
-            if (appointmentDto.getTime().get(i).equals("11")) {
-                times.add(LocalTime.of(20, 0));
-            }
-
-
-        }
-
-    }
-
-    @Override
-    @Transactional
-    public List<EventDto> findAllEvents() {
-        List<Event> result = (List<Event>) eventRepository.findAll();
-        return eventMapper.toDtoList(result);
-
-
-    }
-
-    @Override
-    @Transactional
-    public List<EventDto> findAllEventsForHour() {
-        LocalTime current = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
-        LocalTime currentPlusHour = LocalTime.now().truncatedTo(ChronoUnit.SECONDS).plusHours(1);
-        LocalDate now = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
-        now = now.plusMonths(1);
-        Date date = Date.valueOf(now);
-
-        List<Event> result = eventRepository.findAllForHour(currentPlusHour, current, date);
-        return eventMapper.toDtoList(result);
-    }
-    @Override
-    @Transactional
-    public List<EventDto> findAllEventsForDay() {
-
-        LocalDate now = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
-        now = now.plusMonths(1).minusDays(1);
-        Date date = Date.valueOf(now);
-
-        LocalDate plusDay = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
-        plusDay = plusDay.plusDays(1).plusMonths(1);
-        Date date1 = Date.valueOf(plusDay);
-
-        List<Event> result = eventRepository.findAllForDay(date1, date);
-        return eventMapper.toDtoList(result);
-
-
-    }
-    @Override
-    @Transactional
-    public List<EventDto> findAllPatientByName(String name) {
-        List<Event> result = eventRepository.findAllBy(name);
-        return eventMapper.toDtoList(result);
-
-
-    }
-
-
     @Override
     @Transactional
     public void updateStatus(EventDto eventDto) {
@@ -321,7 +110,11 @@ public class EventServiceImp implements EventService {
         if (eventDto.getStatus().name().equals("CANCELED")) {
             event.setStatus(EventStatus.CANCELED);
             event.setReasonToCancel(eventDto.getReasonToCancel());
-        } else event.setStatus(EventStatus.DONE);
+            rabbitSender.sendMessage("event canceled");
+        } else {
+            event.setStatus(EventStatus.DONE);
+            rabbitSender.sendMessage("event done");
+        }
 
 
         Patient patient = patientRepository.findById(eventDto.getIdPatient()).orElseThrow(PatientNotFoundException::new);
@@ -330,7 +123,9 @@ public class EventServiceImp implements EventService {
         event.setAppointment(appointment);
         eventRepository.save(event);
         log.info("Update status event");
+
     }
+
     @Override
     @Transactional
     public void updateEvent(Event event, Long idAppointment) {
@@ -343,27 +138,152 @@ public class EventServiceImp implements EventService {
         log.info("Update event");
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Page<EventDto> findAllEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable).map(eventMapper::toDto);
+    }
 
-    public List<EventDto> doFilter(Filter filter,String keyword){
-        if (filter.getAnInt().equals("0")){
-            return findAllEvents();
-        }
-        if (filter.getAnInt().equals("1")){
-            return findAllPatientByName(keyword);
-        }
-        if (filter.getAnInt().equals("2")){
-            return findAllEventsForDay();
-        }
-        if (filter.getAnInt().equals("3")){
-            return findAllEventsForHour();
-        }
-        return null;
+    @Transactional(readOnly = true)
+    @Override
+    public Page<EventDto> findAllEventsForHour(Pageable pageable) {
+        LocalTime current = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
+        LocalTime currentPlusHour = LocalTime.now().truncatedTo(ChronoUnit.SECONDS).plusHours(1);
+        LocalDate day = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
+        day = day.plusMonths(1);
+        Date date = Date.valueOf(day);
+        log.info("found list for the current hour");
+        return eventRepository.findAllForHour(currentPlusHour, current, date, pageable).map(eventMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<EventDto> findAllEventsForDay(Pageable pageable) {
+        LocalDate day = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
+        day = day.plusMonths(1).minusDays(1);
+        Date date = Date.valueOf(day);
+
+        LocalDate plusDay = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
+        plusDay = plusDay.plusMonths(1).plusDays(1);
+        Date date1 = Date.valueOf(plusDay);
+        log.info("found list for the current day");
+        return eventRepository.findAllForDay(date1, date, pageable).map(eventMapper::toDto);
+
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<EventDto> findAllPatientByName(String name, Pageable pageable) {
+        log.info("filter by name");
+        return eventRepository.findAllBy(name, pageable).map(eventMapper::toDto);
     }
 
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<EventBoardDto> findAllEventsDayForBoard() {
+        LocalDate now = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
+        now = now.plusMonths(1).minusDays(1);
+        Date date = Date.valueOf(now);
+        LocalDate plusDay = LocalDate.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE));
+        plusDay = plusDay.plusMonths(1).plusDays(1);
+        Date date1 = Date.valueOf(plusDay);
+        List<Event> eventSpringDtos = eventRepository.findAllForDay(date1, date);
+        log.info("found a list for the board");
+        return eventMapper.toStringDtoList(eventSpringDtos);
+
+    }
+
+    public Page<EventDto> doFilter(Filter filter, String keyword, Pageable pageable) {
+        if (filter.getAnInt().equals("0")) return findAllEvents(pageable);
+        if (filter.getAnInt().equals("1")) return findAllPatientByName(keyword, pageable);
+        if (filter.getAnInt().equals("2")) return findAllEventsForDay(pageable);
+        if (filter.getAnInt().equals("3")) return findAllEventsForHour(pageable);
+        return null;
+    }
+
+    private List<Date> getDataBetweenStartEndData(AppointmentDto appointmentDto) {
+        List<Date> datesInRange = new ArrayList<>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(appointmentDto.getStartOfData());
+
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(appointmentDto.getEndOfData());
+        endCalendar.add(Calendar.DATE, 1);
+
+        while (calendar.before(endCalendar)) {
+            Date result = new Date(calendar.getTime().getTime());
+            datesInRange.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+
+        return datesInRange;
+    }
+
+    private void checkWeekDayAndAddTime(Integer weekDay, List<Date> period, Calendar calendar, Map<Date, List<LocalTime>> dateAndTimeMap, AppointmentDto appointmentDto) {
+        for (Date d : period) {
+            calendar.setTime(d);
+            List<LocalTime> times = new ArrayList<>();
+            if (calendar.get(Calendar.DAY_OF_WEEK) == weekDay) {
+                listOfAcceptedTimes(appointmentDto, times);
+            }
+            if (!times.isEmpty()) {
+                dateAndTimeMap.put(d, times);
+            }
+        }
+    }
 
 
+    private Map<Date, List<LocalTime>> countDataAndTime(AppointmentDto appointmentDto) {
+        List<Date> period = getDataBetweenStartEndData(appointmentDto);
+        Calendar calendar = new GregorianCalendar();
+        Map<Date, List<LocalTime>> dateAndTimeMap = new HashMap<>();
 
+
+        if (appointmentDto.isSunday()) {
+            checkWeekDayAndAddTime(Calendar.SUNDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        if (appointmentDto.isMonday()) {
+            checkWeekDayAndAddTime(Calendar.MONDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        if (appointmentDto.isTuesday()) {
+            checkWeekDayAndAddTime(Calendar.TUESDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        if (appointmentDto.isWednesday()) {
+            checkWeekDayAndAddTime(Calendar.WEDNESDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        if (appointmentDto.isThursday()) {
+            checkWeekDayAndAddTime(Calendar.THURSDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        if (appointmentDto.isFriday()) {
+            checkWeekDayAndAddTime(Calendar.FRIDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        if (appointmentDto.isSaturday()) {
+            checkWeekDayAndAddTime(Calendar.SATURDAY, period, calendar, dateAndTimeMap, appointmentDto);
+        }
+        return dateAndTimeMap;
+
+    }
+
+    private void listOfAcceptedTimes(AppointmentDto appointmentDto, List<LocalTime> times) {
+        for (int i = 0; i < appointmentDto.getTime().size(); i++) {
+            switch (appointmentDto.getTime().get(i)) {
+                case ("0") -> times.add(LocalTime.of(9, 0));
+                case ("1") -> times.add(LocalTime.of(10, 0));
+                case ("2") -> times.add(LocalTime.of(11, 0));
+                case ("3") -> times.add(LocalTime.of(12, 0));
+                case ("4") -> times.add(LocalTime.of(13, 0));
+                case ("5") -> times.add(LocalTime.of(14, 0));
+                case ("6") -> times.add(LocalTime.of(15, 0));
+                case ("7") -> times.add(LocalTime.of(16, 0));
+                case ("8") -> times.add(LocalTime.of(17, 0));
+                case ("9") -> times.add(LocalTime.of(18, 0));
+                case ("10") -> times.add(LocalTime.of(19, 0));
+                case ("11") -> times.add(LocalTime.of(20, 0));
+            }
+        }
+
+    }
 
 
 }

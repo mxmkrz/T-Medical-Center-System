@@ -1,63 +1,55 @@
 package com.t_systems.t_medical_center_system.mapper;
 
-import com.t_systems.t_medical_center_system.dto.AppointmentDto;
+
 import com.t_systems.t_medical_center_system.dto.EventDto;
-import com.t_systems.t_medical_center_system.entity.Appointment;
+import com.t_systems.t_medical_center_system.dto.EventBoardDto;
+
 import com.t_systems.t_medical_center_system.entity.Event;
-import com.t_systems.t_medical_center_system.repository.EventRepository;
+
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
+
 
 @Component
 public class EventMapper {
 
-    private EventRepository eventRepository;
+    private final ModelMapper modelMapper;
+    private final Converter<String, String> date = MappingContext::getSource;
 
     @Autowired
-    public EventMapper(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
+    public EventMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        modelMapper.createTypeMap(Event.class, EventDto.class).addMappings(mapper -> mapper.using(date).map(Event::getDate, EventDto::setEventDateTime));
     }
+
+
 
     public EventDto toDto(Event event) {
-        EventDto eventDto = new EventDto();
-        eventDto.setId(event.getId());
-        eventDto.setPatient(event.getPatient());
-        eventDto.setEventDateTime(event.getDate());
-        eventDto.setTherapyType(event.getTherapyType());
-        eventDto.setTime(event.getTime());
-        eventDto.setStatus(event.getStatus());
-        eventDto.setReasonToCancel(event.getReasonToCancel());
-        eventDto.setAppointment(event.getAppointment());
-        return eventDto;
+        return modelMapper.map(event,EventDto.class);
     }
 
 
+    public EventBoardDto toStringDto(Event event){
+        return modelMapper.map(event, EventBoardDto.class);
+    }
 
-    public List<EventDto> toDtoList(List<Event> events) {
-        List<EventDto> eventDtos = new ArrayList<>();
-        for (Event e : events) {
-            eventDtos.add(toDto(e));
+    public List<EventBoardDto> toStringDtoList(List<Event> events){
+        List<EventBoardDto> eventSpringDtos = new ArrayList<>();
+        for (Event e:events) {
+            eventSpringDtos.add(toStringDto(e));
         }
-        return eventDtos;
+        return eventSpringDtos;
     }
 
 
     public Event toEntity(EventDto eventDto){
-        Event event = new Event();
-        event.setId(eventDto.getId());
-        event.setDate(eventDto.getEventDateTime());
-        event.setTime(eventDto.getTime());
-
-        event.setTherapyType(eventDto.getTherapyType());
-        event.setReasonToCancel(event.getReasonToCancel());
-        return  event;
+        return modelMapper.map(eventDto,Event.class);
     }
 }

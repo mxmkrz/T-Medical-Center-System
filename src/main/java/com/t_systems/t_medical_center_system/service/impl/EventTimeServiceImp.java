@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class EventTimeService {
+public class EventTimeServiceImp {
 
-    private EventTimeRepository eventTimeRepository;
+    private final EventTimeRepository eventTimeRepository;
 
     @Autowired
-    public EventTimeService(EventTimeRepository eventTimeRepository) {
+    public EventTimeServiceImp(EventTimeRepository eventTimeRepository) {
         this.eventTimeRepository = eventTimeRepository;
     }
 

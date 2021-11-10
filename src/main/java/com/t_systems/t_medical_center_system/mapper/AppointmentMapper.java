@@ -8,7 +8,6 @@ import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundExcept
 import com.t_systems.t_medical_center_system.repository.*;
 import com.t_systems.t_medical_center_system.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,22 +19,20 @@ import java.util.Objects;
 
 @Component
 public class AppointmentMapper {
-    private AppointmentRepository appointmentRepository;
-    private ProcedureRepository procedureRepository;
-    private MedicalStaffRepository medicalStaffRepository;
-    private WeekDayRepository weekDayRepository;
-    private EventTimeRepository eventTimeRepository;
-    private DrugRepository drugRepository;
-    private EventTimeService eventTimeService;
-    private WeekDayService weekDayService;
-    private DrugServiceImpl drugService;
-    private ProcedureServiceImpl procedureService;
+    private final AppointmentRepository appointmentRepository;
+    private final ProcedureRepository procedureRepository;
+    private final WeekDayRepository weekDayRepository;
+    private final EventTimeRepository eventTimeRepository;
+    private final DrugRepository drugRepository;
+    private final EventTimeServiceImp eventTimeService;
+    private final WeekDayServiceImp weekDayService;
+    private final DrugServiceImpl drugService;
+    private final ProcedureServiceImpl procedureService;
 
     @Autowired
-    public AppointmentMapper(AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, MedicalStaffRepository medicalStaffRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventTimeService eventTimeService, WeekDayService weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
+    public AppointmentMapper(AppointmentRepository appointmentRepository, ProcedureRepository procedureRepository, WeekDayRepository weekDayRepository, EventTimeRepository eventTimeRepository, DrugRepository drugRepository, EventTimeServiceImp eventTimeService, WeekDayServiceImp weekDayService, DrugServiceImpl drugService, ProcedureServiceImpl procedureService) {
         this.appointmentRepository = appointmentRepository;
         this.procedureRepository = procedureRepository;
-        this.medicalStaffRepository = medicalStaffRepository;
         this.weekDayRepository = weekDayRepository;
         this.eventTimeRepository = eventTimeRepository;
         this.drugRepository = drugRepository;
@@ -49,180 +46,26 @@ public class AppointmentMapper {
 
     public Appointment toEntity(AppointmentDto appointmentDto) {
 
-
+        Appointment appointment;
         if (appointmentDto.getId() == null) {
-            Appointment appointment = new Appointment();
+            appointment = new Appointment();
             appointment.setId(appointmentDto.getId());
             appointment.setTherapyType(appointmentDto.getType());
             appointment.setStartDate(appointmentDto.getStartOfData());
             appointment.setEndDate(appointmentDto.getEndOfData());
-
-
-            List<WeekDay> weekDays = new ArrayList<>();
-            if (appointmentDto.isSunday()) {
-                WeekDay sunday = new WeekDay("Sunday");
-                sunday.setAppointment(appointment);
-                weekDays.add(sunday);
-            }
-            if (appointmentDto.isMonday()) {
-                WeekDay monday = new WeekDay("Monday");
-                monday.setAppointment(appointment);
-                weekDays.add(monday);
-            }
-            if (appointmentDto.isTuesday()) {
-                WeekDay tuesday = new WeekDay("Tuesday");
-                tuesday.setAppointment(appointment);
-                weekDays.add(tuesday);
-            }
-            if (appointmentDto.isWednesday()) {
-                WeekDay wednesday = new WeekDay("Wednesday");
-                wednesday.setAppointment(appointment);
-                weekDays.add(wednesday);
-            }
-            if (appointmentDto.isThursday()) {
-                WeekDay thursday = new WeekDay("Thursday");
-                thursday.setAppointment(appointment);
-                weekDays.add(thursday);
-            }
-            if (appointmentDto.isFriday()) {
-                WeekDay friday = new WeekDay("Friday");
-                friday.setAppointment(appointment);
-                weekDays.add(friday);
-            }
-            if (appointmentDto.isSaturday()) {
-                WeekDay saturday = new WeekDay("Saturday");
-                saturday.setAppointment(appointment);
-                weekDays.add(saturday);
-            }
-
-            appointment.setWeekDay(weekDays);
-
-
-            List<Procedure> procedures = new ArrayList<>();
-            if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.PROCEDURE)) {
-                procedures.add(null);
-            } else {
-                Procedure procedure = new Procedure(appointmentDto.getInfo());
-                procedure.setAppointment(appointment);
-                procedures.add(procedure);
-            }
-            appointment.setProcedureList(procedures);
-
-            List<Drug> drugs = new ArrayList<>();
-            if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.DRUG)) {
-                drugs.add(null);
-            } else {
-                Drug drug = new Drug(appointmentDto.getInfoDrugs(), appointmentDto.getDose());
-                drug.setAppointment(appointment);
-                drugs.add(drug);
-
-            }
-            appointment.setDrugsList(drugs);
-
-            List<EventTime> timePatterns = new ArrayList<>();
-            for (int i = 0; i < appointmentDto.getTime().size(); i++) {
-//            switch (appointmentDto.getTime().get(i)) {
-//                case ("0"):
-//                    timeHandling(appointment, 9);
-//                    break;
-//                case ("1"):
-//                    timeHandling(appointment,10);
-//                    break;
-//            }
-                if (appointmentDto.getTime().get(i).equals("0")) {
-                    EventTime tenOClock = new EventTime();
-                    tenOClock.setAppointment(appointment);
-                    tenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 9, 0));
-                    timePatterns.add(tenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("1")) {
-                    EventTime tenOClock = new EventTime();
-                    tenOClock.setAppointment(appointment);
-                    tenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 10, 0));
-                    timePatterns.add(tenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("2")) {
-                    EventTime elevenOClock = new EventTime();
-                    elevenOClock.setAppointment(appointment);
-                    elevenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 11, 0));
-                    timePatterns.add(elevenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("3")) {
-                    EventTime twelveOClock = new EventTime();
-                    twelveOClock.setAppointment(appointment);
-                    twelveOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 12, 0));
-                    timePatterns.add(twelveOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("4")) {
-                    EventTime thirteenOClock = new EventTime();
-                    thirteenOClock.setAppointment(appointment);
-                    thirteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 13, 0));
-                    timePatterns.add(thirteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("5")) {
-                    EventTime fourteenOClock = new EventTime();
-                    fourteenOClock.setAppointment(appointment);
-                    fourteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 14, 0));
-                    timePatterns.add(fourteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("6")) {
-                    EventTime fifteenOClock = new EventTime();
-                    fifteenOClock.setAppointment(appointment);
-                    fifteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 15, 0));
-                    timePatterns.add(fifteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("7")) {
-                    EventTime sixteenOClock = new EventTime();
-                    sixteenOClock.setAppointment(appointment);
-                    sixteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 16, 0));
-                    timePatterns.add(sixteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("8")) {
-                    EventTime seventeenOClock = new EventTime();
-                    seventeenOClock.setAppointment(appointment);
-                    seventeenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 17, 0));
-                    timePatterns.add(seventeenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("9")) {
-                    EventTime eighteenOClock = new EventTime();
-                    eighteenOClock.setAppointment(appointment);
-                    eighteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 18, 0));
-                    timePatterns.add(eighteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("10")) {
-                    EventTime nineteenOClock = new EventTime();
-                    nineteenOClock.setAppointment(appointment);
-                    nineteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 19, 0));
-                    timePatterns.add(nineteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("11")) {
-                    EventTime twentyOClock = new EventTime();
-                    twentyOClock.setAppointment(appointment);
-                    twentyOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 20, 0));
-                    timePatterns.add(twentyOClock);
-                }
-
-            }
-
-            appointment.setTimePatterns(timePatterns);
-
-            MedicalStaff medicalStaff = medicalStaffRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
-            appointment.setStaff(medicalStaff);
-            return appointment;
-
+            appointment.setWeekDay(convertWeekDay(appointmentDto, appointment));
+            appointment.setProcedureList(convertProcedure(appointmentDto, appointment));
+            appointment.setDrugsList(convertDrugs(appointmentDto, appointment));
+            appointment.setTimePatterns(convertEventTime(appointmentDto, appointment));
         } else {
 
-            Appointment appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
-//            List<Event> events = eventRepository.findAllByAppointmentId(appointment.getId());
-//            eventRepository.deleteAll(events);
+            appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
 
             List<WeekDay> weekDaysEntity = weekDayRepository.findAllByAppointmentId(appointment.getId());
             weekDayService.delete(weekDaysEntity);
-            List<WeekDay> weekDays = new ArrayList<>();
 
             List<EventTime> timePatternsEntity = eventTimeRepository.findAllByAppointmentId(appointment.getId());
             eventTimeService.delete(timePatternsEntity);
-            List<EventTime> timePatterns = new ArrayList<>();
 
             List<Drug> drugs = drugRepository.findAllByAppointmentId(appointment.getId());
             drugService.deleteDrugs(drugs);
@@ -230,190 +73,18 @@ public class AppointmentMapper {
             List<Procedure> proceduresEntity = procedureRepository.findProcedureByAppointmentId(appointment.getId());
             procedureService.delete(proceduresEntity);
 
-
-            if (appointmentDto.isSunday()) {
-                WeekDay sunday = new WeekDay("Sunday");
-                sunday.setAppointment(appointment);
-                weekDays.add(sunday);
-            }
-            if (appointmentDto.isMonday()) {
-                WeekDay monday = new WeekDay("Monday");
-                monday.setAppointment(appointment);
-                weekDays.add(monday);
-            }
-            if (appointmentDto.isTuesday()) {
-                WeekDay tuesday = new WeekDay("Tuesday");
-                tuesday.setAppointment(appointment);
-                weekDays.add(tuesday);
-            }
-            if (appointmentDto.isWednesday()) {
-                WeekDay wednesday = new WeekDay("Wednesday");
-                wednesday.setAppointment(appointment);
-                weekDays.add(wednesday);
-            }
-            if (appointmentDto.isThursday()) {
-                WeekDay thursday = new WeekDay("Thursday");
-                thursday.setAppointment(appointment);
-                weekDays.add(thursday);
-            }
-            if (appointmentDto.isFriday()) {
-                WeekDay friday = new WeekDay("Friday");
-                friday.setAppointment(appointment);
-                weekDays.add(friday);
-            }
-            if (appointmentDto.isSaturday()) {
-                WeekDay saturday = new WeekDay("Saturday");
-                saturday.setAppointment(appointment);
-                weekDays.add(saturday);
-            }
-
-
-            appointment.getWeekDay().addAll(weekDays);
-
-
-            List<Procedure> procedures = new ArrayList<>();
-            if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.PROCEDURE)) {
-                procedures.add(null);
-            } else {
-                Procedure procedure = new Procedure(appointmentDto.getInfo());
-                procedure.setAppointment(appointment);
-                procedures.add(procedure);
-            }
-            appointment.getProcedureList().addAll(procedures);
-
-            List<Drug> drugsNew = new ArrayList<>();
-            if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.DRUG)) {
-                drugsNew.add(null);
-            } else {
-                Drug drug = new Drug(appointmentDto.getInfoDrugs(), appointmentDto.getDose());
-                drug.setAppointment(appointment);
-                drugsNew.add(drug);
-
-            }
-            appointment.getDrugsList().addAll(drugsNew);
-
-
-            for (int i = 0; i < appointmentDto.getTime().size(); i++) {
-//            switch (appointmentDto.getTime().get(i)) {
-//                case ("0"):
-//                    timeHandling(appointment, 9);
-//                    break;
-//                case ("1"):
-//                    timeHandling(appointment,10);
-//                    break;
-//            }
-                if (appointmentDto.getTime().get(i).equals("0")) {
-                    EventTime tenOClock = new EventTime();
-                    tenOClock.setAppointment(appointment);
-                    tenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 9, 0));
-                    timePatterns.add(tenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("1")) {
-                    EventTime tenOClock = new EventTime();
-                    tenOClock.setAppointment(appointment);
-                    tenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 10, 0));
-                    timePatterns.add(tenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("2")) {
-                    EventTime elevenOClock = new EventTime();
-                    elevenOClock.setAppointment(appointment);
-                    elevenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 11, 0));
-                    timePatterns.add(elevenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("3")) {
-                    EventTime twelveOClock = new EventTime();
-                    twelveOClock.setAppointment(appointment);
-                    twelveOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 12, 0));
-                    timePatterns.add(twelveOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("4")) {
-                    EventTime thirteenOClock = new EventTime();
-                    thirteenOClock.setAppointment(appointment);
-                    thirteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 13, 0));
-                    timePatterns.add(thirteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("5")) {
-                    EventTime fourteenOClock = new EventTime();
-                    fourteenOClock.setAppointment(appointment);
-                    fourteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 14, 0));
-                    timePatterns.add(fourteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("6")) {
-                    EventTime fifteenOClock = new EventTime();
-                    fifteenOClock.setAppointment(appointment);
-                    fifteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 15, 0));
-                    timePatterns.add(fifteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("7")) {
-                    EventTime sixteenOClock = new EventTime();
-                    sixteenOClock.setAppointment(appointment);
-                    sixteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 16, 0));
-                    timePatterns.add(sixteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("8")) {
-                    EventTime seventeenOClock = new EventTime();
-                    seventeenOClock.setAppointment(appointment);
-                    seventeenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 17, 0));
-                    timePatterns.add(seventeenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("9")) {
-                    EventTime eighteenOClock = new EventTime();
-                    eighteenOClock.setAppointment(appointment);
-                    eighteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 18, 0));
-                    timePatterns.add(eighteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("10")) {
-                    EventTime nineteenOClock = new EventTime();
-                    nineteenOClock.setAppointment(appointment);
-                    nineteenOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 19, 0));
-                    timePatterns.add(nineteenOClock);
-                }
-                if (appointmentDto.getTime().get(i).equals("11")) {
-                    EventTime twentyOClock = new EventTime();
-                    twentyOClock.setAppointment(appointment);
-                    twentyOClock.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), 20, 0));
-                    timePatterns.add(twentyOClock);
-                }
-
-            }
-
-
-            appointment.getTimePatterns().addAll(timePatterns);
-
-            MedicalStaff medicalStaff = medicalStaffRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
-            appointment.setStaff(medicalStaff);
-
-
+            appointment.getWeekDay().addAll(convertWeekDay(appointmentDto, appointment));
+            appointment.getProcedureList().addAll(convertProcedure(appointmentDto, appointment));
+            appointment.getDrugsList().addAll(convertDrugs(appointmentDto, appointment));
+            appointment.getTimePatterns().addAll(convertEventTime(appointmentDto, appointment));
             appointment.setTherapyType(appointmentDto.getType());
             appointment.setStartDate(appointmentDto.getStartOfData());
             appointment.setEndDate(appointmentDto.getEndOfData());
 
-
-//
-//            List<Procedure> procedureListFromEntity = procedureRepository.findProcedureByAppointmentId(appointment.getId());
-//            appointment.setProcedureList(procedureListFromEntity);
-//
-//            List<Drug> drugListFromEntity = drugRepository.findAllByAppointmentId(appointment.getId());
-//            appointment.setDrugsList(drugListFromEntity);
-
-//
-//            appointment.setTherapyType(appointmentDto.getType());
-//            appointment.setStartDate(appointmentDto.getStartOfData());
-//            appointment.setEndDate(appointmentDto.getEndOfData());
-
-
-            return appointment;
         }
+        return appointment;
 
     }
-
-
-//    private void timeHandling(Appointment appointment, int hours) {
-//        EventTime eventTime = new EventTime();
-//        eventTime.setAppointment(appointment);
-//        eventTime.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), hours, 0));
-//        timePatterns.add(eventTime);
-//    }
 
 
     public AppointmentDto toDto(Appointment appointment) {
@@ -466,15 +137,101 @@ public class AppointmentMapper {
         return appointmentDto;
     }
 
-    public List<AppointmentDto> toDtoList(List<Appointment> appointments) {
-        List<AppointmentDto> appointmentDtos = new ArrayList<>();
-        for (Appointment a : appointments) {
-            appointmentDtos.add(toDto(a));
+    private List<Drug> convertDrugs(AppointmentDto appointmentDto, Appointment appointment) {
+        List<Drug> drugs = new ArrayList<>();
+        if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.DRUG)) {
+            drugs.add(null);
+        } else {
+            Drug drug = new Drug(appointmentDto.getInfoDrugs(), appointmentDto.getDose());
+            drug.setAppointment(appointment);
+            drugs.add(drug);
         }
-        return appointmentDtos;
+        return drugs;
+
     }
 
 
+    private List<Procedure> convertProcedure(AppointmentDto appointmentDto, Appointment appointment) {
+        List<Procedure> procedures = new ArrayList<>();
+        if (Objects.isNull(appointmentDto.getInfo()) || !appointmentDto.getType().equals(TherapyType.PROCEDURE)) {
+            procedures.add(null);
+        } else {
+            Procedure procedure = new Procedure(appointmentDto.getInfo());
+            procedure.setAppointment(appointment);
+            procedures.add(procedure);
+        }
+        return procedures;
+    }
+
+
+    private List<EventTime> convertEventTime(AppointmentDto appointmentDto, Appointment appointment) {
+        List<EventTime> timePatterns = new ArrayList<>();
+        for (int i = 0; i < appointmentDto.getTime().size(); i++) {
+            switch (appointmentDto.getTime().get(i)) {
+                case ("0") -> timePatterns.add(eventTimeMaker(appointment, 9));
+                case ("1") -> timePatterns.add(eventTimeMaker(appointment, 10));
+                case ("2") -> timePatterns.add(eventTimeMaker(appointment, 11));
+                case ("3") -> timePatterns.add(eventTimeMaker(appointment, 12));
+                case ("4") -> timePatterns.add(eventTimeMaker(appointment, 13));
+                case ("5") -> timePatterns.add(eventTimeMaker(appointment, 14));
+                case ("6") -> timePatterns.add(eventTimeMaker(appointment, 15));
+                case ("7") -> timePatterns.add(eventTimeMaker(appointment, 16));
+                case ("8") -> timePatterns.add(eventTimeMaker(appointment, 17));
+                case ("9") -> timePatterns.add(eventTimeMaker(appointment, 18));
+                case ("10") -> timePatterns.add(eventTimeMaker(appointment, 19));
+                case ("11") -> timePatterns.add(eventTimeMaker(appointment, 20));
+            }
+        }
+        return timePatterns;
+    }
+
+    private EventTime eventTimeMaker(Appointment appointment, int hours) {
+        EventTime eventTime = new EventTime();
+        eventTime.setAppointment(appointment);
+        eventTime.setTime(LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE), hours, 0));
+        return eventTime;
+    }
+
+
+    private List<WeekDay> convertWeekDay(AppointmentDto appointmentDto, Appointment appointment) {
+        List<WeekDay> weekDays = new ArrayList<>();
+        if (appointmentDto.isSunday()) {
+            WeekDay sunday = new WeekDay("Sunday");
+            sunday.setAppointment(appointment);
+            weekDays.add(sunday);
+        }
+        if (appointmentDto.isMonday()) {
+            WeekDay monday = new WeekDay("Monday");
+            monday.setAppointment(appointment);
+            weekDays.add(monday);
+        }
+        if (appointmentDto.isTuesday()) {
+            WeekDay tuesday = new WeekDay("Tuesday");
+            tuesday.setAppointment(appointment);
+            weekDays.add(tuesday);
+        }
+        if (appointmentDto.isWednesday()) {
+            WeekDay wednesday = new WeekDay("Wednesday");
+            wednesday.setAppointment(appointment);
+            weekDays.add(wednesday);
+        }
+        if (appointmentDto.isThursday()) {
+            WeekDay thursday = new WeekDay("Thursday");
+            thursday.setAppointment(appointment);
+            weekDays.add(thursday);
+        }
+        if (appointmentDto.isFriday()) {
+            WeekDay friday = new WeekDay("Friday");
+            friday.setAppointment(appointment);
+            weekDays.add(friday);
+        }
+        if (appointmentDto.isSaturday()) {
+            WeekDay saturday = new WeekDay("Saturday");
+            saturday.setAppointment(appointment);
+            weekDays.add(saturday);
+        }
+        return weekDays;
+    }
 }
 
 

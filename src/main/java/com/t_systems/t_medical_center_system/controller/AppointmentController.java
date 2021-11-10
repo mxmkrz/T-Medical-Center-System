@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.service.impl.AppointmentServiceImp;
-import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
+import com.t_systems.t_medical_center_system.util.AppointmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionFailedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,106 +21,104 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+
 @Controller
 public class AppointmentController {
-    private AppointmentServiceImp appointmentServiceImp;
-    private PatientServiceImp patientServiceImp;
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private EventServiceImp eventServiceImp;
+    private final AppointmentServiceImp appointmentServiceImp;
+    private final PatientServiceImp patientServiceImp;
+    private final ObjectMapper objectMapper;
+    private final AppointmentValidator appointmentValidator;
 
     @Autowired
-    public AppointmentController(AppointmentServiceImp appointmentServiceImp, PatientServiceImp patientServiceImp, EventServiceImp eventServiceImp) {
+    public AppointmentController(AppointmentServiceImp appointmentServiceImp, PatientServiceImp patientServiceImp, ObjectMapper objectMapper, AppointmentValidator appointmentValidator) {
         this.appointmentServiceImp = appointmentServiceImp;
         this.patientServiceImp = patientServiceImp;
-        this.eventServiceImp = eventServiceImp;
+        this.objectMapper = objectMapper;
+        this.appointmentValidator = appointmentValidator;
     }
+
 
     @PostConstruct
     public void init() {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
-//
-//
-//
-    @ExceptionHandler
-    public String handleException(ConversionFailedException e){
-        return e.getMessage();
-    }
-
-
+    //*******************************************
     @GetMapping(value = "/doctor/profile/{idPatient}/appointment")
-    public String newAppointmentGet(@PathVariable(name = "idPatient") Long id,
+    public String newAppointment(@PathVariable(name = "idPatient") Long id,
                                     Model model) {
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
         model.addAttribute("appointmentNew", new AppointmentDto());
         return "templates/appointment";
     }
 
-
     @PostMapping(value = "/doctor/profile/{idPatient}/appointment")
-    public String newAppointmentPost(@PathVariable(name = "idPatient") Long id,
-                                     @ModelAttribute(value = "appointmentNew") @Valid AppointmentDto appointmentDto, BindingResult bindingResult,Model model) {
-        if (bindingResult.hasErrors()){
-            return "redirect:/doctor/profile/{idPatient}/appointment";
-
+    public String newAppointment(@ModelAttribute(value = "appointmentNew") @Valid AppointmentDto appointmentDto
+            , BindingResult bindingResult
+            , @PathVariable(name = "idPatient") Long id
+            , Model model) {
+        model.addAttribute("patient", patientServiceImp.getPatientById(id));
+        appointmentValidator.validate(appointmentDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "templates/appointment";
         }
         appointmentServiceImp.makeAnAppointment(appointmentDto, id);
         return "redirect:/doctor/profile/{idPatient}";
+
     }
 
-
-
-    @GetMapping(value = "/doctor/profile/{id}/pageAppointment")
-    public String getAppointmentPage(@PathVariable(name = "id") Long id, Model model) {
-        model.addAttribute("pageAppointment", appointmentServiceImp.getAppointmentListByPatientId(id));
+    //*******************************************
+    @GetMapping(value = "/doctor/profile/{id}/appointments")
+    public String getAppointments(@PathVariable(name = "id") Long id
+            , Model model
+            , @PageableDefault(size = 6, sort = {"startDate"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<AppointmentDto> pages = appointmentServiceImp.getAppointmentListByPatientId(id, pageable);
+        model.addAttribute("number", pages.getNumber());
+        model.addAttribute("totalPages", pages.getTotalPages());
+        model.addAttribute("totalElements", pages.getTotalElements());
+        model.addAttribute("size", pages.getSize());
+        model.addAttribute("pageAppointment", pages.getContent());
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
-        return "templates/pageAppointment";
+        return "templates/appointments";
     }
 
 
     //*******************************************
     @GetMapping(value = "/doctor/profile/{id}/edit/{idAppointment}")
-    public String editAppointmentGet(@PathVariable(name = "id") Long id,
+    public String editAppointment(@PathVariable(name = "id") Long id,
                                      @PathVariable(name = "idAppointment") Long idAppointment, Model model) {
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
-        model.addAttribute("editAppointment", appointmentServiceImp.gitAppointById(idAppointment));
+        model.addAttribute("editAppointment", appointmentServiceImp.getAppointById(idAppointment));
         return "templates/appointmentEdit";
     }
 
 
     @PostMapping(value = "/doctor/profile/{id}/edit/{idAppointment}")
-    public String editAppointmentPost(@PathVariable(name = "id") Long id,
-                                      @PathVariable(name = "idAppointment") Long idAppointment,
-                                      @ModelAttribute(value = "appointmentEdit") @Valid AppointmentDto appointmentDto,
-                                      BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
-            return "redirect:/doctor/profile/{id}/edit/{idAppointment}";
-
+    public String editAppointment(@PathVariable(name = "id") Long id
+            , @PathVariable(name = "idAppointment") Long idAppointment
+            , @ModelAttribute(value = "editAppointment") @Valid AppointmentDto appointmentDto
+            , BindingResult bindingResult
+            , Model model) {
+        model.addAttribute("patient", patientServiceImp.getPatientById(id));
+        appointmentValidator.validate(appointmentDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "templates/appointmentEdit";
         }
-
         appointmentServiceImp.updateAppointment(appointmentDto, id);
         return "redirect:/doctor/profile/{id}/pageAppointment";
     }
 
-
+    //*******************************************
     @PostMapping(value = "/doctor/profile/{id}/pageAppointment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String cancelAppointment(@PathVariable(name = "id") Long id,HttpServletRequest request) {
+    public String cancelAppointment(@PathVariable(name = "id") Long id, HttpServletRequest request) {
         try {
             AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
-            appointmentServiceImp.cancelAppointment(appointmentDto,id);
-            System.out.println(appointmentDto);
+            appointmentServiceImp.cancelAppointment(appointmentDto, id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return "0";
     }
-
-
-
-
-
-
 }

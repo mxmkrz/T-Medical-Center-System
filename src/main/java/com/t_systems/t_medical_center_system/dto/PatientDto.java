@@ -19,10 +19,8 @@ public class PatientDto {
     private String diagnosis;
     @Min(value = 0, message = "Insurance Number should be greater than 0")
     private Long insuranceNumber;
-
     @NotBlank(message = "Status is required")
     private String status;
-
     private String doctorsName;
     private Date createDataTime;
     private Date updateDataTime;

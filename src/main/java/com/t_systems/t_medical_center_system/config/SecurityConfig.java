@@ -29,28 +29,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.
-                authorizeRequests().
-                antMatchers("/login").anonymous().
-                antMatchers("/doctor/**", "/nurse/**").authenticated().
-                antMatchers("/doctor/**").hasRole("DOCTOR").
-                antMatchers("/nurse/**").hasRole("NURSE").
-                and().
-                formLogin().
-                loginPage("/login").
-                loginProcessingUrl("/login/process").
-                usernameParameter("name").passwordParameter("password").
-                failureUrl("/login?error=true").
-                successHandler(myAuthenticationSuccessHandler()).
-                and().
-                exceptionHandling().
-                accessDeniedPage("/").
-                and().
-                logout().
+        httpSecurity
+                .authorizeRequests()
+                .antMatchers("/login").anonymous()
+                .antMatchers("/doctor/**", "/nurse/**").authenticated()
+                .antMatchers("/doctor/**").hasRole("DOCTOR")
+                .antMatchers("/nurse/**").hasRole("NURSE")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login/process")
+                .usernameParameter("name").passwordParameter("password")
+                .failureUrl("/login?error=true")
+                .successHandler(myAuthenticationSuccessHandler())
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/")
+                .and()
+                .logout()
 
 
-                and().
-                csrf().disable();
+                .and()
+                .csrf()
+                .disable();
 
     }
 

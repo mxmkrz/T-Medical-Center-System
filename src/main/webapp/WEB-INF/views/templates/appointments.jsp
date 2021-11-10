@@ -20,7 +20,11 @@
             background: url('../static/images/1612683701_129-p-zelenii-meditsinskii-fon-170.jpg');
         }
     </style>
-
+    <style>
+        li {
+            list-style-type: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -32,7 +36,7 @@
     </div>
 </nav>
 <div class="container-fluid">
-    <h3 class="text-white mb-4" >List appointments</h3>
+    <h3 class="text-white mb-4">List appointments</h3>
     <div class="card shadow">
         <div class="card-header py-3">
             <p class="text-black m-0 fw-bold">Important Information </p>
@@ -61,32 +65,64 @@
                         <tbody>
                         <tr>
                             <c:forEach var="appointments" items="${pageAppointment}">
-                        <tr  id="done-${appointments.id}">
-                            <td><c:out value="${patient.name} ${patient.surname}" /></td>
-                            <td><c:out value="${appointments.startOfData}" /></td>
-                            <td><c:out value="${appointments.endOfData}" /></td>
-                            <td><c:out value="${appointments.type}" /></td>
-                            <td><c:out value="${appointments.info}" /></td>
-                            <td><c:out value="${appointments.infoDrugs}" /></td>
-                            <td><c:out value="${appointments.dose}" /></td>
-                            <td><c:out value="${appointments.weekDayString}" /></td>
-                            <td><c:out value="${appointments.eventTimes}" /></td>
-                            <td style="color: ${appointments.status.name() == 'FINISHED' ? '#dc3545' : '#198754'}"><c:out value="${appointments.status}"/></td>
-                            <td><button type="button" class="btn btn-outline-danger btn-lg" data-toggle="modal" data-target="#cancel" data-done-id="${appointments.id}">Finish</button></td>
-                            <td><button type="button" class="btn btn-outline-success btn-lg" data-toggle="modal" data-target="#done" data-done-id="${appointments.id}">Done</button></td>
-                            <td><a class="btn btn-outline-secondary " href="<c:url value="/doctor/profile/${patient.id}/edit/${appointments.id}"/>" role="button">Edit Appointment</a></td>
+                        <tr id="done-${appointments.id}">
+                            <td><c:out value="${patient.name} ${patient.surname}"/></td>
+                            <td><c:out value="${appointments.startOfData}"/></td>
+                            <td><c:out value="${appointments.endOfData}"/></td>
+                            <td><c:out value="${appointments.type}"/></td>
+                            <td><c:out value="${appointments.info}"/></td>
+                            <td><c:out value="${appointments.infoDrugs}"/></td>
+                            <td><c:out value="${appointments.dose}"/></td>
+                            <td><c:out value="${appointments.weekDayString}"/></td>
+                            <td><c:out value="${appointments.eventTimes}"/></td>
+                            <td style="color: ${appointments.status.name() == 'FINISHED' ? '#dc3545' : appointments.status.name() == 'DONE' ? '#198754' : 'blue' }">
+                                <c:out value="${appointments.status}"/></td>
+                            <td>
+                                <button type="button" class="btn btn-outline-danger btn-lg" data-toggle="modal"
+                                        data-target="#cancel" data-done-id="${appointments.id}">Finish
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-success btn-lg" data-toggle="modal"
+                                        data-target="#done" data-done-id="${appointments.id}">Done
+                                </button>
+                            </td>
+                            <td><a class="btn btn-outline-secondary "
+                                   href="<c:url value="/doctor/profile/${patient.id}/edit/${appointments.id}"/>"
+                                   role="button">Edit Appointment</a></td>
                         </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                    <br>
+                    <c:if test="${totalElements > 8 }">
+                   <h6 align="center"><strong>Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</strong></h6>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <c:if test="${number != 0}">
+                                <a class="page-link" style="color: black" tabindex="-1"
+                                   href="/doctor/profile/${patient.id}/appointments?page=${number-1}&size=${size}">Previous</a>
+                            </c:if>
+                        </li>
+                        <c:forEach begin="0" end="${totalPages-1}" var="page">
+                            <li class="page-item " >
+                                <a href="/doctor/profile/${patient.id}/appointments?page=${page}&size=${size}"
+                                   class="page-link" style="color: black"> ${page+1} </a>
+                            </li>
+                        </c:forEach>
+                        </c:if>
+                        <li>
+                            <c:if test="${number lt totalPages - 1}">
+                                <a class="page-link" style="color: black"
+                                   href="/doctor/profile/${patient.id}/appointments?page=${number+1}&size=${size}">Next</a>
+                            </c:if>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 
 <div class="modal fade" id="cancel" tabindex="-1" role="dialog"
@@ -103,7 +139,7 @@
 
             <div class="modal-body">
                 <form:form action="/doctor/profile/${patient.id}/pageAppointment" method="post"
-                      class="formWithValidation_cancel" role="form">
+                           class="formWithValidation_cancel" role="form">
                     Are you sure the appointment has been canceled?
                     <div class="form-group">
                         <label class="col-sm-3 control-label" visibility: hidden for="idInputCancel">Id</label>
@@ -182,7 +218,8 @@
             },
             error: function (result) {
                 alert(result.responseText);
-            }
+            },
+
         });
     });
 </script>
@@ -220,7 +257,6 @@
         });
     });
 </script>
-
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </body>
 

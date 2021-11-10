@@ -97,15 +97,14 @@
                                     </div>
                                     <div class="row">
                                          <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
-                                        <div class="col-md-12"><a class="btn btn-outline-danger" role="button"
-                                                                  href="/doctor/delete/${profile.id}"><i
+                                        <div class="col-md-12"><a class="btn btn-outline-danger" role="button" href="/doctor/delete/${profile.id}"><i
                                                 class="fas fa-trash"></i>&nbsp;Delete</a></div>
                                                </span>
                                     </div>
                                     <div class="row">
                                         <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
                                         <div class="col-md-12"><a class="btn btn-outline-primary" role="button"
-                                                                  href="/doctor/profile/${profile.id}/pageAppointment"><i
+                                                                  href="/doctor/profile/${profile.id}/appointments"><i
                                                 class="fas fa-pager"></i>&nbsp;Appointments</a></div>
                                              </span>
                                     </div>
@@ -123,9 +122,19 @@
                     </div>
                 </div>
             </div>
+
         </section>
     </main>
 </div>
+
+
+
+<script>
+    $('#delete-patient').modal({
+        keyboard: true,
+        // backdrop:"static"
+    })
+</script>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </p>

@@ -21,7 +21,6 @@ public class EventDto {
     private LocalTime time;
     private EventStatus status;
     private TherapyType therapyType;
-
     private String reasonToCancel;
     private Long idPatient;
     private Appointment appointment;

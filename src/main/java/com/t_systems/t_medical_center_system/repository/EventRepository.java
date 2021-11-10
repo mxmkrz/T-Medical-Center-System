@@ -22,22 +22,19 @@ public interface EventRepository extends PagingAndSortingRepository<Event, Long>
     List<Event> findAllByPatientId(Long id);
 
 
-    @Query("SELECT DISTINCT p FROM Event AS p JOIN FETCH p.patient JOIN FETCH p.appointment  WHERE p.time <:nextHour and p.time >:now and p.date =:today")
-    List<Event> findAllForHour(@Param("nextHour") LocalTime nextHour, @Param("now") LocalTime now, @Param("today") Date today);
-
-
     @Query("SELECT DISTINCT p FROM Event AS p JOIN FETCH p.patient JOIN FETCH p.appointment WHERE p.date <:tomorrow and p.date >:yesterday")
     List<Event> findAllForDay(@Param("tomorrow") Date nextDay, @Param("yesterday") Date now);
 
 
-    @Query("SELECT DISTINCT p FROM Event AS p JOIN FETCH p.patient WHERE  p.patient.name LIKE %?1% OR p.patient.surname LIKE %?1%")
-    List<Event> findAllBy(String keyword);
+    @Query("SELECT DISTINCT p FROM Event AS p JOIN  p.patient JOIN  p.appointment  WHERE p.time <:nextHour and p.time >:now and p.date =:today")
+    Page<Event> findAllForHour(@Param("nextHour") LocalTime nextHour, @Param("now") LocalTime now, @Param("today") Date today, Pageable pageable);
 
 
+    @Query("SELECT DISTINCT p FROM Event AS p JOIN  p.patient JOIN  p.appointment WHERE p.date <:tomorrow and p.date >:yesterday")
+    Page<Event> findAllForDay(@Param("tomorrow") Date nextDay, @Param("yesterday") Date now, Pageable pageable);
 
 
-
-
-
+    @Query("SELECT DISTINCT p FROM Event AS p JOIN  p.patient WHERE  p.patient.name LIKE %?1% OR p.patient.surname LIKE %?1%")
+    Page<Event> findAllBy(String keyword, Pageable pageable);
 
 }

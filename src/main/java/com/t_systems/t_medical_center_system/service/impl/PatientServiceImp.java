@@ -17,6 +17,8 @@ import com.t_systems.t_medical_center_system.repository.PatientRepository;
 import com.t_systems.t_medical_center_system.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,23 +37,25 @@ public class PatientServiceImp implements PatientService {
     private final PatientMapper patientMapper;
     private final EventRepository eventRepository;
     private final AppointmentRepository appointmentRepository;
-
+    private final RabbitSender rabbitSender;
 
     @Autowired
-    public PatientServiceImp(PatientRepository patientRepository, Convertor<Patient, PatientDto> patientConvertor, PatientMapper patientMapper, EventRepository eventRepository, AppointmentRepository appointmentRepository, EventRepository eventRepository1) {
+    public PatientServiceImp(PatientRepository patientRepository, Convertor<Patient, PatientDto> patientConvertor, PatientMapper patientMapper, EventRepository eventRepository, AppointmentRepository appointmentRepository, RabbitSender rabbitSender) {
         this.patientRepository = patientRepository;
         this.patientConvertor = patientConvertor;
         this.patientMapper = patientMapper;
+        this.eventRepository = eventRepository;
         this.appointmentRepository = appointmentRepository;
-        this.eventRepository = eventRepository1;
+        this.rabbitSender = rabbitSender;
     }
+
+
 
 
     @Transactional(readOnly = true)
     @Override
-    public List<PatientDto> getAllPatients() {
-        List<Patient> result = (List<Patient>) patientRepository.findAll();
-        return patientConvertor.convertLisToDto(result, PatientDto.class);
+    public Page<PatientDto> getAllPatients(Pageable pageable) {
+        return patientRepository.findAll(pageable).map(patientMapper::toDto);
     }
 
 
@@ -92,6 +96,7 @@ public class PatientServiceImp implements PatientService {
         List<Appointment> appointments = appointmentRepository.findAllByPatientId(id);
         appointmentRepository.deleteAll(appointments);
         patientRepository.deleteById(id);
+        rabbitSender.sendMessage("delete patient");
     }
 
 

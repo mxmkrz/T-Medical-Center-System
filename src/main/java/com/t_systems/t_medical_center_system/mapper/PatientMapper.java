@@ -4,6 +4,10 @@ import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.entity.enums.PatientStatus;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -13,33 +17,20 @@ import java.util.HashSet;
 @Component
 public class PatientMapper {
 
+    private final ModelMapper modelMapper;
+    private final Converter<String, String> doctorName = MappingContext::getSource;
 
-    public Patient toEntity(PatientDto patientDto){
-        Patient patient = new Patient();
-        patient.setId(patientDto.getId());
-        patient.setName(patientDto.getName());
-        patient.setSurname(patientDto.getSurname());
-        patient.setDiagnosis(patientDto.getDiagnosis());
-        patient.setInsuranceNumber(patientDto.getInsuranceNumber());
-        patient.setDoctorName(patientDto.getDoctorsName());
-        if (patientDto.getStatus().equals(PatientStatus.PATIENT.name())) patient.setPatientStatus(PatientStatus.PATIENT);
-        if (patientDto.getStatus().equals(PatientStatus.DISCHARGED.name())) patient.setPatientStatus(PatientStatus.DISCHARGED);
-        patient.setCreateDataTime(patientDto.getCreateDataTime());
-        patient.setUpdateDataTime(patientDto.getUpdateDataTime());
-       return patient;
+    @Autowired
+    public PatientMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        modelMapper.createTypeMap(Patient.class, PatientDto.class).addMappings(mapper -> mapper.using(doctorName).map(Patient::getDoctorName, PatientDto::setDoctorsName));
     }
 
-    public PatientDto toDto(Patient patient){
-        PatientDto patientDto = new PatientDto();
-        patientDto.setId(patient.getId());
-        patientDto.setName(patient.getName());
-        patientDto.setSurname(patient.getSurname());
-        patientDto.setDoctorsName(patient.getDoctorName());
-        patientDto.setInsuranceNumber(patient.getInsuranceNumber());
-        patientDto.setDiagnosis(patient.getDiagnosis());
-        patientDto.setStatus(patient.getPatientStatus().name());
-        patientDto.setCreateDataTime(patient.getCreateDataTime());
-        patientDto.setUpdateDataTime(patient.getUpdateDataTime());
-        return patientDto;
+    public Patient toEntity(PatientDto patientDto) {
+        return modelMapper.map(patientDto, Patient.class);
+    }
+
+    public PatientDto toDto(Patient patient) {
+        return modelMapper.map(patient, PatientDto.class);
     }
 }

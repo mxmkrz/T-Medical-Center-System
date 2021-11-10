@@ -19,6 +19,11 @@
         p.exserif { font-family: "Quicksand", "Book Antiqua", serif; }
 
     </style>
+    <style>
+        li {
+            list-style-type: none;
+        }
+    </style>
 
     <style>
     body {
@@ -102,6 +107,30 @@
                             </tr>
                             </tfoot>
                         </table>
+                        <br>
+                        <c:if test="${totalElements > 4 }">
+                        <h6 align="center">Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</h6>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <c:if test="${number != 0}">
+                                    <a class="page-link" tabindex="-1"
+                                       href="/doctor/patients?page=${number-1}&size=${size}">Previous</a>
+                                </c:if>
+                            </li>
+                            <c:forEach begin="0" end="${totalPages-1}" var="page">
+                                <li class="page-item">
+                                    <a href="/doctor/patients?page=${page}&size=${size}"
+                                       class="page-link"> ${page+1} </a>
+                                </li>
+                            </c:forEach>
+                            </c:if>
+                            <li>
+                                <c:if test="${number lt totalPages - 1}">
+                                    <a class="page-link"
+                                       href="/doctor/patients?page=${number+1}&size=${size}">Next</a>
+                                </c:if>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

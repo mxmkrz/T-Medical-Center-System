@@ -1,8 +1,13 @@
 package com.t_systems.t_medical_center_system.controller;
 
+import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -26,8 +31,15 @@ public class PatientController {
 
 
     @GetMapping("/doctor/patients")
-    public String getPatientsList(Model model) {
-        model.addAttribute("patients", patientService.getAllPatients());
+    public String getPatientsList(Model model
+    ,@PageableDefault(size = 4,sort = {"createDataTime"},direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<PatientDto> pages = patientService.getAllPatients(pageable);
+        model.addAttribute("number", pages.getNumber());
+        model.addAttribute("totalPages", pages.getTotalPages());
+        model.addAttribute("totalElements", pages.getTotalElements());
+        model.addAttribute("size", pages.getSize());
+        model.addAttribute("patients", pages.getContent());
+
         return "templates/patients";
     }
     //*******************************************

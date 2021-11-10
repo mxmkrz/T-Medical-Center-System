@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.t_systems.t_medical_center_system.dto.EventDto;
 import com.t_systems.t_medical_center_system.dto.Filter;
+import com.t_systems.t_medical_center_system.mapper.EventMapper;
+import com.t_systems.t_medical_center_system.repository.EventRepository;
 import com.t_systems.t_medical_center_system.service.EventService;
 import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,25 +21,29 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
 public class EventController {
 
-    private EventServiceImp eventService;
-    private PatientServiceImp patientServiceImp;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final EventServiceImp eventService;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public EventController(EventServiceImp eventServiceImp, PatientServiceImp patientServiceImp) {
-        this.eventService = eventServiceImp;
-        this.patientServiceImp = patientServiceImp;
+    public EventController(EventServiceImp eventService, ObjectMapper objectMapper) {
+        this.eventService = eventService;
+        this.objectMapper = objectMapper;
     }
+
+
 
 
     @PostConstruct
@@ -44,30 +51,25 @@ public class EventController {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
-
     @GetMapping("/nurse/eventList")
-    public String getEventListFilter(@Param("keyword") String keyword
-            , Model model) {
+    public String getEventListFilter(Model model, @Param("keyword") String keyword,
+                                     @Param(value = "filter") Filter filter,
+                                     @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
 
-        model.addAttribute("filter", new Filter());
+        if (filter.getAnInt() != null) {
+            Page<EventDto> pages = eventService.doFilter(filter, keyword, pageable);
+
+            model.addAttribute("filter", filter);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("number", pages.getNumber());
+            model.addAttribute("totalPages", pages.getTotalPages());
+            model.addAttribute("totalElements", pages.getTotalElements());
+            model.addAttribute("size", pages.getSize());
+            model.addAttribute("data", pages.getContent());
+        }
         return "templates/eventList";
-
     }
 
-
-
-    @PostMapping("/nurse/eventList-filter")
-    public String getEventListFilterPost(@Param("keyword") String keyword
-            , Model model,@ModelAttribute Filter filter) {
-
-        model.addAttribute("events",eventService.doFilter(filter,keyword));
-        model.addAttribute("filter",filter);
-        return "templates/eventList";
-
-    }
-
-
-//
     @PostMapping(value = "/nurse/eventList", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

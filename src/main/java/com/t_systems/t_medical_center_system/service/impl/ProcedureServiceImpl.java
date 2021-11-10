@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class ProcedureServiceImpl {
 
-    private ProcedureRepository procedureRepository;
+    private final ProcedureRepository procedureRepository;
 
     @Autowired
     public ProcedureServiceImpl(ProcedureRepository procedureRepository) {

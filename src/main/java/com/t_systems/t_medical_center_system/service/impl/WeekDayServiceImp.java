@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class WeekDayService {
-    private WeekDayRepository weekDayRepository;
+public class WeekDayServiceImp {
+    private final WeekDayRepository weekDayRepository;
 
     @Autowired
-    public WeekDayService(WeekDayRepository weekDayRepository) {
+    public WeekDayServiceImp(WeekDayRepository weekDayRepository) {
         this.weekDayRepository = weekDayRepository;
     }
 
