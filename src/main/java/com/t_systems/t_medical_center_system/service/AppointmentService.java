@@ -17,7 +17,7 @@ public interface AppointmentService {
 
     void updateAppointment(AppointmentDto appointmentDto, Long idPatient);
 
-    void cancelAppointment(AppointmentDto appointmentDto, Long idPatient);
+    void cancelOrDoneAppointment(AppointmentDto appointmentDto, Long idPatient);
 
 
 }

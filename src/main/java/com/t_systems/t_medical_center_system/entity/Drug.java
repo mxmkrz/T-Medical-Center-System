@@ -29,4 +29,9 @@ public class Drug {
         this.name = name;
         this.dosage = dosage;
     }
+
+    @Override
+    public String toString() {
+        return "name=" + name + ", " + "dosage=" + dosage;
+    }
 }

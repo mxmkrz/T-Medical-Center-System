@@ -24,4 +24,6 @@ public class PatientDto {
     private String doctorsName;
     private Date createDataTime;
     private Date updateDataTime;
+    @Email(message = "Wrong email")
+    private String email;
 }

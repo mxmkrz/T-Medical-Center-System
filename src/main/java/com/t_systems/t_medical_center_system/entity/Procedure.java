@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @EqualsAndHashCode(exclude = "appointment")
 @Table(name = "tb_procedure")
-
 public class Procedure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +26,10 @@ public class Procedure {
 
     public Procedure(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "name='" + name + '\'';
     }
 }

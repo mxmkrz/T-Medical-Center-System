@@ -59,6 +59,7 @@
                             <th>Status Appointment</th>
                             <th>Cancel Appointment</th>
                             <th>Done Appointment</th>
+                            <th>Send an email</th>
                             <th>Edit Appointment</th>
                         </tr>
                         </thead>
@@ -77,14 +78,31 @@
                             <td><c:out value="${appointments.eventTimes}"/></td>
                             <td style="color: ${appointments.status.name() == 'FINISHED' ? '#dc3545' : appointments.status.name() == 'DONE' ? '#198754' : 'blue' }">
                                 <c:out value="${appointments.status}"/></td>
+                            <c:choose>
+                                <c:when test="${appointments.status == 'FINISHED'}">
+                                    <td>
+                                        <button type="button" disabled class="btn btn-outline-danger "
+                                                data-toggle="modal"
+                                                data-target="#cancel" data-done-id="${appointments.id}">Finish
+                                        </button>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-danger " data-toggle="modal"
+                                                data-target="#cancel" data-done-id="${appointments.id}">Finish
+                                        </button>
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
                             <td>
-                                <button type="button" class="btn btn-outline-danger btn-lg" data-toggle="modal"
-                                        data-target="#cancel" data-done-id="${appointments.id}">Finish
+                                <button type="button" class="btn btn-outline-success " data-toggle="modal"
+                                        data-target="#done" data-done-id="${appointments.id}">Done
                                 </button>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-outline-success btn-lg" data-toggle="modal"
-                                        data-target="#done" data-done-id="${appointments.id}">Done
+                                <button type="button" class="btn btn-outline-info " data-toggle="modal"
+                                        data-target="#email" data-done-id="${appointments.id}">Send An Email
                                 </button>
                             </td>
                             <td><a class="btn btn-outline-secondary "
@@ -96,7 +114,8 @@
                     </table>
                     <br>
                     <c:if test="${totalElements > 8 }">
-                   <h6 align="center"><strong>Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</strong></h6>
+                    <h6 align="center"><strong>Showing ${number+1} page of ${totalPages} pages of ${totalElements}
+                        events</strong></h6>
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
                             <c:if test="${number != 0}">
@@ -105,7 +124,7 @@
                             </c:if>
                         </li>
                         <c:forEach begin="0" end="${totalPages-1}" var="page">
-                            <li class="page-item " >
+                            <li class="page-item ">
                                 <a href="/doctor/profile/${patient.id}/appointments?page=${page}&size=${size}"
                                    class="page-link" style="color: black"> ${page+1} </a>
                             </li>
@@ -123,7 +142,37 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="email" tabindex="-1" role="dialog"
+     aria-labelledby="allertCompleteEmailModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="allertCompleteEmailModal">Complete Send An Email</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
+            <div class="modal-body">
+                <form:form action="/doctor/profile/${patient.id}/email" method="post"
+                           class="formWithValidation_email" role="form">
+                    Are you sure you want to send the appointment by mail?
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" visibility: hidden for="idInputEmail">Id</label>
+                        <div class="col-sm-9"><input type="number" readonly visibility: hidden class="id field"
+                                                     name="id" id="idInputEmail"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"> No</button>
+                        <button type="submit" class="btn btn-primary"> Yes</button>
+                    </div>
+                </form:form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="cancel" tabindex="-1" role="dialog"
      aria-labelledby="allertCompleteCancelModal"
@@ -188,6 +237,46 @@
     </div>
 </div>
 </p>
+<script>
+    $("#email").on('show.bs.modal', function (e) {
+        var id0 = $(e.relatedTarget).data('done-id');
+        $('#idInputEmail').val(id0);
+
+    });
+    $("#cancel").on('hidden.bs.modal', function () {
+        var form = $(this).find('form');
+        form[0].reset();
+    });
+
+    var form = document.querySelector('.formWithValidation_email')
+    var id0 = form.querySelector('.id')
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault()
+        if (${patient.email == null}) {
+            alert("Empty email")
+            return onerror;
+        }
+
+        console.log(form)
+        $.ajax({
+            url: '/doctor/profile/${patient.id}/email',
+            datatype: 'json',
+            type: "POST",
+            dataType: 'JSON',
+            data: JSON.stringify({
+                id: id0.value,
+            }),
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function (result) {
+                alert(result.responseText);
+            },
+
+        });
+    });
+</script>
 <script>
     $("#cancel").on('show.bs.modal', function (e) {
         var id = $(e.relatedTarget).data('done-id');

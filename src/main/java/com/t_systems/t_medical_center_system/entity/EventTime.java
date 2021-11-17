@@ -21,4 +21,8 @@ public class EventTime {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
+    @Override
+    public String toString() {
+        return "time=" + time ;
+    }
 }

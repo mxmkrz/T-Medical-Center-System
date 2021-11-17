@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,6 +59,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
+                                            <p class="labels"><strong>Email</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.email}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
                                             <p class="labels"><strong>Diagnosis</strong></p>
                                         </div>
                                         <div class="col">
@@ -97,7 +106,8 @@
                                     </div>
                                     <div class="row">
                                          <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
-                                        <div class="col-md-12"><a class="btn btn-outline-danger" role="button" href="/doctor/delete/${profile.id}"><i
+                                        <div class="col-md-12"><a class="btn btn-outline-danger" role="button"
+                                                                  href="/doctor/delete/${profile.id}"><i
                                                 class="fas fa-trash"></i>&nbsp;Delete</a></div>
                                                </span>
                                     </div>
@@ -109,12 +119,24 @@
                                              </span>
                                     </div>
                                     <div class="row">
-                                        <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
-                                                                <div class="col-md-12"><a class="btn btn-outline-success"
-                                                                                          role="button"
-                                                                                          href="/doctor/profile/${profile.id}/appointment"><i
+                                        <c:if test="${profile.status == 'DISCHARGED'}">
+                                        <span hidden class="py-2 px-3 bg-transparent text-white rounded mybtn">
+                                                                <div hidden class="col-md-12"><a
+                                                                        class="btn btn-outline-success"
+                                                                        role="button"
+                                                                        href="/doctor/profile/${profile.id}/appointment"><i
                                                                         class="fas fa-newspaper"></i>&nbsp;Make an appointment</a></div>
                                         </span>
+                                        </c:if>
+                                        <c:if test="${profile.status == 'PATIENT'}">
+                                        <span  class="py-2 px-3 bg-transparent text-white rounded mybtn">
+                                                                <div class="col-md-12"><a
+                                                                        class="btn btn-outline-success"
+                                                                        role="button"
+                                                                        href="/doctor/profile/${profile.id}/appointment"><i
+                                                                        class="fas fa-newspaper"></i>&nbsp;Make an appointment</a></div>
+                                        </span>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +148,6 @@
         </section>
     </main>
 </div>
-
 
 
 <script>

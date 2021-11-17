@@ -50,4 +50,6 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private PatientStatus patientStatus;
 
+    private String email;
+
 }

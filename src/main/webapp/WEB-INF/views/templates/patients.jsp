@@ -62,6 +62,7 @@
                                 <th>Surname</th>
                                 <th>Insurance number</th>
                                 <th>Diagnosis</th>
+                                <th>Email</th>
                                 <th>Create Data Time</th>
                                 <th>Update Data Time</th>
                                 <th>Status</th>
@@ -82,6 +83,9 @@
                                 </td>
                                 <td><strong><a class="nav-link active"
                                                href="/doctor/profile/${patient.id}">${patient.diagnosis}</a></strong>
+                                </td>
+                                <td><strong><a class="nav-link active"
+                                               href="/doctor/profile/${patient.id}">${patient.email}</a></strong>
                                 </td>
                                 <td><strong><a class="nav-link active"
                                                href="/doctor/profile/${patient.id}">${patient.createDataTime}</a></strong>

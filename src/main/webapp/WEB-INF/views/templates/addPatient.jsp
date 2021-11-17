@@ -43,6 +43,13 @@
             background: #0062cc;
             color: #fff;
         }
+
+        .error {
+            color: #ff0000;
+            font-style: italic;
+            font-weight: bold;
+        }
+
     </style>
 
     <style>
@@ -76,35 +83,40 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <form:input type="text" class="form-control" placeholder="Name" path="name"/>
-                        <form:errors path="name"/>
+                        <form:errors path="name" cssClass="error"/>
                     </div>
                     <div class="form-group">
                         <form:input type="text" class="form-control" placeholder="Surname" path="surname"/>
-                        <form:errors path="surname"/>
+                        <form:errors path="surname" cssClass="error"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:input type="text" class="form-control" placeholder="Diagnosis" path="diagnosis"/>
-                        <form:errors path="diagnosis"/>
+                        <form:input type="text" class="form-control" placeholder="Email" path="email"/>
+                        <form:errors path="email" cssClass="error"/>
                     </div>
                     <div class="form-group">
-                        <form:input type="text" class="form-control" placeholder="Insurance Number" path="insuranceNumber"/>
-                        <form:errors path="insuranceNumber"/>
+                        <form:input type="text" class="form-control" placeholder="Diagnosis" path="diagnosis"/>
+                        <form:errors path="diagnosis" cssClass="error"/>
+                    </div>
+                    <div class="form-group">
+                        <form:input type="text" class="form-control" placeholder="Insurance Number"
+                                    path="insuranceNumber"/>
+                        <form:errors path="insuranceNumber" cssClass="error"/>
                     </div>
                 </div>
-                    <div hidden class="col-md-6">
-                        <div class="col">
-                            <label>
-                                <form:select class="form-selected" path="status" >
-                                    <form:option value="PATIENT">PATIENT</form:option>
-                                    <form:option value="DISCHARGED">DISCHARGED</form:option>
-                                </form:select>
-                                <form:errors path="status"/>
-                            </label>
-                        </div>
+                <div hidden class="col-md-6">
+                    <div class="col">
+                        <label>
+                            <form:select class="form-selected" path="status">
+                                <form:option value="PATIENT">PATIENT</form:option>
+                                <form:option value="DISCHARGED">DISCHARGED</form:option>
+                            </form:select>
+                            <form:errors path="status" cssClass="error"/>
+                        </label>
                     </div>
-                    <button type="submit" class="btnSubmit">Add</button>
+                </div>
+                <button type="submit" class="btnSubmit">Add</button>
             </div>
 
             </form:form>

@@ -27,5 +27,8 @@ public class WeekDay {
         this.day = day;
     }
 
-
+    @Override
+    public String toString() {
+        return "day='" + day + '\'';
+    }
 }

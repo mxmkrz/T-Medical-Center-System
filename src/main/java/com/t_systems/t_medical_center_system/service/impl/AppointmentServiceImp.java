@@ -96,7 +96,7 @@ public class AppointmentServiceImp implements AppointmentService {
 
     @Transactional
     @Override
-    public void cancelAppointment(AppointmentDto appointmentDto, Long idPatient) {
+    public void cancelOrDoneAppointment(AppointmentDto appointmentDto, Long idPatient) {
         if (appointmentDto.getStatus().equals(AppointmentStatus.FINISHED)) {
             List<Event> events = eventServiceImp.findAllByAppointmentId(appointmentDto.getId());
 

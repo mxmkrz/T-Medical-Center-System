@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.service.impl.AppointmentServiceImp;
+import com.t_systems.t_medical_center_system.service.impl.MailServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import com.t_systems.t_medical_center_system.util.AppointmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.PrintWriter;
 
 
 @Controller
@@ -28,13 +30,15 @@ public class AppointmentController {
     private final PatientServiceImp patientServiceImp;
     private final ObjectMapper objectMapper;
     private final AppointmentValidator appointmentValidator;
+    private final MailServiceImp mailServiceImp;
 
     @Autowired
-    public AppointmentController(AppointmentServiceImp appointmentServiceImp, PatientServiceImp patientServiceImp, ObjectMapper objectMapper, AppointmentValidator appointmentValidator) {
+    public AppointmentController(AppointmentServiceImp appointmentServiceImp, PatientServiceImp patientServiceImp, ObjectMapper objectMapper, AppointmentValidator appointmentValidator, MailServiceImp mailServiceImp) {
         this.appointmentServiceImp = appointmentServiceImp;
         this.patientServiceImp = patientServiceImp;
         this.objectMapper = objectMapper;
         this.appointmentValidator = appointmentValidator;
+        this.mailServiceImp = mailServiceImp;
     }
 
 
@@ -46,7 +50,7 @@ public class AppointmentController {
     //*******************************************
     @GetMapping(value = "/doctor/profile/{idPatient}/appointment")
     public String newAppointment(@PathVariable(name = "idPatient") Long id,
-                                    Model model) {
+                                 Model model) {
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
         model.addAttribute("appointmentNew", new AppointmentDto());
         return "templates/appointment";
@@ -63,6 +67,7 @@ public class AppointmentController {
             return "templates/appointment";
         }
         appointmentServiceImp.makeAnAppointment(appointmentDto, id);
+
         return "redirect:/doctor/profile/{idPatient}";
 
     }
@@ -86,7 +91,7 @@ public class AppointmentController {
     //*******************************************
     @GetMapping(value = "/doctor/profile/{id}/edit/{idAppointment}")
     public String editAppointment(@PathVariable(name = "id") Long id,
-                                     @PathVariable(name = "idAppointment") Long idAppointment, Model model) {
+                                  @PathVariable(name = "idAppointment") Long idAppointment, Model model) {
         model.addAttribute("patient", patientServiceImp.getPatientById(id));
         model.addAttribute("editAppointment", appointmentServiceImp.getAppointById(idAppointment));
         return "templates/appointmentEdit";
@@ -112,10 +117,24 @@ public class AppointmentController {
     @PostMapping(value = "/doctor/profile/{id}/pageAppointment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String cancelAppointment(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+    public String cancelOrDoneAppointment(@PathVariable(name = "id") Long id, HttpServletRequest request) {
         try {
             AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
-            appointmentServiceImp.cancelAppointment(appointmentDto, id);
+            appointmentServiceImp.cancelOrDoneAppointment(appointmentDto, id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "0";
+    }
+
+//    *******************************************
+    @PostMapping(value = "/doctor/profile/{id}/email", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String sendAppointmentAnEmail(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+        try {
+            AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
+            mailServiceImp.sendSimpleMessage(appointmentDto,id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -72,6 +72,18 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
+                                            <p class="labels"><strong>Email</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <label>
+                                                <input class="form-control" type="text" name="email"
+                                                       placeholder="${profile.email}">
+                                                <form:errors path="email"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
                                             <p class="labels"><strong>Diagnosis</strong></p>
                                         </div>
                                         <div class="col">
