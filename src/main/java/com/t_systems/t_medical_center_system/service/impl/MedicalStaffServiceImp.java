@@ -5,6 +5,8 @@ import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.service.MedicalStaffService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -25,12 +28,20 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
 
     private final MedicalStaffRepository staffRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    private final MedicalStaffRepository medicalStaffRepository;
+    private final JavaMailSender mailSender;
+    private final SimpleMailMessage mailMessage;
     @Autowired
-    public MedicalStaffServiceImp(MedicalStaffRepository doctorRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.staffRepository = doctorRepository;
+    public MedicalStaffServiceImp(MedicalStaffRepository staffRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MedicalStaffRepository medicalStaffRepository, JavaMailSender mailSender, SimpleMailMessage mailMessage) {
+        this.staffRepository = staffRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.medicalStaffRepository = medicalStaffRepository;
+        this.mailSender = mailSender;
+        this.mailMessage = mailMessage;
     }
+
+
+
 
 
     @Transactional
@@ -42,18 +53,40 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
     }
 
 
+    @Override
+    public void sendLinkOnEmail(String email) {
+        mailMessage.setTo(email);
+        mailMessage.setText("Please follow the links to change your password http://localhost:8080/login/change");
+        mailSender.send(mailMessage);
+    }
+
     @Transactional
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        MedicalStaff medicalStaff = staffRepository.findByName(name);
+    public void changePassword(MedicalStaff medicalStaff) {
+        List<MedicalStaff> medicalStaffList = (List<MedicalStaff>) medicalStaffRepository.findAll();
+        for (MedicalStaff m : medicalStaffList) {
+            if (bCryptPasswordEncoder.matches(medicalStaff.getOldPassword(), m.getPassword())) {
+                m.setPassword(bCryptPasswordEncoder.encode(medicalStaff.getNewPassword()));
+                medicalStaffRepository.save(m);
+            }
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        MedicalStaff medicalStaff = staffRepository.findByEmail(email);
         if (medicalStaff == null) {
-            throw new UsernameNotFoundException(name);
+            throw new UsernameNotFoundException(email);
         }
         String role = medicalStaff.getRole().name();
         GrantedAuthority authority = new SimpleGrantedAuthority(role);
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(authority);
 
-        return new org.springframework.security.core.userdetails.User(medicalStaff.getName(), medicalStaff.getPassword(), roles);
+        return new org.springframework.security.core.userdetails.User(medicalStaff.getEmail(), medicalStaff.getPassword(), roles);
     }
+
+
 }

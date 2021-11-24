@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.PrintWriter;
 
 
 @Controller
@@ -110,7 +109,7 @@ public class AppointmentController {
             return "templates/appointmentEdit";
         }
         appointmentServiceImp.updateAppointment(appointmentDto, id);
-        return "redirect:/doctor/profile/{id}/pageAppointment";
+        return "redirect:/doctor/profile/{id}/appointments";
     }
 
     //*******************************************

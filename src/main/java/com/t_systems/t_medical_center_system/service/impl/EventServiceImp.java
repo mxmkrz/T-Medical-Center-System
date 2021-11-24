@@ -194,6 +194,7 @@ public class EventServiceImp implements EventService {
 
     }
 
+    @Override
     public Page<EventDto> doFilter(Filter filter, String keyword, Pageable pageable) {
         if (filter.getAnInt().equals("0")) return findAllEvents(pageable);
         if (filter.getAnInt().equals("1")) return findAllPatientByName(keyword, pageable);
@@ -202,7 +203,7 @@ public class EventServiceImp implements EventService {
         return null;
     }
 
-    private List<Date> getDataBetweenStartEndData(AppointmentDto appointmentDto) {
+    public List<Date> getDataBetweenStartEndData(AppointmentDto appointmentDto) {
         List<Date> datesInRange = new ArrayList<>();
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(appointmentDto.getStartOfData());
@@ -234,7 +235,7 @@ public class EventServiceImp implements EventService {
     }
 
 
-    private Map<Date, List<LocalTime>> countDataAndTime(AppointmentDto appointmentDto) {
+    public Map<Date, List<LocalTime>> countDataAndTime(AppointmentDto appointmentDto) {
         List<Date> period = getDataBetweenStartEndData(appointmentDto);
         Calendar calendar = new GregorianCalendar();
         Map<Date, List<LocalTime>> dateAndTimeMap = new HashMap<>();
@@ -265,7 +266,7 @@ public class EventServiceImp implements EventService {
 
     }
 
-    private void listOfAcceptedTimes(AppointmentDto appointmentDto, List<LocalTime> times) {
+    public void listOfAcceptedTimes(AppointmentDto appointmentDto, List<LocalTime> times) {
         for (int i = 0; i < appointmentDto.getTime().size(); i++) {
             switch (appointmentDto.getTime().get(i)) {
                 case ("0") -> times.add(LocalTime.of(9, 0));

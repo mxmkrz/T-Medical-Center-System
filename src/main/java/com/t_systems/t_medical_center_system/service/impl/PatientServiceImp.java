@@ -12,6 +12,7 @@ import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.mapper.PatientMapper;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.EventRepository;
+import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
 
 import com.t_systems.t_medical_center_system.service.PatientService;
@@ -33,23 +34,21 @@ import java.util.List;
 public class PatientServiceImp implements PatientService {
 
     private final PatientRepository patientRepository;
-    private final Convertor<Patient, PatientDto> patientConvertor;
     private final PatientMapper patientMapper;
     private final EventRepository eventRepository;
     private final AppointmentRepository appointmentRepository;
     private final RabbitSender rabbitSender;
+    private final MedicalStaffRepository medicalStaffRepository;
 
     @Autowired
-    public PatientServiceImp(PatientRepository patientRepository, Convertor<Patient, PatientDto> patientConvertor, PatientMapper patientMapper, EventRepository eventRepository, AppointmentRepository appointmentRepository, RabbitSender rabbitSender) {
+    public PatientServiceImp(PatientRepository patientRepository, PatientMapper patientMapper, EventRepository eventRepository, AppointmentRepository appointmentRepository, RabbitSender rabbitSender, MedicalStaffRepository medicalStaffRepository) {
         this.patientRepository = patientRepository;
-        this.patientConvertor = patientConvertor;
         this.patientMapper = patientMapper;
         this.eventRepository = eventRepository;
         this.appointmentRepository = appointmentRepository;
         this.rabbitSender = rabbitSender;
+        this.medicalStaffRepository = medicalStaffRepository;
     }
-
-
 
 
     @Transactional(readOnly = true)
@@ -71,7 +70,9 @@ public class PatientServiceImp implements PatientService {
     public void savePatient(PatientDto patient) {
         Patient patient1 = patientMapper.toEntity(patient);
         Authentication authStaff = SecurityContextHolder.getContext().getAuthentication();
-        patient1.setDoctorName(authStaff.getName());
+
+        MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(authStaff.getName());
+        patient1.setDoctorName(medicalStaff.getName());
         patientRepository.save(patient1);
         log.info("Add patient");
     }
@@ -81,7 +82,8 @@ public class PatientServiceImp implements PatientService {
     public void updatePatient(PatientDto patient) {
         Patient patient1 = patientMapper.toEntity(patient);
         Authentication authStaff = SecurityContextHolder.getContext().getAuthentication();
-        patient1.setDoctorName(authStaff.getName());
+        MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(authStaff.getName());
+        patient1.setDoctorName(medicalStaff.getName());
         patientRepository.save(patient1);
         log.info("Update patient");
 
@@ -101,7 +103,8 @@ public class PatientServiceImp implements PatientService {
 
 
     @Transactional
-    public void patientDischarge(PatientDto patientDto) {
+    @Override
+    public void discharge(PatientDto patientDto) {
         if (patientDto.getStatus().equals(PatientStatus.DISCHARGED.name())) {
             List<Event> events = eventRepository.findAllByPatientId(patientDto.getId());
             Date currentDate = new Date();

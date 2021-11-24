@@ -2,10 +2,12 @@ package com.t_systems.t_medical_center_system.service.impl;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
+import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
+import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,20 +22,24 @@ public class MailServiceImp {
     public final JavaMailSender mailSender;
     private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
-
+    private final MedicalStaffRepository medicalStaffRepository;
     @Autowired
-    public MailServiceImp(JavaMailSender mailSender, PatientRepository patientRepository, AppointmentRepository appointmentRepository) {
+    public MailServiceImp(JavaMailSender mailSender, PatientRepository patientRepository, AppointmentRepository appointmentRepository, MedicalStaffRepository medicalStaffRepository) {
         this.mailSender = mailSender;
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
+        this.medicalStaffRepository = medicalStaffRepository;
     }
+
+
 
 
     public void sendSimpleMessage(AppointmentDto appointmentDto, Long idPatient) {
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         Appointment appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
+        MedicalStaff medicalStaff = medicalStaffRepository.findByName(patient.getDoctorName());
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(patient.getEmail());
+        mailMessage.setTo(medicalStaff.getEmail());
         mailMessage.setText("Name: " + appointment.getPatient().getName() + "\n" +
                 "Surname: " + appointment.getPatient().getSurname() + "\n" +
                 "Start Date:  " + appointment.getStartDate().toString() + "\n" +

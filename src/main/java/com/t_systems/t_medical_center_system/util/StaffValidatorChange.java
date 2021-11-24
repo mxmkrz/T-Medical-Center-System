@@ -12,12 +12,12 @@ import java.util.List;
 
 
 @Component
-public class StaffValidatorReset implements Validator {
+public class StaffValidatorChange implements Validator {
     private final MedicalStaffRepository medicalStaffRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public StaffValidatorReset(MedicalStaffRepository medicalStaffRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public StaffValidatorChange(MedicalStaffRepository medicalStaffRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.medicalStaffRepository = medicalStaffRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -33,39 +33,45 @@ public class StaffValidatorReset implements Validator {
 
 
         MedicalStaff medicalStaff = (MedicalStaff) o;
-        if (medicalStaff.getOldPassword() == null){
+        if (medicalStaff.getOldPassword().isEmpty()) {
             errors.rejectValue("oldPassword", "", "Old password cannot be empty");
         }
-        if (medicalStaff.getNewPassword() == null){
+        if (medicalStaff.getNewPassword().isEmpty()) {
             errors.rejectValue("newPassword", "", "New password cannot be empty");
         }
-        if (medicalStaff.getConfirmPassword() == null){
+        if (medicalStaff.getConfirmPassword().isEmpty()) {
             errors.rejectValue("confirmPassword", "", "Confirm password cannot be empty");
         }
-        if (!medicalStaff.getNewPassword().equals(medicalStaff.getConfirmPassword())) {
-            errors.rejectValue("confirmPassword", "", "Passwords don't match");
-        }
+
         int countForOldPassword = 0;
         List<MedicalStaff> medicalStaffList = (List<MedicalStaff>) medicalStaffRepository.findAll();
-        for (MedicalStaff m : medicalStaffList) {
-            if (bCryptPasswordEncoder.matches(medicalStaff.getOldPassword(), m.getPassword())) {
-                countForOldPassword++;
+        if (!medicalStaff.getOldPassword().isEmpty()) {
+            for (MedicalStaff m : medicalStaffList) {
+                if (bCryptPasswordEncoder.matches(medicalStaff.getOldPassword(), m.getPassword())) {
+                    countForOldPassword++;
+                }
+            }
+            if (countForOldPassword == 0) {
+                errors.rejectValue("oldPassword", "", "No such password exists");
             }
         }
-        if (countForOldPassword > 0){
-            errors.rejectValue("oldPassword", "", "Old password don't match");
-        }
+
+
         int countForNewPassword = 0;
-        for (MedicalStaff m : medicalStaffList) {
-            if (bCryptPasswordEncoder.matches(medicalStaff.getNewPassword(), m.getPassword())) {
-                countForNewPassword++;
+        if (!medicalStaff.getNewPassword().isEmpty()) {
+            for (MedicalStaff m : medicalStaffList) {
+                if (bCryptPasswordEncoder.matches(medicalStaff.getNewPassword(), m.getPassword())) {
+                    countForNewPassword++;
+                }
+            }
+            if (countForNewPassword > 0) {
+                errors.rejectValue("newPassword", "", "Password already exists");
             }
         }
-        if (countForNewPassword > 0){
-            errors.rejectValue("newPassword", "", "Password already exists");
+
+
+        if (!medicalStaff.getNewPassword().equals(medicalStaff.getConfirmPassword())) {
+            errors.rejectValue("confirmPassword", "", "New password and the Confirmed one do not match");
         }
-
-
-
     }
 }

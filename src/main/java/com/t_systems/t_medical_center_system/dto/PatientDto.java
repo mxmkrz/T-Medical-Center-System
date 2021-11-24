@@ -1,5 +1,6 @@
 package com.t_systems.t_medical_center_system.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.*;
 import java.util.Date;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class PatientDto {
@@ -24,6 +26,4 @@ public class PatientDto {
     private String doctorsName;
     private Date createDataTime;
     private Date updateDataTime;
-    @Email(message = "Wrong email")
-    private String email;
 }

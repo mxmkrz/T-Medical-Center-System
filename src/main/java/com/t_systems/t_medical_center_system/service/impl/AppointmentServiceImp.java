@@ -53,7 +53,7 @@ public class AppointmentServiceImp implements AppointmentService {
     public void makeAnAppointment(AppointmentDto appointment, Long id) {
         Appointment appointmentEntity = appointmentMapper.toEntity(appointment);
         Patient patient = patientRepository.findById(id).orElseThrow(PatientNotFoundException::new);
-        MedicalStaff medicalStaff = medicalStaffRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         appointmentEntity.setStaff(medicalStaff);
         appointmentEntity.setPatient(patient);
         appointmentEntity.setStatus(AppointmentStatus.ACTIVE);
@@ -84,7 +84,7 @@ public class AppointmentServiceImp implements AppointmentService {
         appointmentEntity = appointmentMapper.toEntity(appointmentDto);
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         appointmentEntity.setPatient(patient);
-        MedicalStaff medicalStaff = medicalStaffRepository.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         appointmentEntity.setStaff(medicalStaff);
         eventServiceImp.deleteEvent(appointmentEntity.getId());
         appointmentRepository.save(appointmentEntity);
@@ -105,9 +105,9 @@ public class AppointmentServiceImp implements AppointmentService {
                     e.setStatus(EventStatus.CANCELED);
                     e.setReasonToCancel("Doctor canceled");
                     eventServiceImp.updateEvent(e, appointmentDto.getId());
-                    rabbitSender.sendMessage("done");
                 }
             }
+            rabbitSender.sendMessage("done");
             Appointment appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
             appointment.setStatus(AppointmentStatus.FINISHED);
             appointmentRepository.save(appointment);

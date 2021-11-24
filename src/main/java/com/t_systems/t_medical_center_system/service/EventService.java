@@ -3,6 +3,7 @@ package com.t_systems.t_medical_center_system.service;
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.dto.EventBoardDto;
 import com.t_systems.t_medical_center_system.dto.EventDto;
+import com.t_systems.t_medical_center_system.dto.Filter;
 import com.t_systems.t_medical_center_system.entity.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,8 @@ public interface EventService {
     Page<EventDto> findAllEventsForDay(Pageable pageable);
 
     Page<EventDto> findAllPatientByName(String name, Pageable pageable);
+
+    Page<EventDto> doFilter(Filter filter, String keyword, Pageable pageable);
 
 
 }

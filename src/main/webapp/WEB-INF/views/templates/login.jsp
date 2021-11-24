@@ -23,14 +23,21 @@
     <p>
     <div class="illustration"><i class="icon ion-ios-medkit"></i></div>
     <form:form action="/login/process" method="post">
-        <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
+        <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email"></div>
         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
         <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Sing In</button></div>
         <td><strong><a class="nav-link active"
-                       href="<c:url value="/registrationMedicalStaff"/>">Sing Up</a></strong>
+                       href="<c:url value="/registration"/>">Sing Up</a></strong>
         </td>
+        <div align="center">
+            <td><a class="btn btn-primary btn-sm"
+                   href="<c:url value="/login/reset"/>">Change password</a>
+            </td>
+        </div>
+
+
         <c:if test="${param.error != null}">
-            <div class="mt-5" style="color: #0610d4">Invalid username or password</div>
+            <div class="mt-5" style="color: #f80030">Invalid username or password</div>
         </c:if>
     </form:form>
     </p>

@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/login").anonymous()
+                .antMatchers("/login","/login/reset","/login/change").anonymous()
                 .antMatchers("/doctor/**", "/nurse/**").authenticated()
                 .antMatchers("/doctor/**").hasRole("DOCTOR")
                 .antMatchers("/nurse/**").hasRole("NURSE")
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login/process")
-                .usernameParameter("name").passwordParameter("password")
+                .usernameParameter("email").passwordParameter("password")
                 .failureUrl("/login?error=true")
                 .successHandler(myAuthenticationSuccessHandler())
                 .and()

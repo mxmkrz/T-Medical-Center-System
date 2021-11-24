@@ -23,6 +23,7 @@ import java.util.*;
 @EqualsAndHashCode
 @Table(name = "tb_patients")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
     @Id
@@ -50,6 +51,5 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private PatientStatus patientStatus;
 
-    private String email;
 
 }

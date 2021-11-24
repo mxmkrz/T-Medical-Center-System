@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -24,6 +25,12 @@ public class BeanConfig {
     public ObjectMapper objectMapper(){
         return new ObjectMapper();
     }
+
+    @Bean
+    public SimpleMailMessage simpleMailMessage(){
+        return new SimpleMailMessage();
+    }
+
 
 
 

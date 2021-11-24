@@ -59,14 +59,6 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="labels"><strong>Email</strong></p>
-                                        </div>
-                                        <div class="col">
-                                            <p class="labels">${profile.email}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
                                             <p class="labels"><strong>Diagnosis</strong></p>
                                         </div>
                                         <div class="col">
@@ -121,7 +113,7 @@
                                     <div class="row">
                                         <c:if test="${profile.status == 'DISCHARGED'}">
                                         <span hidden class="py-2 px-3 bg-transparent text-white rounded mybtn">
-                                                                <div hidden class="col-md-12"><a
+                                                                <div hidden  class="col-md-12"><a
                                                                         class="btn btn-outline-success"
                                                                         role="button"
                                                                         href="/doctor/profile/${profile.id}/appointment"><i
@@ -148,14 +140,6 @@
         </section>
     </main>
 </div>
-
-
-<script>
-    $('#delete-patient').modal({
-        keyboard: true,
-        // backdrop:"static"
-    })
-</script>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </p>

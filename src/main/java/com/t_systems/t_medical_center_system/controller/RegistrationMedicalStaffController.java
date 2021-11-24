@@ -22,13 +22,13 @@ public class RegistrationMedicalStaffController {
     }
 
     //*******************************************
-    @GetMapping("/registrationMedicalStaff")
+    @GetMapping("/registration")
     public String addDoctorGet(Model model) {
         model.addAttribute("staff", new MedicalStaff());
-        return "templates/registrationMedicalStaff";
+        return "templates/registration";
     }
 
-    @PostMapping(value = "/registrationMedicalStaff", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+    @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ModelAndView addPatientPost(@ModelAttribute("staff") MedicalStaff doctor) {

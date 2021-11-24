@@ -1,20 +1,14 @@
-
 version: '3.8'
 services:
   app:
-    image: 't_medical_center_system:latest'
+#    image: 'sample'
     container_name: app
-    build:
-      context: .
+    build: .
     ports:
       - "8080:8080"
     depends_on:
+      - rabbitmq
       - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/database
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
   db:
     container_name: db
     image: 'postgres:13.4'
@@ -24,33 +18,19 @@ services:
       - POSTGRES_DB=database
     ports:
       - "5432:5432"
-
-
-#
-#version: '3.8'
-#services:
-#  app:
-#    image: 'test-img'
-#    container_name: app
+  rabbitmq:
+    container_name: rabbitmq
+    image: 'rabbitmq:3.9.8'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+#  app2:
+#    container_name: app2
 #    build:
-#      context: .
+#      dockerfile: /docker/app2/Dockerfile
 #    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - db
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/database
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=root
-#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#  db:
-#    container_name: db
-#    image: 'postgres:13.4'
-#    environment:
-#      - POSTGRES_PASSWORD=root
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_DB=database
-#    ports:
-#      - "5432:5432"
+#      - "8040:8040"
+#      - "9990:9990"
+
 
 

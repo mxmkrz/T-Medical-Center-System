@@ -59,8 +59,8 @@
                             <th>Status Appointment</th>
                             <th>Cancel Appointment</th>
                             <th>Done Appointment</th>
-                            <th>Send an email</th>
                             <th>Edit Appointment</th>
+                            <th>Send an email</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -79,11 +79,16 @@
                             <td style="color: ${appointments.status.name() == 'FINISHED' ? '#dc3545' : appointments.status.name() == 'DONE' ? '#198754' : 'blue' }">
                                 <c:out value="${appointments.status}"/></td>
                             <c:choose>
-                                <c:when test="${appointments.status == 'FINISHED'}">
+                                <c:when test="${appointments.status == 'FINISHED' || appointments.status == 'DONE'}">
                                     <td>
                                         <button type="button" disabled class="btn btn-outline-danger "
                                                 data-toggle="modal"
                                                 data-target="#cancel" data-done-id="${appointments.id}">Finish
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" disabled class="btn btn-outline-success " data-toggle="modal"
+                                                data-target="#done" data-done-id="${appointments.id}">Done
                                         </button>
                                     </td>
                                 </c:when>
@@ -93,21 +98,22 @@
                                                 data-target="#cancel" data-done-id="${appointments.id}">Finish
                                         </button>
                                     </td>
+                                    <td>
+                                        <button type="button"  class="btn btn-outline-success " data-toggle="modal"
+                                                data-target="#done" data-done-id="${appointments.id}">Done
+                                        </button>
+                                    </td>
+
                                 </c:otherwise>
                             </c:choose>
-                            <td>
-                                <button type="button" class="btn btn-outline-success " data-toggle="modal"
-                                        data-target="#done" data-done-id="${appointments.id}">Done
-                                </button>
+                            <td><a class="btn btn-outline-secondary"
+                                   href="<c:url value="/doctor/profile/${patient.id}/edit/${appointments.id}"/>">Edit Appointment</a>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-outline-info " data-toggle="modal"
                                         data-target="#email" data-done-id="${appointments.id}">Send An Email
                                 </button>
                             </td>
-                            <td><a class="btn btn-outline-secondary "
-                                   href="<c:url value="/doctor/profile/${patient.id}/edit/${appointments.id}"/>"
-                                   role="button">Edit Appointment</a></td>
                         </tr>
                         </c:forEach>
                         </tbody>
@@ -253,10 +259,6 @@
 
     form.addEventListener("submit", function (event) {
         event.preventDefault()
-        if (${patient.email == null}) {
-            alert("Empty email")
-            return onerror;
-        }
 
         console.log(form)
         $.ajax({

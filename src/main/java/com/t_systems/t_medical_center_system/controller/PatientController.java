@@ -1,6 +1,5 @@
 package com.t_systems.t_medical_center_system.controller;
 
-import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -82,7 +80,7 @@ public class PatientController {
         if (bindingResult.hasErrors()) {
             return "templates/editPatient";
         }
-        patientService.patientDischarge(patientDto);
+        patientService.discharge(patientDto);
         patientService.updatePatient(patientDto);
         return "redirect:/doctor/profile/{id}";
     }

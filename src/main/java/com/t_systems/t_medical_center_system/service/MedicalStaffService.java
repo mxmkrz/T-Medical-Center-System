@@ -8,6 +8,10 @@ public interface MedicalStaffService {
 
     void saveStaff(MedicalStaff doctor);
 
+    void sendLinkOnEmail(String email);
+
+    void changePassword(MedicalStaff medicalStaff);
+
 
 
 }

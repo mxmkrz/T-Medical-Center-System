@@ -19,5 +19,7 @@ public interface PatientService {
 
     void deletePatient(Long id);
 
+    void discharge(PatientDto patientDto);
+
 
 }

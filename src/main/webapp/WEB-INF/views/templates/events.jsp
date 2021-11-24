@@ -53,7 +53,7 @@
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Event Information </p>
         </div>
-        <form:form method="get" modelAttribute="filter" action="/nurse/eventList">
+        <form:form method="get" modelAttribute="filter" action="/nurse/events">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 text-nowrap">
@@ -107,16 +107,32 @@
                             <td>${event.reasonToCancel}</td>
                             <td hidden>${event.patient.id}</td>
                             <td hidden>${event.appointment.id}</td>
-                            <td>
-                                <button type="button" class="btn btn-outline-danger" data-toggle="modal"
-                                        data-target="#status_cancel" data-done-id="${event.id}">Cancel
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-outline-success" data-toggle="modal"
-                                        data-target="#status_done" data-done-id="${event.id}">Done
-                                </button>
-                            </td>
+                            <c:choose>
+                                <c:when test="${event.status == 'CANCELED' || event.status == 'DONE' || event.appointment.status == 'FINISHED' || event.appointment.status == 'DONE'}">
+                                    <td>
+                                        <button disabled type="button" class="btn btn-outline-danger" data-toggle="modal"
+                                                data-target="#status_cancel" data-done-id="${event.id}">Cancel
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button disabled type="button" class="btn btn-outline-success" data-toggle="modal"
+                                                data-target="#status_done" data-done-id="${event.id}">Done
+                                        </button>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-danger" data-toggle="modal"
+                                                data-target="#status_cancel" data-done-id="${event.id}">Cancel
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                                data-target="#status_done" data-done-id="${event.id}">Done
+                                        </button>
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
                         </tr>
                         </c:forEach>
                         </tbody>
@@ -140,12 +156,12 @@
                         <li class="page-item">
                             <c:if test="${number != 0}">
                                 <a class="page-link" tabindex="-1"
-                                   href="nurse/eventList?anInt=${filter.anInt}&keyword=${keyword}&page=${number-1}&size=${size}">Previous</a>
+                                   href="nurse/events?anInt=${filter.anInt}&keyword=${keyword}&page=${number-1}&size=${size}">Previous</a>
                             </c:if>
                         </li>
                         <c:forEach begin="0" end="${totalPages-1}" var="page">
                             <li class="page-item">
-                                <a href="nurse/eventList?anInt=${filter.anInt}&keyword=${keyword}&page=${page}&size=${size}"
+                                <a href="nurse/events?anInt=${filter.anInt}&keyword=${keyword}&page=${page}&size=${size}"
                                    class="page-link"> ${page+1} </a>
                             </li>
                         </c:forEach>
@@ -153,7 +169,7 @@
                         <li>
                             <c:if test="${number lt totalPages - 1}">
                                 <a class="page-link"
-                                   href="nurse/eventList?anInt=${filter.anInt}&keyword=${keyword}&page=${number+1}&size=${size}">Next</a>
+                                   href="nurse/events?anInt=${filter.anInt}&keyword=${keyword}&page=${number+1}&size=${size}">Next</a>
                             </c:if>
                         </li>
                     </ul>
@@ -177,7 +193,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="/nurse/eventList" method="get"
+                <form action="/nurse/events" method="get"
                       class="formWithValidation_waypoint" role="form">
                     Are you sure that the event has been executed??
                     <div class="form-group">
@@ -258,7 +274,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="/nurse/eventList" method="get"
+                <form action="/nurse/events" method="get"
                       class="formWithValidation_cancel" role="form">
                     Are you sure the event has been canceled?
                     <div class="form-group">
@@ -328,7 +344,7 @@
 
 <script>
     function clearFilter() {
-        window.location = '/nurse/eventList'
+        window.location = '/nurse/events'
     }
 </script>
 <script type="text/javascript">
@@ -389,7 +405,7 @@
     form.addEventListener("submit", function (event) {
         event.preventDefault()
         $.ajax({
-            url: 'nurse/eventList',
+            url: 'nurse/events',
             datatype: 'json',
             type: "POST",
             dataType: 'JSON',
@@ -405,7 +421,6 @@
                 idAppointment: idAppointment.value,
             }),
             success: function (data) {
-                // success(id.value);
                 window.location.reload();
             },
             error: function (result) {
@@ -413,14 +428,6 @@
             }
         });
     })
-</script>
-<script>
-    function success(a) {
-        $("#closeButton").click()
-        var i = document.getElementById(`done-` + a);
-        i["children"][3].innerHTML = 'DONE'
-        i["children"][3].style.backgroundColor = '#198754';
-    }
 </script>
 <script>
     $("#status_cancel").on('show.bs.modal', function (e) {
@@ -475,7 +482,7 @@
 
 
         $.ajax({
-            url: 'nurse/eventList',
+            url: 'nurse/events',
             datatype: 'json',
             type: "POST",
             dataType: 'JSON',
@@ -491,7 +498,6 @@
                 idAppointment: idAppointment2.value,
             }),
             success: function (data) {
-                // successCancel(id2.value);
                 window.location.reload();
 
 
@@ -501,14 +507,6 @@
             }
         });
     });
-</script>
-<script>
-    function successCancel(a) {
-        $("#closeButtonCancel").click()
-        var i = document.getElementById(`done-` + a);
-        i["children"][3].innerHTML = 'CANCELED'
-        i["children"][3].style.backgroundColor = '#dc3545';
-    }
 </script>
 </body>
 </html>

@@ -142,8 +142,6 @@
             <h3 align="center">Please choose a time</h3>
         </div>
         <div class="col">
-
-
             <form:select id="dates-field2" class="multiselect-ui form-control" multiple="multiple" path="time">
                 <form:option value="0">9:00 - 10:00</form:option>
                 <form:option value="1">10:00 - 11:00</form:option>
@@ -220,9 +218,6 @@
                 var currentWeekDay2 = new Date(dateFirstCalendar2).getDay();
 
                 var period = getCountDay();
-                // alert(currentWeekDay + " week day 1 cal")
-                // alert(currentWeekDay2 + " week day 2 cal")
-                // alert(period)
                 if (period < 7) {
                     if (currentWeekDay < currentWeekDay2) {
                         if (0 === currentWeekDay || 0 === currentWeekDay2) {
@@ -272,7 +267,7 @@
 
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'PROCEDURE') {
             $('.procId_input').show();
         } else {
@@ -282,7 +277,7 @@
 </script>
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'DRUG') {
             $('.drugId_input').show();
         } else {
@@ -293,7 +288,7 @@
 </script>
 <script>
     $('#selectType').change(function () {
-        var selectval = $(this).val(); // Получим значение из select со значением #participation
+        var selectval = $(this).val();
         if (selectval === 'DRUG') {
             $('.drugInfoId_input').show();
             $('.drugInfoId_input').prop('required', true);
@@ -306,7 +301,6 @@
 
 <script type="text/javascript">
     $(function () {
-        // инициализация datetimepicker7 и datetimepicker8
         $("#datetimepicker7").datetimepicker();
         $("#datetimepicker8").datetimepicker({
             useCurrent: false
@@ -320,19 +314,6 @@
 
 
     });
-
-    // $(function () {
-    //     $('#datetimepicker4').datetimepicker({
-    //         locale: 'ru'
-    //     });
-    // });
-    //
-    // $('#datetimepicker7').datetimepicker({
-    //     format: 'DD/MM/YYYY h:mm A'
-    // });
-    // $('#datetimepicker8').datetimepicker({
-    //     format: 'DD/MM/YYYY h:mm A'
-    // });
 </script>
 
 

@@ -92,10 +92,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:input type="text" class="form-control" placeholder="Email" path="email"/>
-                        <form:errors path="email" cssClass="error"/>
-                    </div>
-                    <div class="form-group">
                         <form:input type="text" class="form-control" placeholder="Diagnosis" path="diagnosis"/>
                         <form:errors path="diagnosis" cssClass="error"/>
                     </div>
@@ -126,46 +122,5 @@
 
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </body>
-<%--<script>--%>
-<%--    $("#create_status").on('show.bs.modal', function (e) {--%>
-<%--        var status = $(e.relatedTarget).data('patient-status');--%>
-<%--        $('#statusInput').val(status);--%>
-<%--    });--%>
-<%--    $("#create_status").on('hidden.bs.modal', function () {--%>
-<%--        var form = $(this).find('form');--%>
-<%--        form[0].reset();--%>
-
-<%--    });--%>
-<%--    var form = document.querySelector('.formWithValidation1')--%>
-<%--    var status = form.querySelector('.status')--%>
-
-<%--    form.addEventListener("submit", function (event) {--%>
-<%--        event.preventDefault()--%>
-
-
-<%--        $.ajax({--%>
-<%--            url: '/doctor/add',--%>
-<%--            datatype: 'json',--%>
-<%--            type: "POST",--%>
-<%--            dataType: 'JSON',--%>
-<%--            data: JSON.stringify({--%>
-<%--                id: ${patient.id},--%>
-<%--                name: '${patient.name}',--%>
-<%--                surname: "${patient.surname}",--%>
-<%--                diagnosis: '${patient.diagnosis}',--%>
-<%--                insuranceNumber: ${patient.insuranceNumber},--%>
-<%--                status: status.value,--%>
-<%--            }),--%>
-<%--            success: function (response) {--%>
-<%--                if (response.redirect) {--%>
-<%--                    window.location.href = response.redirect;--%>
-<%--                }--%>
-<%--            },--%>
-<%--            error: function (result) {--%>
-<%--                alert("error" + result.responseText);--%>
-<%--            }--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
 </html>
 

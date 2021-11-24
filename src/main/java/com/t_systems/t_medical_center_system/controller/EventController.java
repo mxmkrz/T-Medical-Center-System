@@ -5,15 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.t_systems.t_medical_center_system.dto.EventDto;
 import com.t_systems.t_medical_center_system.dto.Filter;
-import com.t_systems.t_medical_center_system.mapper.EventMapper;
-import com.t_systems.t_medical_center_system.repository.EventRepository;
-import com.t_systems.t_medical_center_system.service.EventService;
 import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
-import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
@@ -21,15 +15,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 @Controller
 public class EventController {
@@ -51,7 +40,7 @@ public class EventController {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
-    @GetMapping("/nurse/eventList")
+    @GetMapping("/nurse/events")
     public String getEventListFilter(Model model, @Param("keyword") String keyword,
                                      @Param(value = "filter") Filter filter,
                                      @PageableDefault(sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
@@ -67,13 +56,13 @@ public class EventController {
             model.addAttribute("size", pages.getSize());
             model.addAttribute("data", pages.getContent());
         }
-        return "templates/eventList";
+        return "templates/events";
     }
 
-    @PostMapping(value = "/nurse/eventList", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+    @PostMapping(value = "/nurse/events", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String changeStatusToDone(HttpServletRequest request) {
+    public String changeStatus(HttpServletRequest request) {
         try {
             EventDto eventDto = objectMapper.readValue(request.getInputStream(), EventDto.class);
             eventService.updateStatus(eventDto);
