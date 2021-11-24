@@ -31,8 +31,6 @@ class MedicalStaffServiceImpTest {
     private MedicalStaffRepository medicalStaffRepository;
     @Mock
     private BCryptPasswordEncoder cryptPasswordEncoder;
-    @Mock
-    private JavaMailSender mailSender;
 
     @Test
     void saveStaff() {

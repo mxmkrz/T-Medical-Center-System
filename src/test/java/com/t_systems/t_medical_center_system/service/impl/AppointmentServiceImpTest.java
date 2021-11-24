@@ -11,12 +11,13 @@ import com.t_systems.t_medical_center_system.mapper.AppointmentMapper;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -27,7 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@AutoConfigureMockMvc
+
 @ExtendWith(SpringExtension.class)
 class AppointmentServiceImpTest {
     @InjectMocks
@@ -44,6 +45,13 @@ class AppointmentServiceImpTest {
     private RabbitSender rabbitSender;
     @Mock
     private MedicalStaffRepository medicalStaffRepository;
+
+    @Before
+    public void setUp(){
+        MockitoAnnotations.openMocks(this);
+    }
+
+
 
 
     @Test

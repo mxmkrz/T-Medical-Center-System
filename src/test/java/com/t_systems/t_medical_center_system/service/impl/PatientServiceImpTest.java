@@ -12,27 +12,17 @@ import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.EventRepository;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
-import com.t_systems.t_medical_center_system.service.PatientService;
-import org.junit.Assert;
 import org.junit.Before;
 
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.Authentication;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 
 import java.sql.Date;
@@ -43,7 +33,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@AutoConfigureMockMvc
+
 @ExtendWith(SpringExtension.class)
 class PatientServiceImpTest {
     @InjectMocks
@@ -58,6 +48,11 @@ class PatientServiceImpTest {
     private PatientMapper modelMapper;
     @Mock
     private MedicalStaffRepository medicalStaffRepository;
+    @Before
+    public void setUp(){
+        MockitoAnnotations.openMocks(this);
+    }
+
 
 
     @Test
