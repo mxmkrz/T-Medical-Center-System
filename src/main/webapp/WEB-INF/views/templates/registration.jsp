@@ -23,17 +23,15 @@
 <body>
 <section class="register-photo">
     <div class="form-container">
-        <form:form action="/registrationMedicalStaff" method="post" modelAttribute="staff" class="formWithValidation2"
+        <form:form action="/registration" method="post" modelAttribute="staff" class="formWithValidation2"
                    role="form">
             <h2 class="text-center"><strong>Create</strong> an account.</h2>
+            <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email"></div>
             <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
             <div class="mb-3"><input class="form-control" type="text" name="surname" placeholder="Surname"></div>
             <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
             <div class="mb-3"><input class="form-control" type="text" name="passwordConfirm"
                                      placeholder="Password (repeat)"></div>
-            <div class="mb-3"><input class="form-control" type="text" name="position" placeholder="Position"></div>
-            <div class="mb-3"><input class="form-control" type="text" name="specialization"
-                                     placeholder="Specialization"></div>
             <div class="form-floating">
                     <select class="form-select" name="role" id="roleInput" aria-label="Floating label select example">
                         <option selected>Role</option>
@@ -70,7 +68,7 @@
 
 
         $.ajax({
-            url: '/registrationMedicalStaff',
+            url: '/registration',
             datatype: 'json',
             type: "POST",
             dataType: 'JSON',
@@ -78,8 +76,7 @@
                 id: ${staff.id},
                 name: '${staff.name}',
                 surname: "${staff.surname}",
-                position: '${staff.position}',
-                specialization: ${staff.specialization},
+                email: '${staff.email}',
                 role: role.value,
             }),
             success: function (response) {
