@@ -3,7 +3,6 @@ package com.t_systems.t_medical_center_system.service.impl;
 import com.t_systems.t_medical_center_system.entity.Event;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.enums.AppointmentStatus;
-import com.t_systems.t_medical_center_system.mapper.Convertor;
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.entity.Patient;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -31,15 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class AppointmentControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext context;
 
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .build();
-    }
     @Test
     @WithMockUser(roles = "DOCTOR")
     void getAppointments() throws Exception {

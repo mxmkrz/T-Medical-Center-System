@@ -46,17 +46,9 @@ class AppointmentServiceImpTest {
     @Mock
     private MedicalStaffRepository medicalStaffRepository;
 
-    @Before
-    public void setUp(){
-        MockitoAnnotations.openMocks(this);
-    }
-
-
-
-
     @Test
     @WithMockUser(roles = "DOCTOR")
-    public void makeAnAppointment() {
+     void makeAnAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         Patient patient = new Patient();
@@ -82,7 +74,7 @@ class AppointmentServiceImpTest {
 
     @Test
     @WithMockUser(roles = "DOCTOR")
-    public void updateAppointment() {
+     void updateAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         Patient patient = new Patient();
@@ -108,7 +100,7 @@ class AppointmentServiceImpTest {
     }
 
     @Test
-    public void cancelAppointment() {
+     void cancelAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         appointmentDto.setStatus(AppointmentStatus.FINISHED);
@@ -139,7 +131,7 @@ class AppointmentServiceImpTest {
     }
 
     @Test
-    public void doneAppointment() {
+     void doneAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         appointmentDto.setStatus(AppointmentStatus.DONE);

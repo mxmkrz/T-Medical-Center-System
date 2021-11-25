@@ -30,9 +30,6 @@
             margin-bottom: 2%;
         }
 
-        .form-control {
-            border-radius: 1.5rem;
-        }
 
         .btnSubmit {
             border: none;
@@ -63,11 +60,11 @@
 <p>
 <div class="row" style="margin-right: 0px;margin-left: 0px;">
     <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
-        <a class="anone" href="/doctor/patients"><i
-                class="fa fa-long-arrow-left"></i><span>&nbsp;Back</span></a>
+        <a class="anone" href="/doctor/patients"><em
+                class="fa fa-long-arrow-left"></em><span>&nbsp;Back</span></a>
     </div>
     <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
-        <a class="anone" href="/logout"><i class="fa fa-long-arrow-left"></i><strong>&nbsp; Logout</strong></a>
+        <a class="anone" href="/logout"><em class="fa fa-long-arrow-left"></em><strong>&nbsp; Logout</strong></a>
     </div>
 </div>
 <div class="container register-form">

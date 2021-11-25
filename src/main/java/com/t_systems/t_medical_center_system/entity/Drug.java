@@ -3,6 +3,7 @@ package com.t_systems.t_medical_center_system.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode(exclude = "appointment")
 @Table(name = "tb_drug")
-public class Drug {
+public class Drug implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

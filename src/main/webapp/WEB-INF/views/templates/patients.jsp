@@ -23,6 +23,9 @@
         li {
             list-style-type: none;
         }
+        .align-center {
+            text-align: center;
+        }
     </style>
 
     <style>
@@ -35,7 +38,7 @@
 <p>
 <p class="exserif">
 <nav class="navbar navbar-dark navbar-expand-md" id="app-navbar">
-    <div class="container-fluid"><a class="navbar-brand" href="#"><i class="icon ion-ios-infinite" id="brand-logo"></i></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+    <div class="container-fluid"><a class="navbar-brand" href="#"><em class="icon ion-ios-infinite" id="brand-logo"></em></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link active" href=/doctor/add>Add Patient</a></li>
@@ -50,27 +53,27 @@
     <div class="container-fluid">
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold" align="center" >Patient Information </p>
+                <p class="text-primary m-0 fw-bold align-center"  >Patient Information </p>
             </div>
             <div class="card-body">
                 <div class="patients_input form-group">
                     <div class="table-responsive table mt-2"  role="grid" aria-describedby="dataTable_info">
-                        <table class="table my-0">
+                        <table class="text-black table my-0" >
                             <thead>
-                            <tr align="center">
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Insurance number</th>
-                                <th>Diagnosis</th>
-                                <th>Create Data Time</th>
-                                <th>Update Data Time</th>
-                                <th>Status</th>
+                            <tr class="align-center">
+                                <th scope="row">Name</th>
+                                <th scope="row">Surname</th>
+                                <th scope="row">Insurance number</th>
+                                <th scope="row">Diagnosis</th>
+                                <th scope="row">Create Data Time</th>
+                                <th scope="row">Update Data Time</th>
+                                <th scope="row">Status</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <c:forEach var="patient" items="${patients}">
-                            <tr align="center">
+                            <tr class="align-center">
                                 <td><strong><a class="nav-link active"
                                                href="/doctor/profile/${patient.id}">${patient.name}</a></strong>
                                 </td>
@@ -96,20 +99,20 @@
                             </c:forEach>
                             </tbody>
                             <tfoot>
-                            <tr align="center">
-                                <th>Name</th>
-                                <th>Surname</th>
-                                <th>Insurance number</th>
-                                <th>Diagnosis</th>
-                                <th>Create Data Time</th>
-                                <th>Update Data Time</th>
-                                <th>Status</th>
+                            <tr class="align-center">
+                                <th scope="row">Name</th>
+                                <th scope="row">Surname</th>
+                                <th scope="row">Insurance number</th>
+                                <th scope="row">Diagnosis</th>
+                                <th scope="row">Create Data Time</th>
+                                <th scope="row">Update Data Time</th>
+                                <th scope="row">Status</th>
                             </tr>
                             </tfoot>
                         </table>
                         <br>
                         <c:if test="${totalElements > 4 }">
-                        <h6 align="center">Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</h6>
+                        <h6 class="align-center">Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</h6>
                         <ul class="pagination justify-content-center">
                             <li class="page-item">
                                 <c:if test="${number != 0}">

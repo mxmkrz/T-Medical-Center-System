@@ -16,12 +16,15 @@
         body {
             background: url('../static/images/hero-bg.jpg');
         }
+        .align-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <section class="login-clean">
     <p>
-    <div class="illustration"><i class="icon ion-ios-medkit"></i></div>
+    <div class="illustration"><em class="icon ion-ios-medkit"></em></div>
     <form:form action="/login/process" method="post">
         <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email"></div>
         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
@@ -29,7 +32,7 @@
         <td><strong><a class="nav-link active"
                        href="<c:url value="/registration"/>">Sing Up</a></strong>
         </td>
-        <div align="center">
+        <div class="align-center">
             <td><a class="btn btn-primary btn-sm"
                    href="<c:url value="/login/reset"/>">Change password</a>
             </td>

@@ -5,6 +5,7 @@ import com.t_systems.t_medical_center_system.entity.enums.TherapyType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
-public class Appointment {
+public class Appointment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

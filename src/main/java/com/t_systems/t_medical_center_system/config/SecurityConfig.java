@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/login","/login/reset","/login/change").anonymous()
-                .antMatchers("/doctor/**", "/nurse/**").authenticated()
                 .antMatchers("/doctor/**").hasRole("DOCTOR")
                 .antMatchers("/nurse/**").hasRole("NURSE")
                 .and()
@@ -47,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/")
                 .and()
                 .logout()
-
 
                 .and()
                 .csrf()

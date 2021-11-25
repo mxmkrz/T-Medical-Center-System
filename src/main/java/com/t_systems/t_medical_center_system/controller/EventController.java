@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.t_systems.t_medical_center_system.dto.EventDto;
 import com.t_systems.t_medical_center_system.dto.Filter;
 import com.t_systems.t_medical_center_system.service.impl.EventServiceImp;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@Slf4j
 public class EventController {
 
     private final EventServiceImp eventService;
@@ -66,9 +68,8 @@ public class EventController {
         try {
             EventDto eventDto = objectMapper.readValue(request.getInputStream(), EventDto.class);
             eventService.updateStatus(eventDto);
-            System.out.println(eventDto);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.warn(e.getMessage());
         }
         return "0";
     }

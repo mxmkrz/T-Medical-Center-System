@@ -33,15 +33,9 @@ public class StaffValidatorChange implements Validator {
 
 
         MedicalStaff medicalStaff = (MedicalStaff) o;
-        if (medicalStaff.getOldPassword().isEmpty()) {
-            errors.rejectValue("oldPassword", "", "Old password cannot be empty");
-        }
-        if (medicalStaff.getNewPassword().isEmpty()) {
-            errors.rejectValue("newPassword", "", "New password cannot be empty");
-        }
-        if (medicalStaff.getConfirmPassword().isEmpty()) {
-            errors.rejectValue("confirmPassword", "", "Confirm password cannot be empty");
-        }
+        if (medicalStaff.getOldPassword().isEmpty()) errors.rejectValue("oldPassword", "", "Old password cannot be empty");
+        if (medicalStaff.getNewPassword().isEmpty()) errors.rejectValue("newPassword", "", "New password cannot be empty");
+        if (medicalStaff.getConfirmPassword().isEmpty()) errors.rejectValue("confirmPassword", "", "Confirm password cannot be empty");
 
         int countForOldPassword = 0;
         List<MedicalStaff> medicalStaffList = (List<MedicalStaff>) medicalStaffRepository.findAll();
@@ -55,8 +49,6 @@ public class StaffValidatorChange implements Validator {
                 errors.rejectValue("oldPassword", "", "No such password exists");
             }
         }
-
-
         int countForNewPassword = 0;
         if (!medicalStaff.getNewPassword().isEmpty()) {
             for (MedicalStaff m : medicalStaffList) {
@@ -68,10 +60,8 @@ public class StaffValidatorChange implements Validator {
                 errors.rejectValue("newPassword", "", "Password already exists");
             }
         }
-
-
-        if (!medicalStaff.getNewPassword().equals(medicalStaff.getConfirmPassword())) {
-            errors.rejectValue("confirmPassword", "", "New password and the Confirmed one do not match");
-        }
+        if (!medicalStaff.getNewPassword().equals(medicalStaff.getConfirmPassword())) errors.rejectValue("confirmPassword", "", "New password and the Confirmed one do not match");
     }
+
+
 }

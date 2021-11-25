@@ -193,7 +193,7 @@ public class EventServiceImp implements EventService {
         return eventMapper.toStringDtoList(eventSpringDtos);
 
     }
-
+    @Transactional
     @Override
     public Page<EventDto> doFilter(Filter filter, String keyword, Pageable pageable) {
         if (filter.getAnInt().equals("0")) return findAllEvents(pageable);

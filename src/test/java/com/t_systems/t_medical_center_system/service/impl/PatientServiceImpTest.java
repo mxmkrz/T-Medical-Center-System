@@ -12,25 +12,20 @@ import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.EventRepository;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
-import org.junit.Before;
-
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
@@ -48,16 +43,10 @@ class PatientServiceImpTest {
     private PatientMapper modelMapper;
     @Mock
     private MedicalStaffRepository medicalStaffRepository;
-    @Before
-    public void setUp(){
-        MockitoAnnotations.openMocks(this);
-    }
-
-
 
     @Test
     @WithMockUser(roles = "DOCTOR")
-    public void save() {
+    void save() {
         Patient patient = new Patient();
         PatientDto patientDto = new PatientDto();
         MedicalStaff medicalStaff = new MedicalStaff();
@@ -68,6 +57,26 @@ class PatientServiceImpTest {
         when(medicalStaffRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(medicalStaff);
 
         patientService.savePatient(patientDto);
+
+        verify(patientRepository, times(1)).save(patient);
+        assertEquals(patient.getDoctorName(), medicalStaff.getName());
+
+
+    }
+
+    @Test
+    @WithMockUser(roles = "DOCTOR")
+    void update() {
+        Patient patient = new Patient();
+        PatientDto patientDto = new PatientDto();
+        MedicalStaff medicalStaff = new MedicalStaff();
+        medicalStaff.setName("Doctor");
+
+
+        when(modelMapper.toEntity(patientDto)).thenReturn(patient);
+        when(medicalStaffRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())).thenReturn(medicalStaff);
+
+        patientService.updatePatient(patientDto);
 
         verify(patientRepository, times(1)).save(patient);
         assertEquals(patient.getDoctorName(), medicalStaff.getName());

@@ -14,8 +14,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class MailServiceImp {
 
@@ -23,13 +21,17 @@ public class MailServiceImp {
     private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
     private final MedicalStaffRepository medicalStaffRepository;
+    private final SimpleMailMessage mailMessage;
     @Autowired
-    public MailServiceImp(JavaMailSender mailSender, PatientRepository patientRepository, AppointmentRepository appointmentRepository, MedicalStaffRepository medicalStaffRepository) {
+    public MailServiceImp(JavaMailSender mailSender, PatientRepository patientRepository, AppointmentRepository appointmentRepository, MedicalStaffRepository medicalStaffRepository, SimpleMailMessage simpleMailMessage) {
         this.mailSender = mailSender;
         this.patientRepository = patientRepository;
         this.appointmentRepository = appointmentRepository;
         this.medicalStaffRepository = medicalStaffRepository;
+        this.mailMessage = simpleMailMessage;
     }
+
+
 
 
 
@@ -38,7 +40,6 @@ public class MailServiceImp {
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         Appointment appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
         MedicalStaff medicalStaff = medicalStaffRepository.findByName(patient.getDoctorName());
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(medicalStaff.getEmail());
         mailMessage.setText("Name: " + appointment.getPatient().getName() + "\n" +
                 "Surname: " + appointment.getPatient().getSurname() + "\n" +

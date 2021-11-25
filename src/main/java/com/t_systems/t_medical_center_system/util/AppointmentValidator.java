@@ -1,18 +1,15 @@
 package com.t_systems.t_medical_center_system.util;
 
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
-import com.t_systems.t_medical_center_system.entity.EventTime;
+
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
 import java.time.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 
 
@@ -34,11 +31,14 @@ public class AppointmentValidator implements Validator {
         weekDay.add(appointment.isFriday());
         weekDay.add(appointment.isSaturday());
         weekDay.add(appointment.isSunday());
-        int counter = 0;
+        boolean checkEmpty = false;
         for (Boolean w : weekDay) {
-            if (w) counter++;
+            if (w) {
+                checkEmpty = true;
+                break;
+            }
         }
-        if (counter == 0) {
+        if (!checkEmpty) {
             errors.rejectValue("saturday", "", "WeekDays should not be empty");
         }
         if (appointment.getInfo().isEmpty() && appointment.getInfoDrugs().isEmpty()) {

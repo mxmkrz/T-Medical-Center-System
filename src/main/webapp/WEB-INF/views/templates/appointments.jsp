@@ -21,6 +21,9 @@
         }
     </style>
     <style>
+        .align-center {
+            text-align: center;
+        }
         li {
             list-style-type: none;
         }
@@ -44,23 +47,23 @@
         <div class="card-body">
             <div class="patients_input form-group">
                 <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                    <table class="table my-0">
+                    <table class="table table my-0">
                         <thead>
                         <tr>
-                            <th>Name/Surname</th>
-                            <th>Date of Start</th>
-                            <th>Date of End</th>
-                            <th>Type</th>
-                            <th>Info Procedure</th>
-                            <th>Info Drugs</th>
-                            <th>Info Dose</th>
-                            <th>Week Day</th>
-                            <th>Event Times</th>
-                            <th>Status Appointment</th>
-                            <th>Cancel Appointment</th>
-                            <th>Done Appointment</th>
-                            <th>Edit Appointment</th>
-                            <th>Send an email</th>
+                            <th scope="row">Name/Surname</th>
+                            <th scope="row">Date of Start</th>
+                            <th scope="row">Date of End</th>
+                            <th scope="row">Type</th>
+                            <th scope="row">Info Procedure</th>
+                            <th scope="row">Info Drugs</th>
+                            <th scope="row">Info Dose</th>
+                            <th scope="row">Week Day</th>
+                            <th scope="row">Event Times</th>
+                            <th scope="row">Status Appointment</th>
+                            <th scope="row">Cancel Appointment</th>
+                            <th scope="row">Done Appointment</th>
+                            <th scope="row">Edit Appointment</th>
+                            <th scope="row">Send an email</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -120,7 +123,7 @@
                     </table>
                     <br>
                     <c:if test="${totalElements > 8 }">
-                    <h6 align="center"><strong>Showing ${number+1} page of ${totalPages} pages of ${totalElements}
+                    <h6 class="align-center"><strong>Showing ${number+1} page of ${totalPages} pages of ${totalElements}
                         events</strong></h6>
                     <ul class="pagination justify-content-center">
                         <li class="page-item">

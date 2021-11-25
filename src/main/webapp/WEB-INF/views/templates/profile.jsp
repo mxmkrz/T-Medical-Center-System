@@ -16,6 +16,9 @@
         body {
             background: url('../static/images/Fotolia_133334155_M-1.jpg');
         }
+        .align-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -25,16 +28,15 @@
         <section class="clean-block about-us">
             <div class="row" style="margin-right: 0px;margin-left: 0px;">
                 <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
-                    <a class="anone" href="/doctor/patients"><i
-                            class="fa fa-long-arrow-left"></i><span>&nbsp;Back</span></a>
+                    <a class="anone" href="/doctor/patients"><em class="fa fa-long-arrow-left"></em><span>&nbsp;Back</span></a>
                 </div>
                 <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
-                    <a class="anone" href="/logout"><i class="fa fa-long-arrow-left"></i><strong>&nbsp; Logout</strong></a>
+                    <a class="anone" href="/logout"><em class="fa fa-long-arrow-left"></em><strong>&nbsp; Logout</strong></a>
                 </div>
             </div>
             <div class="row" style="margin-right: 0px;margin-left: 0px;">
             </div>
-            <h3 align="center">Patient profile</h3>
+            <h3 class="align-center">Patient profile</h3>
             <div class="row justify-content-center" style="margin-right: 0px;margin-left: 0px;">
                 <div class="col-sm-6 col-lg-4" style="padding-right: 0px;padding-left: 0px;">
                     <div class="card clean-card text-center">
@@ -92,23 +94,17 @@
                                     <div class="row">
                                          <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
                                         <div class="col-md-12"><a class="btn btn-outline-secondary" type="button"
-                                                                  href="/doctor/profile/${profile.id}/edit"><i
-                                                class="fas fa-pencil-alt"></i>&nbsp;Edit</a></div>
-                                                   </span>
+                                                                  href="/doctor/profile/${profile.id}/edit"><em class="fas fa-pencil-alt"></em>&nbsp;Edit</a></div></span>
                                     </div>
                                     <div class="row">
                                          <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
                                         <div class="col-md-12"><a class="btn btn-outline-danger" role="button"
-                                                                  href="/doctor/delete/${profile.id}"><i
-                                                class="fas fa-trash"></i>&nbsp;Delete</a></div>
-                                               </span>
+                                                                  href="/doctor/delete/${profile.id}"><em class="fas fa-trash"></em>&nbsp;Delete</a></div></span>
                                     </div>
                                     <div class="row">
                                         <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
                                         <div class="col-md-12"><a class="btn btn-outline-primary" role="button"
-                                                                  href="/doctor/profile/${profile.id}/appointments"><i
-                                                class="fas fa-pager"></i>&nbsp;Appointments</a></div>
-                                             </span>
+                                                                  href="/doctor/profile/${profile.id}/appointments"><em class="fas fa-pager"></em>&nbsp;Appointments</a></div></span>
                                     </div>
                                     <div class="row">
                                         <c:if test="${profile.status == 'DISCHARGED'}">
@@ -116,8 +112,8 @@
                                                                 <div hidden  class="col-md-12"><a
                                                                         class="btn btn-outline-success"
                                                                         role="button"
-                                                                        href="/doctor/profile/${profile.id}/appointment"><i
-                                                                        class="fas fa-newspaper"></i>&nbsp;Make an appointment</a></div>
+                                                                        href="/doctor/profile/${profile.id}/appointment"><em
+                                                                        class="fas fa-newspaper"></em>&nbsp;Make an appointment</a></div>
                                         </span>
                                         </c:if>
                                         <c:if test="${profile.status == 'PATIENT'}">
@@ -125,8 +121,8 @@
                                                                 <div class="col-md-12"><a
                                                                         class="btn btn-outline-success"
                                                                         role="button"
-                                                                        href="/doctor/profile/${profile.id}/appointment"><i
-                                                                        class="fas fa-newspaper"></i>&nbsp;Make an appointment</a></div>
+                                                                        href="/doctor/profile/${profile.id}/appointment"><em
+                                                                        class="fas fa-newspaper"></em>&nbsp;Make an appointment</a></div>
                                         </span>
                                         </c:if>
                                     </div>

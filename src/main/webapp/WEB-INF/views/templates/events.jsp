@@ -28,6 +28,9 @@
         li {
             list-style-type: none;
         }
+        .align-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -82,17 +85,17 @@
             <div class="patients_input form-group">
                 <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
 
-                    <table class="table my-0">
+                    <table class="table table my-0">
                         <thead>
                         <tr>
-                            <th>Patient Information</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Event status</th>
-                            <th>Type of therapy</th>
-                            <th>Reason for cancellation</th>
-                            <th>Cancel</th>
-                            <th>Done</th>
+                            <th scope="row">Patient Information</th>
+                            <th scope="row">Date</th>
+                            <th scope="row">Time</th>
+                            <th scope="row">Event status</th>
+                            <th scope="row">Type of therapy</th>
+                            <th scope="row">Reason for cancellation</th>
+                            <th scope="row">Cancel</th>
+                            <th scope="row">Done</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -151,7 +154,7 @@
                     </table>
                     <br>
                     <c:if test="${totalElements > 10 }">
-                    <h6 align="center">Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</h6>
+                    <h6 class="align-center">Showing ${number+1} page of ${totalPages} pages of ${totalElements} events</h6>
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
                             <c:if test="${number != 0}">

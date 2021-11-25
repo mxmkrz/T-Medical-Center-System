@@ -7,6 +7,7 @@ import com.t_systems.t_medical_center_system.service.impl.AppointmentServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.MailServiceImp;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
 import com.t_systems.t_medical_center_system.util.AppointmentValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-
+@Slf4j
 @Controller
 public class AppointmentController {
     private final AppointmentServiceImp appointmentServiceImp;
@@ -121,7 +122,7 @@ public class AppointmentController {
             AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
             appointmentServiceImp.cancelOrDoneAppointment(appointmentDto, id);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+           log.warn(e.getMessage());
         }
         return "0";
     }
@@ -135,7 +136,7 @@ public class AppointmentController {
             AppointmentDto appointmentDto = objectMapper.readValue(request.getInputStream(), AppointmentDto.class);
             mailServiceImp.sendSimpleMessage(appointmentDto,id);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.warn(e.getMessage());
         }
         return "0";
     }

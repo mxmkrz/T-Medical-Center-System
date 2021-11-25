@@ -1,6 +1,5 @@
 package com.t_systems.t_medical_center_system.service.impl;
 
-import com.t_systems.t_medical_center_system.config.RabbitConfig;
 import com.t_systems.t_medical_center_system.entity.Event;
 import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
@@ -9,7 +8,6 @@ import com.t_systems.t_medical_center_system.entity.enums.EventStatus;
 import com.t_systems.t_medical_center_system.exception.AppointmentNotFoundException;
 import com.t_systems.t_medical_center_system.exception.PatientNotFoundException;
 import com.t_systems.t_medical_center_system.mapper.AppointmentMapper;
-import com.t_systems.t_medical_center_system.mapper.Convertor;
 import com.t_systems.t_medical_center_system.dto.AppointmentDto;
 import com.t_systems.t_medical_center_system.entity.Appointment;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;

@@ -1,18 +1,14 @@
 package com.t_systems.t_medical_center_system.mapper;
 
 import com.t_systems.t_medical_center_system.dto.PatientDto;
-import com.t_systems.t_medical_center_system.entity.MedicalStaff;
 import com.t_systems.t_medical_center_system.entity.Patient;
-import com.t_systems.t_medical_center_system.entity.enums.PatientStatus;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+
 
 @Component
 public class PatientMapper {

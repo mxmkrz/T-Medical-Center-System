@@ -22,15 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private WebApplicationContext context;
 
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                .build();
-    }
 
     @Test
     @WithMockUser(roles = "DOCTOR")

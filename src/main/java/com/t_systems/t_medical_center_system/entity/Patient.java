@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -24,7 +25,7 @@ import java.util.*;
 @Table(name = "tb_patients")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient {
+public class Patient implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

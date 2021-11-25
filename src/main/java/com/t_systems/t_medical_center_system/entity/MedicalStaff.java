@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Table(name = "tb_medical_staff")
 @NoArgsConstructor
-public class MedicalStaff {
+public class MedicalStaff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

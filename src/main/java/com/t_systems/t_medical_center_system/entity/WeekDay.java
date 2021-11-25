@@ -5,13 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "tb_week_day")
 @Setter
 @Getter
 @NoArgsConstructor
-public class WeekDay {
+public class WeekDay implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -16,6 +16,19 @@
     <description>Project for Spring Boot</description>
     <properties>
         <java.version>16</java.version>
+        <sonar.exclusions>
+            src/main/webapp/WEB-INF/views/**/*
+        </sonar.exclusions>
+        <sonar.coverage.exclusions>
+            src/main/java/com/t_systems/t_medical_center_system/config/**/*,
+            src/main/java/com/t_systems/t_medical_center_system/dto/**/*,
+            src/main/java/com/t_systems/t_medical_center_system/entity/**/*,
+            src/main/java/com/t_systems/t_medical_center_system/exception/**/*,
+            src/main/java/com/t_systems/t_medical_center_system/mapper/**/*,
+            src/main/java/com/t_systems/t_medical_center_system/repository/**/*,
+            src/main/java/com/t_systems/t_medical_center_system/util/**/*
+        </sonar.coverage.exclusions>
+
     </properties>
     <dependencies>
 
@@ -140,6 +153,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.7</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -151,6 +169,13 @@
                     <finalName>sample</finalName>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.1.2184</version>
+            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

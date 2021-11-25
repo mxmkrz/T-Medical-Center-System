@@ -34,6 +34,9 @@
             font-style: italic;
             font-weight: bold;
         }
+        .align-center {
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -50,8 +53,8 @@
     <form:hidden path="id"/>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h3 align="center">Please choose a period</h3>
+            <div class="col align-center">
+                <h3>Please choose a period</h3>
             </div>
             <div class="col">
                 <div class="col-xs-6">
@@ -60,7 +63,7 @@
                             <input type="text" name="startOfData" class="form-control " placeholder="Start Date"/>
                             <form:errors path="startOfData" cssClass="error"/>
                             <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-calendar"></i></span>
+                    <em class="glyphicon glyphicon-calendar"></em></span>
                         </div>
                     </div>
                 </div>
@@ -73,7 +76,7 @@
                             <input type="text" name="endOfData" class="form-control" id="btn1" placeholder="End Date"/>
                             <form:errors path="endOfData" cssClass="error"/>
                             <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-calendar"></i>
+                    <em class="glyphicon glyphicon-calendar"></em>
                 </span>
                         </div>
                     </div>
@@ -81,11 +84,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <h3 align="center">Please choose a weekDay</h3>
+            <div class="col align-center">
+                <h3>Please choose a weekDay</h3>
             </div>
             <div class="col">
-                <div class="container" align="center">
+                <div class="container align-center">
                     <div class="mt-square3d" id=0day style="font-size:10px;">
                         <h3><strong>Sunday</strong></h3>
                         <input id="1" name="sunday" type="checkbox"/>
@@ -129,11 +132,11 @@
                     </div>
                 </div>
             </div>
-            <div align="center">
+            <div class="align-center">
                 <form:errors path="saturday" cssClass="error"/>
             </div>
-            <div class="col">
-                <h3 align="center">Please choose a time</h3>
+            <div class="col align-center">
+                <h3>Please choose a time</h3>
             </div>
             <div class="col">
 
@@ -153,8 +156,8 @@
                 </form:select>
                 <form:errors path="time" cssClass="error"/>
             </div>
-            <div class="col">
-                <h3 align="center">Please choose the type of therapy</h3>
+            <div class="col align-center">
+                <h3>Please choose the type of therapy</h3>
             </div>
             <div class="col">
 
@@ -278,7 +281,6 @@
             $('.drugId_input').hide();
         }
     });
-</script>
 </script>
 <script>
     $('#selectType').change(function () {

@@ -3,6 +3,7 @@ package com.t_systems.t_medical_center_system.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "tb_time_in_period")
 @NoArgsConstructor
-public class EventTime {
+public class EventTime implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

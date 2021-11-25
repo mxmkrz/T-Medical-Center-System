@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
@@ -60,23 +60,23 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="m-sm-4">
-                                    <div class="form-group">
-                                        <input class="form-control form-control-lg" type="password" name="oldPassword"
-                                               placeholder="Old password" autocomplete="numeric">
-                                        <form:errors path="oldPassword" cssClass="error"/>
-                                        <br>
-                                        <input class="form-control form-control-lg" type="password" name="newPassword"
-                                               placeholder="New password" autocomplete="numeric">
-                                        <form:errors path="newPassword" cssClass="error"/>
-                                        <br>
-                                        <input class="form-control form-control-lg" type="password"
-                                               name="confirmPassword"
-                                               placeholder="Confirm password" autocomplete="numeric">
-                                        <form:errors path="confirmPassword" cssClass="error"/>
-                                    </div>
-                                    <div class="text-center mt-3">
-                                        <button type="submit" class="btn btn-lg btn-primary">Change password</button>
-                                    </div>
+                                <div class="form-group">
+                                    <input class="form-control form-control-lg" type="password" name="oldPassword"
+                                           placeholder="Old password" autocomplete="numeric">
+                                    <form:errors path="oldPassword" cssClass="error"/>
+                                    <br>
+                                    <input class="form-control form-control-lg" type="password" name="newPassword"
+                                           placeholder="New password" autocomplete="numeric">
+                                    <form:errors path="newPassword" cssClass="error"/>
+                                    <br>
+                                    <input class="form-control form-control-lg" type="password"
+                                           name="confirmPassword"
+                                           placeholder="Confirm password" autocomplete="numeric">
+                                    <form:errors path="confirmPassword" cssClass="error"/>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button type="submit" class="btn btn-lg btn-primary">Change password</button>
+                                </div>
                             </div>
                         </div>
                     </div>
