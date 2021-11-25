@@ -16,8 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
 </head>
-
-<body>
+<body style="background-image: url('../static/images/Fotolia_133334155_M-1.jpg')">
 <section class="register-photo">
     <div class="form-container">
         <form:form action="/registration" method="post" modelAttribute="staff" class="formWithValidation2"

@@ -10,11 +10,6 @@
     <link rel="stylesheet" href="../static/css/styles.css">
     <style>
         body {
-            background: url('../static/images/hero-bg.jpg');
-        }
-    </style>
-    <style>
-        body {
             margin-top: 20px;
             background-color: #f2f3f8;
         }
@@ -46,7 +41,7 @@
     </style>
 
 </head>
-<body>
+<body style="background-image: url('../static/images/hero-bg.jpg')">
 <nav class="navbar">
     <div class="container-fluid">
         <a class="navbar-brand" style="color: #0610d4" href="/logout">Back</a>

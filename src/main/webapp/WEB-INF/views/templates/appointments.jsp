@@ -16,11 +16,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <style>
-        body {
-            background: url('../static/images/1612683701_129-p-zelenii-meditsinskii-fon-170.jpg');
-        }
-    </style>
-    <style>
         .align-center {
             text-align: center;
         }
@@ -30,8 +25,7 @@
     </style>
 </head>
 
-<body>
-<p>
+<body style="background-image: url('../static/images/1612683701_129-p-zelenii-meditsinskii-fon-170.jpg')">
 <nav class="navbar">
     <div class="container-fluid">
         <a class="navbar-brand" style="color: #e8f3ff" href="/doctor/profile/${patient.id}">Back</a>

@@ -26,29 +26,19 @@
     <title></title>
     <script src="../static/bootstrap/js/Multi-Select-Dropdown-by-Jigar-Mistry.js"></script>
     <link rel="stylesheet" href="../static/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
-
-    <style>
-        body {
-            background: url('../static/images/1613688120_48-p-fon-dlya-prezentatsii-doktor-51.jpg');
-        }
-
-    </style>
     <style>
         .error {
             color: #ff0000;
             font-style: italic;
             font-weight: bold;
         }
-
         .align-center {
             text-align: center;
         }
     </style>
 
 </head>
-<body>
-<p>
-
+<body style="background-image: url('../static/images/1613688120_48-p-fon-dlya-prezentatsii-doktor-51.jpg')">
     <form:form action="/doctor/profile/${patient.id}/appointment" method="post"
                modelAttribute="appointmentNew">
 <nav class="navbar navbar-light bg-light">

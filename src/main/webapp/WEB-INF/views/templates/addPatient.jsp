@@ -46,18 +46,9 @@
             font-style: italic;
             font-weight: bold;
         }
-
-    </style>
-
-    <style>
-        body {
-            background: url('../static/images/1619575509_35-phonoteka_org-p-fon-dlya-prezentatsii-vrach-35.jpg');
-        }
     </style>
 </head>
-
-<body>
-<p>
+<body style="background-image: url('../static/images/1619575509_35-phonoteka_org-p-fon-dlya-prezentatsii-vrach-35.jpg');">
 <div class="row" style="margin-right: 0px;margin-left: 0px;">
     <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
         <a class="anone" href="/doctor/patients"><em
@@ -93,7 +84,7 @@
                         <form:errors path="diagnosis" cssClass="error"/>
                     </div>
                     <div class="form-group">
-                        <form:input type="text" class="form-control" placeholder="Insurance Number"
+                        <form:input type="number" class="form-control" placeholder="Insurance Number"
                                     path="insuranceNumber"/>
                         <form:errors path="insuranceNumber" cssClass="error"/>
                     </div>

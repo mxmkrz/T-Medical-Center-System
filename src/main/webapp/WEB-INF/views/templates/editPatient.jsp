@@ -1,8 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-</html>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,16 +14,9 @@
     <link rel="stylesheet" href="../static/fonts/fontawesome5-overrides.min.css">
     <link rel="stylesheet" href="../static/css/Ludens-Users---3-Profile.css">
     <link rel="stylesheet" href="../static/css/styles.css">
-    <style>
-        body {
-            background: url('../static/images/Fotolia_133334155_M-1.jpg');
-        }
-    </style>
 </head>
-<body>
-<div>
-    <p>
-        <form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile"
+<body style="background-image: url('../static/images/Fotolia_133334155_M-1.jpg')">
+    <form:form action="/doctor/profile/${profile.id}/edit" method="post" modelAttribute="profile"
                    class="formWithValidation3">
             <form:hidden path="id"/>
     <main class="page" style="min-height: 100%;">
@@ -36,7 +27,8 @@
                             class="fa fa-long-arrow-left"></em><span>&nbsp;Back</span></a>
                 </div>
                 <div class="col-md-12" style="margin-bottom: 25px;padding-left: 75px;font-size: 21px;margin-top: 73px;">
-                    <a class="anone" href="/logout"><em class="fa fa-long-arrow-left"></em><strong>&nbsp; Logout</strong></a>
+                    <a class="anone" href="/logout"><em class="fa fa-long-arrow-left"></em><strong>&nbsp;
+                        Logout</strong></a>
                 </div>
             </div>
             <div class="row" style="margin-right: 0px;margin-left: 0px;">
@@ -53,7 +45,8 @@
                                         </div>
                                         <div class="col">
                                             <label>
-                                                <input class="form-control" type="text" name="name" placeholder="${profile.name}">
+                                                <input class="form-control" type="text" name="name"
+                                                       placeholder="${profile.name}">
                                                 <form:errors path="name"/>
                                             </label>
                                         </div>
@@ -88,7 +81,7 @@
                                         </div>
                                         <div class="col">
                                             <label>
-                                                <input class="form-control" type="text" name="insuranceNumber"
+                                                <input class="form-control" type="number" name="insuranceNumber"
                                                        placeholder="${profile.insuranceNumber}">
                                                 <form:errors path="insuranceNumber"/>
                                             </label>
@@ -100,7 +93,7 @@
                                         </div>
                                         <div class="col">
                                             <label>
-                                                <form:select class="form-selected" path="status" >
+                                                <form:select class="form-selected" path="status">
                                                     <form:option value="PATIENT">PATIENT</form:option>
                                                     <form:option value="DISCHARGED">DISCHARGED</form:option>
                                                 </form:select>
@@ -122,9 +115,7 @@
             </div>
         </section>
     </main>
-</div>
 </form:form>
-<script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </body>
-</p>
+<script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </html>

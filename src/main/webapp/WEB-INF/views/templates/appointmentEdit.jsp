@@ -23,12 +23,6 @@
     <script src="../static/bootstrap/js/Multi-Select-Dropdown-by-Jigar-Mistry.js"></script>
     <link rel="stylesheet" href="../static/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
     <style>
-        body {
-            background: url('../static/images/1613688120_48-p-fon-dlya-prezentatsii-doktor-51.jpg');
-        }
-
-    </style>
-    <style>
         .error {
             color: #ff0000;
             font-style: italic;
@@ -40,8 +34,7 @@
     </style>
 
 </head>
-<body>
-<p>
+<body style="background-image: url('../static/images/1613688120_48-p-fon-dlya-prezentatsii-doktor-51.jpg')">
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/doctor/profile/${patient.id}/appointments">Back</a>

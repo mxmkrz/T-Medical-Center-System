@@ -3,6 +3,7 @@ package com.t_systems.t_medical_center_system.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 
 import javax.validation.constraints.*;
@@ -20,6 +21,7 @@ public class PatientDto {
     @NotBlank(message = "Diagnosis is required")
     private String diagnosis;
     @Min(value = 0, message = "Insurance Number should be greater than 0")
+    @NotNull(message = "Insurance empty")
     private Long insuranceNumber;
     @NotBlank(message = "Status is required")
     private String status;

@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,11 +19,12 @@ import javax.validation.Valid;
 public class PatientController {
 
     private final PatientServiceImp patientService;
-
     @Autowired
-    public PatientController(@NonNull PatientServiceImp patientService) {
+    public PatientController(PatientServiceImp patientService) {
         this.patientService = patientService;
     }
+
+
 
 
     @GetMapping("/doctor/patients")

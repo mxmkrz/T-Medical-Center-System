@@ -14,11 +14,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
-
-    <style>
-        p.exserif { font-family: "Quicksand", "Book Antiqua", serif; }
-
-    </style>
     <style>
         li {
             list-style-type: none;
@@ -28,15 +23,8 @@
         }
     </style>
 
-    <style>
-    body {
-    background: url('../static/images/hero-bg.jpg');
-    }</style>
-
 </head>
-<body>
-<p>
-<p class="exserif">
+<body style="background-image: url('../static/images/hero-bg.jpg')">
 <nav class="navbar navbar-dark navbar-expand-md" id="app-navbar">
     <div class="container-fluid"><a class="navbar-brand" href="#"><em class="icon ion-ios-infinite" id="brand-logo"></em></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-1">
@@ -48,8 +36,6 @@
     </div>
 </nav>
 <div class="container py-5">
-
-
     <div class="container-fluid">
         <div class="card shadow">
             <div class="card-header py-3">
@@ -140,8 +126,6 @@
         </div>
     </div>
 </div>
-</p>
-</p>
 </body>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </html>

@@ -13,17 +13,13 @@
     <link rel="stylesheet" href="../static/css/Login-Form-Clean.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <style>
-        body {
-            background: url('../static/images/hero-bg.jpg');
-        }
         .align-center {
             text-align: center;
         }
     </style>
 </head>
-<body>
+<body style="background-image: url('../static/images/hero-bg.jpg');">
 <section class="login-clean">
-    <p>
     <div class="illustration"><em class="icon ion-ios-medkit"></em></div>
     <form:form action="/login/process" method="post">
         <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email"></div>
@@ -43,7 +39,6 @@
             <div class="mt-5" style="color: #f80030">Invalid username or password</div>
         </c:if>
     </form:form>
-    </p>
 </section>
 </body>
 </html>

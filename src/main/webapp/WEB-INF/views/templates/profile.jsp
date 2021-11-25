@@ -13,17 +13,13 @@
     <link rel="stylesheet" href="../static/css/Ludens-Users---3-Profile.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <style>
-        body {
-            background: url('../static/images/Fotolia_133334155_M-1.jpg');
-        }
         .align-center {
             text-align: center;
         }
     </style>
 </head>
-<body>
+<body style="background-image: url('../static/images/Fotolia_133334155_M-1.jpg')">
 <div>
-    <p>
     <main class="page" style="min-height: 100%;">
         <section class="clean-block about-us">
             <div class="row" style="margin-right: 0px;margin-left: 0px;">

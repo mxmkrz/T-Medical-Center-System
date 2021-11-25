@@ -20,11 +20,6 @@
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <style>
-        body {
-            background: url('../static/images/hero-bg.jpg');
-        }
-    </style>
-    <style>
         li {
             list-style-type: none;
         }
@@ -33,8 +28,7 @@
         }
     </style>
 </head>
-<body>
-<p>
+<body style="background-image: url('../static/images/hero-bg.jpg')">
 <ul class="nav justify-content-end">
     <li class="nav-item">
         <a class="navbar-brand">
@@ -180,8 +174,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 <div class="modal fade" id="status_done" tabindex="-1" role="dialog"
      aria-labelledby="allertCompleteDoneModal"
