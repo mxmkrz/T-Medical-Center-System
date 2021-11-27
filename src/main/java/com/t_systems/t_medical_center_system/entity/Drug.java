@@ -4,7 +4,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
+/**
+ * An entity that represents a drug in database
+ *
+ * @author Kuryzin Maxim
+ * @github mxmkrz
+ */
 @Entity
 @NoArgsConstructor
 @Getter

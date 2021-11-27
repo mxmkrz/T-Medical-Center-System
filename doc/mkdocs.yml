@@ -1,0 +1,22 @@
+site_name: Technical solution description
+theme:
+  name: material
+extra:
+  alternate:
+    - name: English
+      link: /pages/
+      lang: en
+    - name: Russian
+      link: /ru/
+      lang: ru
+repo_url: https://github.com/mxmkrz/T-Medical-Center-System
+repo_name: mxmkrz/T-Medical-Center-System
+plugins:
+  - search
+nav:
+    - Introduction: "pages/introduction.md"
+    - Application description: "pages/description.md"
+    - Used Technologies: "pages/technologies.md"
+    - DATABASE MODEL: "pages/database.md"
+    - Sonar report: "pages/sonar_report.md"
+    - Jacoco report: "pages/jacoco_report.md"

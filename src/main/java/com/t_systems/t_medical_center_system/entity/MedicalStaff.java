@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * An entity that represents a doctor in database
+ * An entity that represents a doctor or nurse in database
  *
  * @author Kuryzin Maxim
  * @github mxmkrz
@@ -40,7 +40,8 @@ public class MedicalStaff implements Serializable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @Transient
+    private String confirmPasswordStaff;
 
     @Transient
     private String oldPassword;

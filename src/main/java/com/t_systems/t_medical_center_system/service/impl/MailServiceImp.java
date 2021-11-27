@@ -22,6 +22,7 @@ public class MailServiceImp {
     private final AppointmentRepository appointmentRepository;
     private final MedicalStaffRepository medicalStaffRepository;
     private final SimpleMailMessage mailMessage;
+
     @Autowired
     public MailServiceImp(JavaMailSender mailSender, PatientRepository patientRepository, AppointmentRepository appointmentRepository, MedicalStaffRepository medicalStaffRepository, SimpleMailMessage simpleMailMessage) {
         this.mailSender = mailSender;
@@ -32,9 +33,12 @@ public class MailServiceImp {
     }
 
 
-
-
-
+    /**
+     * This is method send an appointment on mail.
+     *
+     * @param appointmentDto the eventDto
+     * @param idPatient      the idPatient for find patient
+     */
 
     public void sendSimpleMessage(AppointmentDto appointmentDto, Long idPatient) {
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);

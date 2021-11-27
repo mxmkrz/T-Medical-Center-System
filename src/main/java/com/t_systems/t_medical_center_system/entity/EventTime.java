@@ -5,7 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
+/**
+ * An entity that represents a time even in database
+ *
+ * @author Kuryzin Maxim
+ * @github mxmkrz
+ */
 @Entity
 @Getter
 @Setter

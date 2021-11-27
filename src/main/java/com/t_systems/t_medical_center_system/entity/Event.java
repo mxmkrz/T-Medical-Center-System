@@ -10,7 +10,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Date;
-
+/**
+ * An entity that represents a event in database
+ *
+ * @author Kuryzin Maxim
+ * @github mxmkrz
+ */
 @Entity
 @Table(name = "events")
 @NoArgsConstructor

@@ -73,6 +73,14 @@ public class EventServiceImp implements EventService {
 
     }
 
+    /**
+     * This is method creates events.Method gets map date with list times.
+     * Then go by map and by list with times.One event is created for each time
+     *
+     * @param appointmentDto the eventDto
+     * @param idPatient      the idPatient for find patient
+     * @param appointmentId  the appointmentId for find appointment
+     */
     @Override
     @Transactional
     public void generateEvents(AppointmentDto appointmentDto, Long idPatient, Long appointmentId) {
@@ -100,6 +108,12 @@ public class EventServiceImp implements EventService {
         }
     }
 
+    /**
+     * This is method sets event status on cancel or done.
+     * Set reason to cancel only for canceled event
+     *
+     * @param eventDto the eventDto
+     */
 
     @Override
     @Transactional
@@ -144,6 +158,12 @@ public class EventServiceImp implements EventService {
         return eventRepository.findAll(pageable).map(eventMapper::toDto);
     }
 
+    /**
+     * This is method find events  the next hour during current day
+     *
+     * @param pageable the pageable
+     * @return list events for second app during current day
+     */
     @Transactional(readOnly = true)
     @Override
     public Page<EventDto> findAllEventsForHour(Pageable pageable) {
@@ -156,6 +176,12 @@ public class EventServiceImp implements EventService {
         return eventRepository.findAllForHour(currentPlusHour, current, date, pageable).map(eventMapper::toDto);
     }
 
+    /**
+     * This is method find events between  yesterday's date and tomorrow's date
+     *
+     * @param pageable the pageable
+     * @return list events for second app during current day
+     */
     @Transactional(readOnly = true)
     @Override
     public Page<EventDto> findAllEventsForDay(Pageable pageable) {
@@ -178,7 +204,12 @@ public class EventServiceImp implements EventService {
         return eventRepository.findAllBy(name, pageable).map(eventMapper::toDto);
     }
 
-
+    /**
+     * This is method find events between  yesterday's date and tomorrow's date
+     * This is  method use an only a second app
+     *
+     * @return list events for second app during current day
+     */
     @Transactional(readOnly = true)
     @Override
     public List<EventBoardDto> findAllEventsDayForBoard() {
@@ -193,6 +224,15 @@ public class EventServiceImp implements EventService {
         return eventMapper.toStringDtoList(eventSpringDtos);
 
     }
+
+    /**
+     * This is method for filter information
+     *
+     * @param filter   the filter number
+     * @param keyword  name or surname patient for search
+     * @param pageable the pageable
+     * @return page by request number filter
+     */
     @Transactional
     @Override
     public Page<EventDto> doFilter(Filter filter, String keyword, Pageable pageable) {
@@ -202,6 +242,14 @@ public class EventServiceImp implements EventService {
         if (filter.getAnInt().equals("3")) return findAllEventsForHour(pageable);
         return null;
     }
+
+    /**
+     * This is method finds a list with dates between a start date and end date.
+     * Method compare dates with Gregorian Calendar.
+     *
+     * @param appointmentDto the appointmentDto
+     * @return list with dates in the period
+     */
 
     public List<Date> getDataBetweenStartEndData(AppointmentDto appointmentDto) {
         List<Date> datesInRange = new ArrayList<>();
@@ -221,6 +269,15 @@ public class EventServiceImp implements EventService {
         return datesInRange;
     }
 
+    /**
+     * This is method checks dates and times about appointment
+     *
+     * @param weekDay        the weekday necessary for to set a specific day of the week
+     * @param period         the period for go by dates
+     * @param calendar       the calendar that compare with real weekday
+     * @param dateAndTimeMap the dateAndTimeMap for  fill map
+     * @param appointmentDto the appointmentDto for method listOfAcceptedTimes
+     */
     private void checkWeekDayAndAddTime(Integer weekDay, List<Date> period, Calendar calendar, Map<Date, List<LocalTime>> dateAndTimeMap, AppointmentDto appointmentDto) {
         for (Date d : period) {
             calendar.setTime(d);
@@ -234,7 +291,12 @@ public class EventServiceImp implements EventService {
         }
     }
 
-
+    /**
+     * This is method finds count weekday from user
+     *
+     * @param appointmentDto the appointmentDto for calculate weekday
+     * @return map with dates and list times
+     */
     public Map<Date, List<LocalTime>> countDataAndTime(AppointmentDto appointmentDto) {
         List<Date> period = getDataBetweenStartEndData(appointmentDto);
         Calendar calendar = new GregorianCalendar();
@@ -266,6 +328,12 @@ public class EventServiceImp implements EventService {
 
     }
 
+    /**
+     * This is method finds list times from 9 o'clock to 21 o'clock and install real times.
+     *
+     * @param appointmentDto the appointmentDto for calculate weekday
+     * @param times          the times for calculate times from users
+     */
     public void listOfAcceptedTimes(AppointmentDto appointmentDto, List<LocalTime> times) {
         for (int i = 0; i < appointmentDto.getTime().size(); i++) {
             switch (appointmentDto.getTime().get(i)) {

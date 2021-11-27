@@ -91,7 +91,12 @@ public class AppointmentServiceImp implements AppointmentService {
         rabbitSender.sendMessage("update");
 
     }
-
+    /**
+     * Cancel or done an appointment.Set status for events.
+     *
+     * @param appointmentDto the appointmentDto
+     * @param idPatient the idPatient
+     */
     @Transactional
     @Override
     public void cancelOrDoneAppointment(AppointmentDto appointmentDto, Long idPatient) {

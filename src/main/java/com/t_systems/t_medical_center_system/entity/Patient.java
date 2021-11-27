@@ -11,7 +11,7 @@ import java.util.*;
 
 
 /**
- * This is my Patient entity,here I will write the mapping in the database
+ * An entity that represents a patient in database
  *
  * @author Kuryzin Maxim
  * @github mxmkrz

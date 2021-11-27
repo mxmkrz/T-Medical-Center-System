@@ -8,7 +8,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * An entity that represents  appointment in database
+ *
+ * @author Kuryzin Maxim
+ * @github mxmkrz
+ */
 @Entity
 @Table(name = "tb_appointment")
 @Setter

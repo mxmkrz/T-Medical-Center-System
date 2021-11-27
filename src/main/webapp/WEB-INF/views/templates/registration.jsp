@@ -1,90 +1,70 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Add Doctor</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Untitled</title>
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-
+    <style>
+        .error {
+            color: #ff0000;
+            font-style: italic;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body style="background-image: url('../static/images/Fotolia_133334155_M-1.jpg')">
-<section class="register-photo">
-    <div class="form-container">
-        <form:form action="/registration" method="post" modelAttribute="staff" class="formWithValidation2"
-                   role="form">
-            <h2 class="text-center"><strong>Create</strong> an account.</h2>
-            <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email"></div>
-            <div class="mb-3"><input class="form-control" type="text" name="name" placeholder="Name"></div>
-            <div class="mb-3"><input class="form-control" type="text" name="surname" placeholder="Surname"></div>
-            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="mb-3"><input class="form-control" type="text" name="passwordConfirm"
-                                     placeholder="Password (repeat)"></div>
-            <div class="form-floating">
-                    <select class="form-select" name="role" id="roleInput" aria-label="Floating label select example">
-                        <option selected>Role</option>
-                        <option value="ROLE_DOCTOR">DOCTOR</option>
-                        <option value="ROLE_NURSE">NURSE</option>
-                    </select>
+<div class="nav-item">
+    <a class="navbar-brand">
+        <a class="nav-link" href="/menu">Back</a>
+    </a>
+</div>
+<div class="container register-form">
+    <div class="form">
+        <form:form action="/menu/registration" method="post" modelAttribute="staff">
+        <h2 class="text"><strong>Create</strong> an account for medical staff</h2>
+        <div class="col-md-4">
+            <div class="form-group">
+                <form:input type="email" class="form-control" placeholder="Email" path="email"/>
+                <form:errors path="email" cssClass="error"/>
             </div>
-            <div class="mb-3">
-                <div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox">I agree to the terms of registration.</label></div>
+            <div class="form-group">
+                <form:input type="text" class="form-control" placeholder="Name" path="name"/>
+                <form:errors path="name" cssClass="error"/>
             </div>
-            <div class="mb-3">
-                <button class="btn btn-primary d-block w-100" type="submit">Sign Up</button>
+            <div class="form-group">
+                <form:input type="text" class="form-control" placeholder="Surname" path="surname"/>
+                <form:errors path="surname" cssClass="error"/>
             </div>
-        </form:form>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <form:input type="password" class="form-control" placeholder="Password" path="password"/>
+                <form:errors path="password" cssClass="error"/>
+            </div>
+            <div class="form-group">
+                <form:input type="password" class="form-control" placeholder="Confirm Password" path="confirmPasswordStaff"/>
+                <form:errors path="confirmPasswordStaff" cssClass="error"/>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <form:select class="form-select" aria-label="Floating label select example" path="role">
+                <form:option value="ROLE_DOCTOR">DOCTOR</form:option>
+                <form:option value="ROLE_NURSE">NURSE</form:option>
+            </form:select>
+            <form:errors path="role" cssClass="error"/>
+        </div>
     </div>
-</section>
+    <button class="btn btn-primary col-md-4" type="submit">Sign Up</button>
+    </form:form>
+</div>
+
+
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
 </body>
-<script>
-    $("#edit_role").on('show.bs.modal', function (e) {
-        var role = $(e.relatedTarget).data('staff-role');
-        $('#roleInput').val(role);
-    });
-    $("#edit_role").on('hidden.bs.modal', function () {
-        var form = $(this).find('form');
-        form[0].reset();
-
-    });
-    var form = document.querySelector('.formWithValidation2')
-    var role = form.querySelector('.role')
-
-    form.addEventListener("submit", function (event) {
-        event.preventDefault()
-
-
-        $.ajax({
-            url: '/registration',
-            datatype: 'json',
-            type: "POST",
-            dataType: 'JSON',
-            data: JSON.stringify({
-                id: ${staff.id},
-                name: '${staff.name}',
-                surname: "${staff.surname}",
-                email: '${staff.email}',
-                role: role.value,
-            }),
-            success: function (response) {
-                if (response.redirect) {
-                    window.location.href = response.redirect;
-                }
-            },
-            error: function (result) {
-                alert("error" + result.responseText);
-            }
-        });
-    });
-
-</script>
 </html>

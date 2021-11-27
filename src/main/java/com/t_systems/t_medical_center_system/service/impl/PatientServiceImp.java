@@ -99,7 +99,12 @@ public class PatientServiceImp implements PatientService {
         rabbitSender.sendMessage("delete patient");
     }
 
-
+    /**
+     * This is method necessary for discharge patient.
+     * Function deletes all event after current date and update status appointment.
+     *
+     * @param patientDto the patientDto
+     */
     @Transactional
     @Override
     public void discharge(PatientDto patientDto) {

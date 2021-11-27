@@ -31,6 +31,7 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
     private final MedicalStaffRepository medicalStaffRepository;
     private final JavaMailSender mailSender;
     private final SimpleMailMessage mailMessage;
+
     @Autowired
     public MedicalStaffServiceImp(MedicalStaffRepository staffRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MedicalStaffRepository medicalStaffRepository, JavaMailSender mailSender, SimpleMailMessage mailMessage) {
         this.staffRepository = staffRepository;
@@ -41,9 +42,6 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
     }
 
 
-
-
-
     @Transactional
     @Override
     public void saveStaff(MedicalStaff doctor) {
@@ -52,6 +50,11 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
         log.info("Add medical staff");
     }
 
+    /**
+     * This is the method necessary for resetting passwords. Here send a link on mail that the user goes to the link to change the password.
+     *
+     * @param email the email
+     */
 
     @Override
     public void sendLinkOnEmail(String email) {
@@ -60,6 +63,12 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
         mailSender.send(mailMessage);
     }
 
+    /**
+     * This is the method necessary for check old password and new password in database.
+     * If password compare to set new  password for staff and save in database.
+     *
+     * @param medicalStaff the medicalStaff
+     */
     @Transactional
     @Override
     public void changePassword(MedicalStaff medicalStaff) {
@@ -72,6 +81,11 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
         }
     }
 
+    /**
+     * This is method necessary for authentication medical staff
+     *
+     * @param email the email
+     */
 
     @Transactional
     @Override

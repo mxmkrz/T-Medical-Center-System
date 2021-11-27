@@ -6,7 +6,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
+/**
+ * An entity that represents a weekday in database
+ *
+ * @author Kuryzin Maxim
+ * @github mxmkrz
+ */
 @Entity
 @Table(name = "tb_week_day")
 @Setter

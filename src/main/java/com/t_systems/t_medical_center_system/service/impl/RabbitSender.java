@@ -15,6 +15,12 @@ public class RabbitSender {
         this.rabbitConfig = rabbitConfig;
     }
 
+    /**
+     * This is method necessary for send message for second app
+     *
+     * @param message the message
+     */
+
     public void sendMessage(String message){
         rabbitConfig.produce(message);
         log.info("send " + message);

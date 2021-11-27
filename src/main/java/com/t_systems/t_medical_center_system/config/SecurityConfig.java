@@ -32,8 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/login","/login/reset","/login/change").anonymous()
-                .antMatchers("/doctor/**").hasRole("DOCTOR")
-                .antMatchers("/nurse/**").hasRole("NURSE")
+                .antMatchers("/doctor/**").hasAnyRole("DOCTOR","ADMIN")
+                .antMatchers("/nurse/**").hasAnyRole("NURSE","ADMIN")
+                .antMatchers("/menu/**").hasRole("ADMIN")
+
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -44,8 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/")
+
                 .and()
                 .logout()
+                .deleteCookies("JSESSIONID")
 
                 .and()
                 .csrf()
