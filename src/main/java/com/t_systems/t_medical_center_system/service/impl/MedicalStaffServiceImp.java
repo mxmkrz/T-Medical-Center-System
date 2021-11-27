@@ -44,9 +44,9 @@ public class MedicalStaffServiceImp implements MedicalStaffService, UserDetailsS
 
     @Transactional
     @Override
-    public void saveStaff(MedicalStaff doctor) {
-        doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
-        staffRepository.save(doctor);
+    public void saveStaff(MedicalStaff staff) {
+        staff.setPassword(bCryptPasswordEncoder.encode(staff.getPassword()));
+        staffRepository.save(staff);
         log.info("Add medical staff");
     }
 

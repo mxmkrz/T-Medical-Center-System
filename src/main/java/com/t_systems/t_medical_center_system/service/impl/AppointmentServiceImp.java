@@ -64,6 +64,7 @@ public class AppointmentServiceImp implements AppointmentService {
     @Transactional(readOnly = true)
     @Override
     public Page<AppointmentDto> getAppointmentListByPatientId(Long id, Pageable pageable) {
+        checkStatusEvents(id);
         Patient patient = patientRepository.findById(id).orElseThrow(PatientNotFoundException::new);
         return appointmentRepository.findAllByPatient(patient, pageable).map(appointmentMapper::toDto);
     }
@@ -91,11 +92,12 @@ public class AppointmentServiceImp implements AppointmentService {
         rabbitSender.sendMessage("update");
 
     }
+
     /**
      * Cancel or done an appointment.Set status for events.
      *
      * @param appointmentDto the appointmentDto
-     * @param idPatient the idPatient
+     * @param idPatient      the idPatient
      */
     @Transactional
     @Override
@@ -132,6 +134,46 @@ public class AppointmentServiceImp implements AppointmentService {
             rabbitSender.sendMessage("cancel");
             log.info("Appointment completed and event statuses completed ");
         }
+    }
+
+    /**
+     * This is the method necessary for setting appointment status if the nurse cancels or done or cancels and done all events.
+     * The method calculates event status if events equal list size next set appointment status.
+     *
+     * @param id the id patient
+     */
+    @Override
+    @Transactional
+    public void checkStatusEvents(Long id) {
+        List<Appointment> appointments = appointmentRepository.findAllByPatientId(id);
+        int countEventDone = 0;
+        int countEventCancel = 0;
+        for (Appointment a : appointments) {
+            List<Event> events = eventServiceImp.findAllByAppointmentId(a.getId());
+            for (Event e : events) {
+                if (e.getStatus().equals(EventStatus.DONE)) {
+                    countEventDone++;
+                }
+                if (e.getStatus().equals(EventStatus.CANCELED)) {
+                    countEventCancel++;
+                }
+            }
+            if (countEventDone == events.size()) {
+                a.setStatus(AppointmentStatus.DONE);
+                countEventDone = 0;
+            }
+            if (countEventCancel == events.size()) {
+                a.setStatus(AppointmentStatus.FINISHED);
+                countEventCancel = 0;
+            }
+            if (countEventCancel + countEventDone == events.size()) {
+                a.setStatus(AppointmentStatus.FINISHED);
+                countEventDone = 0;
+                countEventCancel = 0;
+            }
+
+        }
+
     }
 
 

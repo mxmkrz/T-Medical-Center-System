@@ -11,13 +11,11 @@ import com.t_systems.t_medical_center_system.mapper.AppointmentMapper;
 import com.t_systems.t_medical_center_system.repository.AppointmentRepository;
 import com.t_systems.t_medical_center_system.repository.MedicalStaffRepository;
 import com.t_systems.t_medical_center_system.repository.PatientRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,7 +23,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 
@@ -48,7 +47,7 @@ class AppointmentServiceImpTest {
 
     @Test
     @WithMockUser(roles = "DOCTOR")
-     void makeAnAppointment() {
+    void makeAnAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         Patient patient = new Patient();
@@ -74,7 +73,7 @@ class AppointmentServiceImpTest {
 
     @Test
     @WithMockUser(roles = "DOCTOR")
-     void updateAppointment() {
+    void updateAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         Patient patient = new Patient();
@@ -100,7 +99,7 @@ class AppointmentServiceImpTest {
     }
 
     @Test
-     void cancelAppointment() {
+    void cancelAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         appointmentDto.setStatus(AppointmentStatus.FINISHED);
@@ -131,7 +130,7 @@ class AppointmentServiceImpTest {
     }
 
     @Test
-     void doneAppointment() {
+    void doneAppointment() {
         AppointmentDto appointmentDto = new AppointmentDto();
         Appointment appointment = new Appointment();
         appointmentDto.setStatus(AppointmentStatus.DONE);
@@ -157,6 +156,31 @@ class AppointmentServiceImpTest {
                 , ArgumentMatchers.any());
         verify(rabbitSender, times(1)).sendMessage(ArgumentMatchers.anyString());
         verify(appointmentRepository, times(1)).save(appointment);
+
+    }
+
+    @Test
+    void checkStatusEvents() {
+        Appointment appointment = new Appointment();
+        appointment.setId(2L);
+        List<Appointment> appointments = List.of(appointment);
+        Event event1 = new Event();
+        Event event2 = new Event();
+        event1.setStatus(EventStatus.CANCELED);
+        event2.setStatus(EventStatus.DONE);
+        List<Event> events = List.of(event1, event2);
+        for (Appointment a : appointments) {
+            a.setEvents(events);
+
+        }
+
+        when(appointmentRepository.findAllByPatientId(1L)).thenReturn(appointments);
+        when(eventServiceImp.findAllByAppointmentId(appointment.getId())).thenReturn(events);
+
+        appointmentServiceImp.checkStatusEvents(1L);
+
+        assertEquals(AppointmentStatus.FINISHED, appointment.getStatus());
+
 
     }
 

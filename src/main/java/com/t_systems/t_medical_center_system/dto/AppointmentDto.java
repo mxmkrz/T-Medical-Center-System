@@ -26,7 +26,7 @@ public class AppointmentDto {
     private Integer dose;
     private String infoDrugs;
     private String info;
-    @Future(message = "Start date must be less than current")
+    @Future(message = "Start date not must be less than current")
     @DateTimeFormat(pattern = "MM/dd/yyyy h:mm a")
     @NotNull(message = "Start date should not be empty")
     private Date startOfData;

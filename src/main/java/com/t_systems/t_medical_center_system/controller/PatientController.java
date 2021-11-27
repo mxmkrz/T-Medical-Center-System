@@ -2,6 +2,7 @@ package com.t_systems.t_medical_center_system.controller;
 
 import com.t_systems.t_medical_center_system.dto.PatientDto;
 import com.t_systems.t_medical_center_system.service.impl.PatientServiceImp;
+import com.t_systems.t_medical_center_system.util.PatientValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +20,13 @@ import javax.validation.Valid;
 public class PatientController {
 
     private final PatientServiceImp patientService;
+    private final PatientValidator patientValidator;
     @Autowired
-    public PatientController(PatientServiceImp patientService) {
+    public PatientController(PatientServiceImp patientService, PatientValidator patientValidator) {
         this.patientService = patientService;
+        this.patientValidator = patientValidator;
     }
+
 
 
 
@@ -50,6 +54,7 @@ public class PatientController {
 
     @PostMapping(value = "/doctor/add")
     public String addPatientPost(@ModelAttribute("patient") @Valid PatientDto patientDto, BindingResult bindingResult) {
+        patientValidator.validate(patientDto,bindingResult);
         if (bindingResult.hasErrors()) {
             return "/templates/addPatient";
         }
@@ -76,6 +81,7 @@ public class PatientController {
 
     @PostMapping(value = "/doctor/profile/{id}/edit")
     public String updatePatientPost(@ModelAttribute("profile") @Valid PatientDto patientDto, BindingResult bindingResult) {
+        patientValidator.validate(patientDto,bindingResult);
         if (bindingResult.hasErrors()) {
             return "templates/editPatient";
         }

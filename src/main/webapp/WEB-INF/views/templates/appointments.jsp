@@ -116,7 +116,7 @@
                         </tbody>
                     </table>
                     <br>
-                    <c:if test="${totalElements > 8 }">
+                    <c:if test="${totalElements > 6 }">
                     <h6 class="align-center"><strong>Showing ${number+1} page of ${totalPages} pages of ${totalElements}
                         events</strong></h6>
                     <ul class="pagination justify-content-center">

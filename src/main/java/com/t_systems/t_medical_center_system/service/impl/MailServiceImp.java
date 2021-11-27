@@ -43,7 +43,7 @@ public class MailServiceImp {
     public void sendSimpleMessage(AppointmentDto appointmentDto, Long idPatient) {
         Patient patient = patientRepository.findById(idPatient).orElseThrow(PatientNotFoundException::new);
         Appointment appointment = appointmentRepository.findById(appointmentDto.getId()).orElseThrow(AppointmentNotFoundException::new);
-        MedicalStaff medicalStaff = medicalStaffRepository.findByName(patient.getDoctorName());
+        MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(patient.getDoctorEmail());
         mailMessage.setTo(medicalStaff.getEmail());
         mailMessage.setText("Name: " + appointment.getPatient().getName() + "\n" +
                 "Surname: " + appointment.getPatient().getSurname() + "\n" +

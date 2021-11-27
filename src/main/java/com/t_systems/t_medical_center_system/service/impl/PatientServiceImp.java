@@ -71,6 +71,7 @@ public class PatientServiceImp implements PatientService {
 
         MedicalStaff medicalStaff = medicalStaffRepository.findByEmail(authStaff.getName());
         patient1.setDoctorName(medicalStaff.getName());
+        patient1.setDoctorEmail(medicalStaff.getEmail());
         patientRepository.save(patient1);
         log.info("Add patient");
     }

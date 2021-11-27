@@ -16,5 +16,7 @@ public interface AppointmentService {
 
     void cancelOrDoneAppointment(AppointmentDto appointmentDto, Long idPatient);
 
+    void checkStatusEvents(Long id);
+
 
 }

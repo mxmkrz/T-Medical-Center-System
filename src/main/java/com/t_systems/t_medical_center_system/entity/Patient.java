@@ -34,6 +34,7 @@ public class Patient implements Serializable {
     private String diagnosis;
     private Long insuranceNumber;
     private String doctorName;
+    private String doctorEmail;
 
     @CreationTimestamp
     private Date createDataTime;

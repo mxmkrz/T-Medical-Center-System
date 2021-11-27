@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.List;
+
 @Component
 public class AdminValidator implements Validator {
     private MedicalStaffRepository medicalStaffRepository;
@@ -41,6 +43,12 @@ public class AdminValidator implements Validator {
         }
         if (!medicalStaff.getPassword().equals(medicalStaff.getConfirmPasswordStaff())) {
             errors.rejectValue("confirmPasswordStaff", "", "New password and the Confirmed one do not match");
+        }
+        List<MedicalStaff> list = (List<MedicalStaff>) medicalStaffRepository.findAll();
+        for (MedicalStaff m:list) {
+            if (medicalStaff.getEmail().equals(m.getEmail())){
+                errors.rejectValue("email","","Staff with this email already exists");
+            }
         }
 
 
