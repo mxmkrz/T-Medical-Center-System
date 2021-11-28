@@ -20,3 +20,5 @@ nav:
     - DATABASE MODEL: "pages/database.md"
     - Sonar report: "pages/sonar_report.md"
     - Jacoco report: "pages/jacoco_report.md"
+    - Future plans: "pages/plans.md"
+    - Application: http://localhost:8080/login

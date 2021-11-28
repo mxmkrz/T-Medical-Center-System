@@ -19,6 +19,9 @@
     </style>
 </head>
 <body style="background-image: url('../static/images/hero-bg.jpg');">
+<nav class="nav">
+    <a class="btn btn-outline-primary lh-lg"  href="http://127.0.0.1:8000/">Technical solution description</a>
+</nav>
 <section class="login-clean">
     <div class="illustration"><em class="icon ion-ios-medkit"></em></div>
     <form:form action="/login/process" method="post">

@@ -112,11 +112,14 @@ class EventServiceImpTest {
         Date dateAfter = Date.valueOf(nowPlusFiveDay);
         appointmentDto.setStartOfData(dateBefore);
         appointmentDto.setEndOfData(dateAfter);
-        appointmentDto.setTime(new ArrayList<>(List.of("2", "3")));
+        appointmentDto.setTime(new ArrayList<>(List.of("0","1","2", "3","4","5","6","7","8")));
         appointmentDto.setTuesday(true);
+        appointmentDto.setMonday(true);
+        appointmentDto.setFriday(true);
+        appointmentDto.setSaturday(true);
 
         Map<Date, List<LocalTime>> map = eventServiceImp.countDataAndTime(appointmentDto);
-        assertEquals(2, map.size());
+        assertEquals(6, map.size());
 
 
     }
@@ -188,6 +191,28 @@ class EventServiceImpTest {
         verify(eventRepository, times(1)).save(event);
         assertEquals(EventStatus.DONE, event.getStatus());
         assertNull(eventDto.getReasonToCancel());
+
+    }
+
+    @Test
+    void updateEvent() {
+        Event event = new Event();
+        event.setId(26L);
+        Patient patient = new Patient();
+        patient.setId(3L);
+        Appointment appointment = new Appointment();
+        event.setPatient(patient);
+        event.setAppointment(appointment);
+
+        when(patientRepository.findById(patient.getId())).thenReturn(Optional.of(patient));
+        when(eventRepository.findById(event.getId())).thenReturn(Optional.of(event));
+        when(appointmentRepository.findById(14L)).thenReturn(Optional.of(appointment));
+
+        eventServiceImp.updateEvent(event,14L);
+        verify(eventRepository, times(1)).save(event);
+        assertEquals(patient, event.getPatient());
+        assertEquals(appointment,event.getAppointment());
+
 
     }
 

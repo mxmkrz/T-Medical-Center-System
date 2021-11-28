@@ -36,7 +36,7 @@ class AppointmentControllerTest {
     @Test
     @WithMockUser(roles = "DOCTOR")
     void getAppointments() throws Exception {
-        ResultActions result = mockMvc.perform(get("/doctor/profile/{id}/appointments",2L));
+        ResultActions result = mockMvc.perform(get("/doctor/profile/{id}/appointments",3L));
         assertEquals(result.andReturn().getResponse().getStatus(), HttpStatus.OK.value());
     }
 
@@ -50,4 +50,11 @@ class AppointmentControllerTest {
                 .content(appointmentDto.toString()));
         Assertions.assertEquals(result.andReturn().getResponse().getStatus(),HttpStatus.FORBIDDEN.value());
     }
+    @Test
+    @WithMockUser(roles = "DOCTOR")
+    void editAppointment() throws Exception {
+        ResultActions result = mockMvc.perform(get("/doctor/profile/{id}/edit/{idAppointment}",3L,14L));
+        assertEquals(result.andReturn().getResponse().getStatus(), HttpStatus.OK.value());
+    }
+
 }

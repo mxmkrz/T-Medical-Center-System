@@ -57,5 +57,12 @@ class PatientControllerTest {
         Assertions.assertEquals(result.andReturn().getResponse().getStatus(),HttpStatus.FORBIDDEN.value());
     }
 
+    @Test
+    @WithMockUser(roles = "DOCTOR")
+    void getPatientsList() throws Exception {
+        ResultActions result = mockMvc.perform(get("/doctor/patients"));
+        Assertions.assertEquals(result.andReturn().getResponse().getStatus(),HttpStatus.OK.value());
+    }
+
 
 }

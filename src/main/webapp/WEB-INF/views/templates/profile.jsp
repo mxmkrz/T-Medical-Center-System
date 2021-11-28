@@ -88,6 +88,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong>Doctor's email</strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels">${profile.doctorsEmail}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                          <span class="py-2 px-3 bg-transparent text-white rounded mybtn">
                                         <div class="col-md-12"><a class="btn btn-outline-secondary" type="button"
                                                                   href="/doctor/profile/${profile.id}/edit"><em class="fas fa-pencil-alt"></em>&nbsp;Edit</a></div></span>

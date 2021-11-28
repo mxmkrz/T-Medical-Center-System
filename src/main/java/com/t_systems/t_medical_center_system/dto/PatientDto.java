@@ -26,6 +26,7 @@ public class PatientDto {
     @NotBlank(message = "Status is required")
     private String status;
     private String doctorsName;
+    private String doctorsEmail;
     private Date createDataTime;
     private Date updateDataTime;
 }

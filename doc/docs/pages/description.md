@@ -2,6 +2,8 @@ The app have 2 user roles:
 
     1.Doctor
     2.Nurse
+    3.Admin
+
 Doctor:
     
     Doctors can add,edit,delete patient.Also,doctors can make appointments,edit appointments.
@@ -16,5 +18,8 @@ Nurse:
 
     Nurses can monitor events for all the time,for the day,for the nexrt hour.
     Also they can set the status and reason for cancel of an event.
+Admin:
+
+    Admin can create medical staff.Admin have access to all pages
 
 

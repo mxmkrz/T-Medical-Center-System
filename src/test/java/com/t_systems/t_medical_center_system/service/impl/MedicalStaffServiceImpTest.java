@@ -46,7 +46,7 @@ class MedicalStaffServiceImpTest {
         assertNotEquals("qwerty123", medicalStaff.getPassword());
     }
 
-//
+
 //    @Test
 //    void changePassword(){
 //        MedicalStaff medicalStaff = new MedicalStaff();
@@ -57,7 +57,9 @@ class MedicalStaffServiceImpTest {
 //        when(medicalStaffRepository.findAll()).thenReturn(medicalStaffList);
 //
 //        medicalStaffServiceImp.changePassword(medicalStaff);
+//        String pas = bCryptPasswordEncoder.encode("123");
 //
-//       assertEquals(bCryptPasswordEncoder.encode("123"),medicalStaff.getPassword());
+//
+//       assertEquals(pas,medicalStaff.getPassword());
 //    }
 }

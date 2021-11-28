@@ -15,11 +15,14 @@ public class PatientMapper {
 
     private final ModelMapper modelMapper;
     private final Converter<String, String> doctorName = MappingContext::getSource;
+    private final Converter<String, String> doctorEmail = MappingContext::getSource;
+
 
     @Autowired
     public PatientMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        modelMapper.createTypeMap(Patient.class, PatientDto.class).addMappings(mapper -> mapper.using(doctorName).map(Patient::getDoctorName, PatientDto::setDoctorsName));
+        modelMapper.createTypeMap(Patient.class, PatientDto.class).addMappings(mapper -> mapper.using(doctorName).map(Patient::getDoctorName, PatientDto::setDoctorsName))
+                .addMappings(mapper -> mapper.using(doctorEmail).map(Patient::getDoctorEmail, PatientDto::setDoctorsEmail));
     }
 
     public Patient toEntity(PatientDto patientDto) {
